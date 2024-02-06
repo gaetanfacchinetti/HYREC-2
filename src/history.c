@@ -41,138 +41,113 @@
 #include "history.h"
 #include "helium.h"
 
+
+double test_cython(double x, double y)
+{
+  return 2.0;
+}
+
+int comp (const void * elem1, const void * elem2) 
+{
+    int f = *((int*)elem1);
+    int s = *((int*)elem2);
+    if (f > s) return  -1;
+    if (f < s) return 1;
+    return 0;
+}
+
+void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params)
+{
+  
+  double Omega_b, Omega_cb, Omega_k, y, Tnu0;
+
+  param->h  = cosmo_params.h;
+  param->T0 = cosmo_params.T0;
+
+  Omega_b   = cosmo_params.Omega_b;
+  Omega_cb  = cosmo_params.Omega_cb;
+  Omega_k   = cosmo_params.Omega_k;
+  param->w0 = cosmo_params.w0;
+  param->wa = cosmo_params.wa;
+
+  param->mnu[0] = cosmo_params.mnu1;
+  param->mnu[1] = cosmo_params.mnu2;
+  param->mnu[2] = cosmo_params.mnu3;
+
+  param->YHe  = cosmo_params.YHe;
+  param->Neff = cosmo_params.Neff;
+  param->fsR = cosmo_params.fsR;
+  param->meR = cosmo_params.meR;
+
+  param->Nur = param->Neff - param->Nmnu;
+  param->orh2  = 4.48162687719e-7 *param->T0*param->T0*param->T0*param->T0 *(1. + 0.227107317660239 *param->Nur);
+  param->ocbh2  = Omega_cb *param->h*param->h;
+  param->obh2  = Omega_b *param->h*param->h;
+  param->okh2  = Omega_k *param->h*param->h;
+
+  Tnu0 = param->T0 * pow(4./11.,1./3.);
+  param->onuh2 = 0.;
+  if (param->Nmnu != 0)
+  {
+    for (int i=0;i<param->Nmnu;i++)
+    {
+      y = param->mnu[i]/kBoltz/Tnu0;
+      param->onuh2 = param->onuh2 + (1.+0.317322*0.0457584*pow(y,3.47446+1.)
+                      + 2.05298*0.0457584*pow(y,3.47446-1.))/(1.+0.0457584*pow(y,3.47446))*(3.450e-8 *Tnu0*Tnu0*Tnu0*Tnu0)*5.6822*2;
+    }
+  }
+
+  param->odeh2 = (1. - Omega_cb - Omega_k - param->orh2/param->h/param->h- param->onuh2/param->h/param->h)*param->h*param->h;
+  param->nH0 = 11.223846333047e-6*param->obh2*(1.-param->YHe);  // number density of hudrogen today in cm-3
+  param->fHe = param->YHe/(1-param->YHe)/3.97153;              // abundance of helium by number
+
+  param->inj_params->pann        = injection_params.pann;
+  param->inj_params->pann_halo   = injection_params.pann_halo;
+  param->inj_params->ann_z       = injection_params.ann_z;
+  param->inj_params->ann_zmax    = injection_params.ann_zmax;
+  param->inj_params->ann_zmin    = injection_params.ann_zmin;
+  param->inj_params->ann_var     = injection_params.ann_var;
+  param->inj_params->ann_z_halo  = injection_params.ann_z_halo;
+  param->inj_params->on_the_spot = injection_params.on_the_spot;
+  param->inj_params->decay       = injection_params.decay;
+  param->inj_params->Mpbh        = injection_params.Mpbh;
+  param->inj_params->fpbh        = injection_params.fpbh;
+
+  param->inj_params->odmh2 = param->ocbh2 - param->obh2;
+
+  if (MODEL == SWIFT) param->dlna = DLNA_SWIFT;
+  else param->dlna = DLNA_HYREC;
+}
+
+
+
+HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax, double zmin)
+{
+  
+  HYREC_DATA *data = malloc(sizeof(*data));
+
+  data->path_to_hyrec = "./src/";
+  hyrec_allocate(data, zmax, zmin);
+  init_hyrec(data->cosmo, cosmo_params, inj_params);
+  hyrec_compute(data, MODEL); 
+  
+  return data;
+}
+
+
+
+/*
+    hyrec_free(&rec_data);
+
+  
+  return 0;
+}
+*/
+
 /*************************************************************************************
 Hubble expansion rate in sec^-1.
 *************************************************************************************/
 
-#ifdef CAMB
-
-/* Use the Hubble rate from CAMB */
-
-extern double exported_dtauda(double *);
-
-double rec_HubbleRate(REC_COSMOPARAMS *cosmo, double z) {
-  double a;
-
-  a = 1./(1.+z);
-  /* conversion from d tau/ da in Mpc to H(z) in 1/s */
-  return 1./(a*a)/exported_dtauda(&a) /3.085678e22 * 2.99792458e8;
-}
-
-HYREC_DATA rec_data;
-double logstart, dlna;
-long int Nz;
-int firstTime=0;
-
-void hyrec_init() {
-  /* Allocate spaces for hyrec data */
-  double zmax = 8000.;
-  double zmin = 0.;
-  char *buffer = (char *) malloc (4096);
-  getcwd (buffer, 4096);
-  chdir(HYRECPATH);
-  rec_data.path_to_hyrec = "";
-  hyrec_allocate(&rec_data, zmax, zmin);
-  chdir(buffer);
-  free(buffer);
-}
-
-void rec_build_history_camb_(const double* OmegaC, const double* OmegaB, const double* h0inp, const double* tcmb,
-                             const double* yp, const double* num_nu, double *xe, double *Tm, long int* nz) {
-
-  double zmax = 8000.;
-  double zmin = 0.;
-  double h = *h0inp/100.;
-  double h2 = h*h;
-  char sub_message[SIZE_ErrorM];
-
-  /* To load tables only once */
-  if (firstTime==0){
-    hyrec_init();
-    logstart = -log(1.+zmax);
-    Nz = rec_data.Nz;
-    firstTime =1;
-  }
-  
-  if (*nz != Nz) {
-    rec_data.error = 1;
-    sprintf(sub_message, "  called from rec_build_history_camb_\n");
-    strcat(sub_message, "  Wrong number of redshifts is given from CAMB\n");
-    strcat(sub_message, "  For the default SWIFT model, Nz should be 2248 in hyrec.f90\n");
-    strcat(sub_message, "  For the rest of models in HYREC-2, Nz should be 105859 in hyrec.f90\n");
-    strcat(sub_message, "  Check the line 18 of history.h and line 22 of hyrec.f90\n");
-    strcat(rec_data.error_message, sub_message);
-    printf("\n%s\n",rec_data.error_message);
-    hyrec_free(&rec_data);
-    exit(1);
-   }
-
-  /* Defining HYREC-2 parameters from CAMB */
-  /* Note that there are some parameters which don't have to be defined here
-     since Hubble rate is directly given from CAMB: orh2, okh2, odeh2, onuh2, w0, wa. */
-  rec_data.cosmo->h = h;
-  rec_data.cosmo->T0 = *tcmb;
-  rec_data.cosmo->obh2 = *OmegaB * h2;
-  rec_data.cosmo->ocbh2 = (*OmegaB + *OmegaC) * h2;
-  rec_data.cosmo->YHe = *yp;
-  rec_data.cosmo->Neff = *num_nu;  /* effective number of neutrino species */
-  rec_data.cosmo->fsR = rec_data.cosmo->meR = 1.;   /* Default: today's values */
-  rec_data.cosmo->nH0 = 11.223846333047e-6*rec_data.cosmo->obh2*(1.-rec_data.cosmo->YHe);  // number density of hudrogen today in cm-3
-  rec_data.cosmo->fHe = rec_data.cosmo->YHe/(1.-rec_data.cosmo->YHe)/3.97153;              // abundance of helium by number
-  if (MODEL == SWIFT) rec_data.cosmo->dlna = DLNA_SWIFT;
-  else rec_data.cosmo->dlna = DLNA_HYREC;
-  dlna = rec_data.cosmo->dlna;
-
-  /* It seems there are no parameters related to DM annihilation in CAMB
-     So, following parameters (inj_params) are meaningless here          */
-  rec_data.cosmo->inj_params->pann = 0.;
-  rec_data.cosmo->inj_params->pann_halo = 0.;
-  rec_data.cosmo->inj_params->ann_z = 1.;
-  rec_data.cosmo->inj_params->ann_zmax = 1.;
-  rec_data.cosmo->inj_params->ann_zmin = 1.;
-  rec_data.cosmo->inj_params->ann_var = 1.;
-  rec_data.cosmo->inj_params->ann_z_halo = 1.;
-  rec_data.cosmo->inj_params->on_the_spot = 1;
-  rec_data.cosmo->inj_params->decay = 0.;
-
-  /* Primodial black hole parameters */
-  rec_data.cosmo->inj_params->Mpbh = 1.;
-  rec_data.cosmo->inj_params->fpbh = 0.;
-
-  rec_data.cosmo->inj_params->odmh2 = *OmegaC * h2;
-
-  /* This is a flag to use Hubble rate defined history.c
-     This flag is for the HYREC-2 implementation in CLASS    */
-  double Hubble_flag[1];
-  Hubble_flag[0] = -1.;
-
-  rec_data.xe_output = xe; rec_data.Tm_output = Tm;
-  
-  rec_build_history(&rec_data, MODEL, Hubble_flag);
-  if (rec_data.error == 1) {
-    printf("\n%s\n",rec_data.error_message);
-    exit(1);
-  }
-}
-
-
-double hyrec_xe_(double* a, double *xe){
-  double loga = log(*a);
-  int error;   /* error and error_message are meaningless here */
-  char *error_message;
-  if (loga < logstart) return xe[0];
-  return rec_interp1d(logstart, dlna, xe, Nz, loga, &error, error_message);
-}
-
-double hyrec_tm_(double* a, double *tm){
-  double loga = log(*a);
-  int error;  /* error and error_message are meaningless here */
-  char *error_message;
-  if (loga < logstart) return tm[0];
-  return rec_interp1d(logstart, dlna, tm, Nz, loga, &error, error_message);
-}
-
-#else
 
 /* Hyrec Hubble expansion rate. */
 
@@ -202,7 +177,6 @@ double rec_HubbleRate(REC_COSMOPARAMS *cosmo, double z) {
   return( 3.2407792896393e-18 * sqrt(rho) );
 }
 
-#endif
 
 /*************************************************************************************************
 Cosmological parameters Input/Output
@@ -927,8 +901,9 @@ Note that path_to_hyrec in HYREC_DATA should be defined first
 before calling hyrec_allocate().
 ***********************************************************/
 
-void hyrec_allocate(HYREC_DATA *data, double zmax, double zmin) {
+void hyrec_allocate(HYREC_DATA * data, double zmax, double zmin) {
   double DLNA;
+
   if (MODEL == SWIFT) DLNA = DLNA_SWIFT;
   else DLNA = DLNA_HYREC;
 
@@ -973,6 +948,7 @@ void hyrec_free(HYREC_DATA *data) {
   free(data->rad);
   free_fit(data->fit);
   free(data->fit);
+  free(data);
 }
 
 /******************************************************************

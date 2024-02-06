@@ -35,6 +35,7 @@
 #define DLNT_MAX         5e-4       /* Use the steady-state approximation for Tm as long as 1-Tm/Tr < DLNT_MAX, then switch to ODE integration */
 #define DTM_DIFF_MAX     5e-2       /* If |1-dTmdlna_prev/dTmdlna| > DTM_DIFF_MAX, evole Tm with implicit method */
 
+
 void rec_get_cosmoparam(FILE *fin, FILE *fout, REC_COSMOPARAMS *param);
 
 double rec_HubbleRate(REC_COSMOPARAMS *param, double z);
@@ -60,6 +61,36 @@ void rec_get_xe_next2_HTm(HYREC_DATA *data, int model, double z_in, long iz, dou
                           double dTmdlna_prev[2], double H, double z_out, double H_next);
 
 char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array);
+
+// modif here
+
+//----------------------------------------------------//
+typedef struct {
+  double h;
+  double T0;
+  double Omega_b, Omega_cb, Omega_k;
+  double w0, wa; 
+  double Neff; 
+  double Nmnu; 
+  double mnu1, mnu2, mnu3;             
+  double YHe;
+  double fsR, meR;
+} INPUT_COSMOPARAMS;
+
+typedef struct {
+  double pann;
+  double pann_halo; 
+  double ann_z, ann_zmax, ann_zmin, ann_var;
+  double ann_z_halo;
+  int on_the_spot;
+  double Mpbh, fpbh;
+  double decay;
+} INPUT_INJ_PARAMS;
+
+double test_cython(double x, double y);
+void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params);
+HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS global_cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin);
+//----------------------------------------------------//
 
 void hyrec_allocate(HYREC_DATA *data, double zmax, double zmin);
 void hyrec_free(HYREC_DATA *data);

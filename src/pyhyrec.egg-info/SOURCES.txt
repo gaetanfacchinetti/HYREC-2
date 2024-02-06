@@ -1,0 +1,11 @@
+README.md
+pyhyrec.c
+pyproject.toml
+setup.py
+src/history.h
+src/pyhyrec.egg-info/PKG-INFO
+src/pyhyrec.egg-info/SOURCES.txt
+src/pyhyrec.egg-info/dependency_links.txt
+src/pyhyrec.egg-info/requires.txt
+src/pyhyrec.egg-info/top_level.txt
+tests/test.py

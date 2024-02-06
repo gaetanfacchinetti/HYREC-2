@@ -1,7 +1,23 @@
+Metadata-Version: 2.1
+Name: pyhyrec
+Version: 1.0.0
+Summary: A code for cosmological recombination history
+Author: Nanoom Lee, Yacine Ali-Haimoud, Chris Hirata
+Author-email: Gaétan Facchinetti <gaetanfacc@gmail.com>
+Project-URL: Homepage, https://github.com/gaetanfacchinetti/HYREC-2
+Keywords: physics,cosmology,recombination
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: cython
+Requires-Dist: numpy
+Provides-Extra: dev
+
 # HYREC-2
-
-[![Build Status](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/CI.yml?query=branch%3Amain)
-
 
 A code for primordial hydrogen and helium recombination including radiative transfer. An updated version of HyRec with new computing mode.
 HYREC-2 is implemented in `CLASS` code as a default module for recombination history since version 3.0.0.
@@ -18,8 +34,6 @@ See readme.pdf for detailed info, and check HYREC-2 paper (Reference 1 below) fo
 In this fork we have implement a lightweight python wrapper for HYREC-2 using cython.
 
 ### Installation
-
-The main option for clonning the repo is
 
 
 ## Classical C version

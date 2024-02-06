@@ -14,7 +14,7 @@ HYREC_EXE = hyrec.o
 
 HYREC_SRC2 = hyrectools.c helium.c hydrogen.c history.c energy_injection.c hyrec.c
 
-default: libhyrec.a
+default: libhyrec.so
 
 clean: 
 	rm *.o
@@ -23,5 +23,5 @@ hyrec: $(HYREC_SRC2)
 	$(CC) $(LDFLAG) -o hyrec  $(HYREC_SRC2) -lm
 
 
-libhyrec.a: $(HYREC_SRC)
+libhyrec.so: $(HYREC_SRC)
 	$(AR) $@ $(HYREC_SRC)

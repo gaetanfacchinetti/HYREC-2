@@ -1,0 +1,32 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel", "cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyhyrec"
+version = "1.0.0"
+description = "A code for cosmological recombination history"
+readme = "README.md"
+authors = [{name = "Nanoom Lee"}, {name = "Yacine Ali-Haimoud"}, {name = "Chris Hirata"}, { name = "Gaétan Facchinetti", email = "gaetanfacc@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Operating System :: Unix",
+    "Operating System :: MacOS :: MacOS X",
+]
+keywords = ["physics", "cosmology", "recombination"]
+dependencies = [
+    "cython",
+    "numpy",
+]
+requires-python = ">=3.6"
+
+[project.optional-dependencies]
+dev = []
+
+[project.urls]
+Homepage = "https://github.com/gaetanfacchinetti/HYREC-2"
