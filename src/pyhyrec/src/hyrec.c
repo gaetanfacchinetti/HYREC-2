@@ -19,21 +19,23 @@ int main(void) {
   data->path_to_hyrec = "";
   hyrec_allocate(data, zmax, zmin);
 
-  /*
-  rec_get_cosmoparam(stdin, stderr, ptr_data->cosmo);
-  hyrec_compute(ptr_data, MODEL);
-  if (ptr_data->error == 1) fprintf(stderr,"%s\n",ptr_data->error_message);
+  rec_get_cosmoparam(stdin, stderr, data->cosmo);
+  hyrec_compute(data, MODEL);
+
+  if (data->error == 1) fprintf(stderr,"%s\n",data->error_message);
   else {
     double z = zmax;
+    char file[200];
+    FILE *fout;
+    fout = fopen("output_xe.dat", "a");
     while (z > zmin) {
-      printf("%f %1.10E %1.10E\n",z,hyrec_xe(z, ptr_data),hyrec_Tm(z, ptr_data));
+      fprintf(fout, "%f %1.10E %1.10E\n",z,hyrec_xe(z, data),hyrec_Tm(z, data));
       z -= 1.;
       }
+    fclose(fout);
   }
-  */
   
   hyrec_free(data);
-  free(data);
 
   return 0;
 

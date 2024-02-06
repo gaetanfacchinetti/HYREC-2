@@ -126,7 +126,7 @@ HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_para
   
   HYREC_DATA *data = malloc(sizeof(*data));
 
-  data->path_to_hyrec = "./src/";
+  data->path_to_hyrec = "./src/pyhyrec/data/";
   hyrec_allocate(data, zmax, zmin);
   init_hyrec(data->cosmo, cosmo_params, inj_params);
   hyrec_compute(data, MODEL); 

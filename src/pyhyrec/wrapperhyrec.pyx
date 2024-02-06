@@ -1,6 +1,7 @@
 
 import warnings
 import numpy as np
+import os
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     _filename = 'pyhyrec/' + filename.split("/")[-1]
@@ -48,7 +49,12 @@ cdef extern from "src/history.h":
 def call_test_cython(double x, double y) :
     return test_cython(x, y)
 
-def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax = 8000.0, double zmin = 0.0, int nz = 200):
+def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax = 8000.0, double zmin = 0.0, int nz = 8000):
+
+    location = os.path.join( os.path.dirname(os.path.realpath(__file__)), 'data')
+
+    f = open(os.path.join(location, 'Alpha_inf.dat'), 'r')
+    print(f.read())
 
     data = run_hyrec(cosmo_params, inj_params, zmax, zmin)
     
@@ -56,7 +62,7 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
     if data.error == 1 :
         print(str(data.error_message.decode('utf-8')))
 
-    z_array = np.logspace(np.log10(np.max([zmin, 1e-3])), np.log10(zmax), nz)
+    z_array = np.linspace(np.max([zmin, 1.0]), zmax, nz)
     xe_array = np.zeros(nz)
     Tm_array = np.zeros(nz)
     
