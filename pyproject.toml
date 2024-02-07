@@ -22,7 +22,6 @@ keywords = ["physics", "cosmology", "recombination"]
 dependencies = [
     "cython",
     "numpy",
-    "warnings",
 ]
 requires-python = ">=3.6"
 

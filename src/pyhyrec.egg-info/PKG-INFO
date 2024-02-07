@@ -691,6 +691,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: cython
 Requires-Dist: numpy
+Requires-Dist: warnings
 Provides-Extra: dev
 
 # HYREC-2
