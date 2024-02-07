@@ -3,6 +3,7 @@ import warnings
 import numpy as np
 import os
 
+
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     _filename = 'pyhyrec/' + filename.split("/")[-1]
     return ' %s:%s: %s (%s)\n' % (_filename, lineno, message, category.__name__)
@@ -11,7 +12,6 @@ warnings.formatwarning = warning_on_one_line
 
 cdef extern from "src/history.h":
 
-    double test_cython(double x, double y)
 
     ctypedef struct INPUT_INJ_PARAMS:
 
@@ -40,23 +40,18 @@ cdef extern from "src/history.h":
         char * error_message
         pass
 
-    HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin)
+    HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location)
     void hyrec_free(HYREC_DATA * data)
     double hyrec_xe(double z, HYREC_DATA * data)
     double hyrec_Tm(double z, HYREC_DATA * data)
     
 
-def call_test_cython(double x, double y) :
-    return test_cython(x, y)
-
 def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax = 8000.0, double zmin = 0.0, int nz = 8000):
 
-    location = os.path.join( os.path.dirname(os.path.realpath(__file__)), 'data')
-
-    f = open(os.path.join(location, 'Alpha_inf.dat'), 'r')
-    print(f.read())
-
-    data = run_hyrec(cosmo_params, inj_params, zmax, zmin)
+    str_table_location = os.path.join( os.path.dirname(os.path.realpath(__file__)), 'data/')
+    cstr_table_location = str_table_location.encode('utf-8') 
+    
+    cdef HYREC_DATA * data = run_hyrec(cosmo_params, inj_params, zmax, zmin, cstr_table_location)
     
     ## If something went wrong we print the error message
     if data.error == 1 :
@@ -72,6 +67,7 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
     
     # Free the memory at the end
     hyrec_free(data)
+    
     
     return z_array, xe_array, Tm_array
 

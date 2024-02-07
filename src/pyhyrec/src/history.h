@@ -87,9 +87,8 @@ typedef struct {
   double decay;
 } INPUT_INJ_PARAMS;
 
-double test_cython(double x, double y);
 void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params);
-HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS global_cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin);
+HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS global_cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location);
 //----------------------------------------------------//
 
 void hyrec_allocate(HYREC_DATA *data, double zmax, double zmin);

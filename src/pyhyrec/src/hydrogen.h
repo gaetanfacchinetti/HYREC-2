@@ -188,11 +188,8 @@ void rescale_T(double *T, double fsR, double meR);
 double alphaB_PPB(double TM, double fsR, double meR);
 double rec_TLA_dxHIIdlna(REC_COSMOPARAMS *cosmo, double xe, double xHII, double nH, double H, double TM, double TR, double Fudge);
 
-
-
 void allocate_radiation(RADIATION *rad, long int Nz, int *error, char error_message[SIZE_ErrorM]);
 void free_radiation(RADIATION *rad);
-
 
 void allocate_and_read_atomic(HYREC_ATOMIC *atomic, int *error, char *path_to_hyrec, char error_message[SIZE_ErrorM]);
 void free_atomic(HYREC_ATOMIC *atomic);

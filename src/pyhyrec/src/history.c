@@ -37,15 +37,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <libgen.h>
+//#include <signal.h>
 
 #include "history.h"
 #include "helium.h"
 
 
-double test_cython(double x, double y)
-{
-  return 2.0;
-}
 
 int comp (const void * elem1, const void * elem2) 
 {
@@ -70,14 +67,16 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->w0 = cosmo_params.w0;
   param->wa = cosmo_params.wa;
 
+
   param->mnu[0] = cosmo_params.mnu1;
   param->mnu[1] = cosmo_params.mnu2;
   param->mnu[2] = cosmo_params.mnu3;
 
   param->YHe  = cosmo_params.YHe;
   param->Neff = cosmo_params.Neff;
-  param->fsR = cosmo_params.fsR;
-  param->meR = cosmo_params.meR;
+  param->fsR  = cosmo_params.fsR;
+  param->meR  = cosmo_params.meR;
+  param->Nmnu = cosmo_params.Nmnu;
 
   param->Nur = param->Neff - param->Nmnu;
   param->orh2  = 4.48162687719e-7 *param->T0*param->T0*param->T0*param->T0 *(1. + 0.227107317660239 *param->Nur);
@@ -119,14 +118,27 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   else param->dlna = DLNA_HYREC;
 }
 
+//void segfault_sigaction(int signal, siginfo_t *si, void *arg)
+//{
+//    printf("Caught segfault at address %p\n", si->si_addr);
+//    exit(0);
+//}
 
 
-HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax, double zmin)
+HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location)
 {
-  
-  HYREC_DATA *data = malloc(sizeof(*data));
 
-  data->path_to_hyrec = "./src/pyhyrec/data/";
+  //memset(&sa, 0, sizeof(struct sigaction));
+  //sigemptyset(&sa.sa_mask);
+  //sa.sa_sigaction = segfault_sigaction;
+  //sa.sa_flags   = SA_SIGINFO;
+
+  //sigaction(SIGSEGV, &sa, NULL);
+  //printf("We are here");
+
+  HYREC_DATA * data = malloc(sizeof(*data));
+
+  data->path_to_hyrec = table_location;
   hyrec_allocate(data, zmax, zmin);
   init_hyrec(data->cosmo, cosmo_params, inj_params);
   hyrec_compute(data, MODEL); 
@@ -135,14 +147,6 @@ HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_para
 }
 
 
-
-/*
-    hyrec_free(&rec_data);
-
-  
-  return 0;
-}
-*/
 
 /*************************************************************************************
 Hubble expansion rate in sec^-1.
