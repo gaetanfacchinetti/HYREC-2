@@ -30,3 +30,7 @@ dev = []
 
 [project.urls]
 Homepage = "https://github.com/gaetanfacchinetti/HYREC-2"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
