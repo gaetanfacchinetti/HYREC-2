@@ -46,28 +46,45 @@ cdef extern from "src/history.h":
     double hyrec_Tm(double z, HYREC_DATA * data)
     
 
+
+"""
+    call_run_hyrec(cosmo_params:INPUT_COSMOPARAMS, inj_params:INPUT_INJ_PARAMS, zmax:float, zmin:float, nz:int)
+
+Run hyrec
+
+Returns:
+--------
+z_array: np.ndarray
+    Array with size `nz` of linearly spaced redshifts between `zmin` and `zmax``
+xe_array: np.ndarray
+    Array with size `nz` of the inter-galactic medium electron fraction
+Tm_array: np.ndarrat
+    Array with size `nz` of the inter-galactic medium temperature [in K]
+"""
 def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax = 8000.0, double zmin = 0.0, int nz = 8000):
 
     str_table_location = os.path.join( os.path.dirname(os.path.realpath(__file__)), 'data/')
     cstr_table_location = str_table_location.encode('utf-8') 
     
+    # Calling the Hyrec C function returning a pointer of type HYREC_DATA
     cdef HYREC_DATA * data = run_hyrec(cosmo_params, inj_params, zmax, zmin, cstr_table_location)
     
     ## If something went wrong we print the error message
     if data.error == 1 :
         print(str(data.error_message.decode('utf-8')))
 
+    # Define numpy arrays to store the data
     z_array = np.linspace(np.max([zmin, 1.0]), zmax, nz)
     xe_array = np.zeros(nz)
     Tm_array = np.zeros(nz)
     
+    # Transfering the data from the C code to the numpy arrays
     for iz, z in enumerate(z_array):
         xe_array[iz] = hyrec_xe(z, data)
         Tm_array[iz] = hyrec_Tm(z, data)
     
     # Free the memory at the end
     hyrec_free(data)
-    
     
     return z_array, xe_array, Tm_array
 

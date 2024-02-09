@@ -3,3 +3,10 @@
 src/hyrec
 *.egg-info
 .nfs*
+.pytest_cache
+
+build
+__pycache__
+pyhyrec.egg-info
+
+dist
