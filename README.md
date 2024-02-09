@@ -1,6 +1,6 @@
 # HYREC-2
 
-[![Build Status](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/CI.yml?query=branch%3Amain)
+[![Build Status](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/python-package.yml/badge.svg?branch=main)](https://github.com/gaetanfacchinetti/HYREC-2/actions/workflows/python-package.yml?query=branch%3Amain)
 
 
 A code for primordial hydrogen and helium recombination including radiative transfer. An updated version of HyRec with new computing mode.
