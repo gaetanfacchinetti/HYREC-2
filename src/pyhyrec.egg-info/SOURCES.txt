@@ -5,8 +5,9 @@ pyproject.toml
 setup.py
 ./src/pyhyrec/wrapperhyrec.c
 src/pyhyrec/__init__.py
+src/pyhyrec/__main__.py
+src/pyhyrec/params.py
 src/pyhyrec/wrapperhyrec.c
-src/pyhyrec/wrapperhyrec.cpython-39-x86_64-linux-gnu.so
 src/pyhyrec/wrapperhyrec.pyx
 src/pyhyrec.egg-info/PKG-INFO
 src/pyhyrec.egg-info/SOURCES.txt

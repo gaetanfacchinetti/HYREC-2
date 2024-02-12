@@ -3,6 +3,8 @@ import warnings
 import numpy as np
 import os
 
+#from .params import HyRecCosmoParams
+
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     _filename = 'pyhyrec/' + filename.split("/")[-1]
@@ -105,10 +107,10 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
     inj_params.ann_var = ann_var
     inj_params.ann_z_halo = ann_z_halo
     inj_params.decay = decay
+    inj_params.on_the_spot = on_the_spot
     inj_params.Mpbh = Mpbh
     inj_params.fpbh = fpbh
-    inj_params.on_the_spot = on_the_spot
-    
+   
     return inj_params
 
 

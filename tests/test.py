@@ -12,13 +12,14 @@ def test_call_run():
     cosmo_params = pyhy.init_INPUT_COSMOPARAMS(6.735837e-01, 2.7255, 0.0494142797907188, 0.31242079216478097, 0., -1, 0, 3.046, 1.0, 0.06, 0., 0., 0.245, 1., 1.)
     pyhy.call_run_hyrec(cosmo_params, inj_params)
 
+
 # Check here that the result given with the defaut options match with the default output
 def test_default_output():
     
-    inj_params = pyhy.init_INPUT_INJ_PARAMS(0., 0., 0., 0., 0., 0., 0., 0, 0., 1., 0.)
-    cosmo_params = pyhy.init_INPUT_COSMOPARAMS(6.735837e-01, 2.7255, 0.0494142797907188, 0.31242079216478097, 0., -1, 0, 3.046, 1.0, 0.06, 0., 0., 0.245, 1., 1.)
+    cosmo = pyhy.HyRecCosmoParams()
+    inj  = pyhy.HyRecInjectionParams()
 
-    _, xe, Tm = pyhy.call_run_hyrec(cosmo_params, inj_params)
+    _, xe, Tm = pyhy.call_run_hyrec(cosmo(), inj())
 
     data = np.loadtxt("./tests/output_xe.dat")
 
