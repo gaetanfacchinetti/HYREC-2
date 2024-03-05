@@ -29,7 +29,8 @@ requires-python = ">=3.6"
 dev = []
 
 [project.urls]
-Homepage = "https://github.com/gaetanfacchinetti/HYREC-2"
+Homepage      = "https://github.com/nanoomlee/HYREC-2"
+PythonVersion = "https://github.com/gaetanfacchinetti/HYREC-2"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

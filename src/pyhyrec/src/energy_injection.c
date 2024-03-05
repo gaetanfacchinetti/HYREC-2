@@ -63,6 +63,38 @@ double dEdtdV_DM_ann(double z, INJ_PARAMS *params){
   
 }
 
+
+/***************************************************************************************
+Effect of primordial magnetic fields
+According to Chluba et al. 2015
+***************************************************************************************/
+
+// Energy injection rate due to turbulences
+// H must be in 1/s for a result in eV / cm^3 / s 
+double gamma_turbulences(double z, double H, double B0, double nB)
+{
+  double zi = 1088;
+
+  if (z > zi)
+    return 0;
+
+  double m = 2.0*(nB+3.0)/(nB + 5.0);
+  double kd = 286.91 * B0;
+  double titd = 14.8 / B0 / kd;
+  double rhoB = 9.5e-8 * square(B0) * 0.26 * pow(1+z, 4);
+ 
+  return 3.0*m/2.0 * pow(log(1+titd), m)/pow(log(1+titd) + 1.5 * log((1+zi)/(1+z)), m+1) * H * rhoB;
+}
+
+
+// Energy injection rate due to ambipolar diffusion
+double gamma_ambipolar(double z, double xp, double B0, double nB)
+{
+  return 0.0;
+}
+
+
+
 /***************************************************************************************
 Effect of accreting primordial black holes 
 Since the accuracy is certainly not at the percent level, 

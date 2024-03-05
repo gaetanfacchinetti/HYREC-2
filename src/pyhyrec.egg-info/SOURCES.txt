@@ -4,6 +4,7 @@ README.md
 pyproject.toml
 setup.py
 ./src/pyhyrec/wrapperhyrec.c
+src/pyhyrec/.DS_Store
 src/pyhyrec/__init__.py
 src/pyhyrec/__main__.py
 src/pyhyrec/params.py

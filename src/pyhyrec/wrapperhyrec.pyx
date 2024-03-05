@@ -3,8 +3,6 @@ import warnings
 import numpy as np
 import os
 
-#from .params import HyRecCosmoParams
-
 
 def warning_on_one_line(message, category, filename, lineno, file=None, line=None):
     _filename = 'pyhyrec/' + filename.split("/")[-1]
