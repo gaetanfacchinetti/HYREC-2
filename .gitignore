@@ -10,3 +10,5 @@ __pycache__
 pyhyrec.egg-info
 
 dist
+
+example_pmf.ipynb

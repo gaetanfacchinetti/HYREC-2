@@ -217,6 +217,9 @@ double rec_HMLA_2photon_dxedlna(HYREC_DATA *data, double xe, double nH, double H
 double rec_dxHIIdlna(HYREC_DATA *data, int model, double xe, double xHII, double nH, double H, double TM, double TR,
                      unsigned iz, double z);
 
+void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
+		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
+           double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat);
 
 /************ SWITCHES FOR RADIATIVE TRANSFER. ALL SWITCHES SET TO 1 ARE THE DEFAULT MODEL  ************/
 

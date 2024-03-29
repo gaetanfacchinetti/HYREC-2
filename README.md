@@ -32,7 +32,7 @@ In this fork we have implement a lightweight python wrapper for HYREC-2 using cy
   pip install hyrec
   ```
 
-## How to run HYREC-2
+### How to run HYREC-2
 
 An example of notebook using the python wrapper is given [here](https://github.com/gaetanfacchinetti/HYREC-2/blob/master/example.ipynb).
 

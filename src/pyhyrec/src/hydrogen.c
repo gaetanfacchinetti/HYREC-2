@@ -36,6 +36,51 @@
 #include "hydrogen.h"
 
 
+
+/*******************************************************************************
+Fraction of energy deposited in the form of heat, ionization and excitations
+*******************************************************************************/
+
+double chi_heat(double xe) { 
+  return (1.+2.*xe)/3.; // Approximate value of Chen & Kamionkowski 2004 
+
+  // fit by Vivian Poulin of columns 1 and 2 in Table V of Galli et al. 2013
+  // overall coefficient slightly changed by YAH so it reaches exactly 1 at xe = 1.  
+  //return (xe < 1.? 1.-pow(1.-pow(xe,0.300134),1.51035) : 1.);
+}
+
+
+/**********************************************************************************
+Energy *deposition* rate per unit volume
+Essentially use a very simple ODE solution
+**********************************************************************************/
+
+void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
+		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
+           double *ion, double *exclya, double *dEdtdV_heat) {
+
+  double inj  = dEdtdV_inj(z_out, xe, Tgas, params->inj_params);
+  
+  if (params->inj_params->on_the_spot == 1) *dEdtdV_dep = inj;
+
+  // Else put in your favorite recipe to translate from injection to deposition
+  // Here I assume injected photon spectrum Compton cools at rate dE/dt = - 0.1 n_h c sigma_T E
+  // This is valid for E_photon ~ MeV or so.
+  
+  else { // c sigma_T = 2e-14 (cgs)
+    *dEdtdV_dep = (*dEdtdV_dep *exp(-7.*dlna) + 2e-15* dlna*nH/H *inj)
+                 /(1.+ 2e-15 *dlna*nH/H);                              
+  }     
+
+  *ion     = *dEdtdV_dep / 3. / nH * xH /EI;
+  *exclya  = *ion / 0.75;
+  *dEdtdV_heat    = *dEdtdV_dep * chi_heat(xe); 
+}
+
+
+
+
+
 /***********************************************************************************************************
 Some constants appropriately rescaled for different values of the fine-structure constant and electron mass
 ***********************************************************************************************************/

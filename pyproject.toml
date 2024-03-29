@@ -4,6 +4,7 @@
 requires = ["setuptools>=61.0.0", "wheel", "cython"]
 build-backend = "setuptools.build_meta"
 
+
 [project]
 name = "pyhyrec"
 version = "1.0.0"
@@ -35,3 +36,4 @@ PythonVersion = "https://github.com/gaetanfacchinetti/HYREC-2"
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
+

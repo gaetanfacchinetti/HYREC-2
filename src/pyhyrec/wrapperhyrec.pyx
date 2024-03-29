@@ -12,7 +12,6 @@ warnings.formatwarning = warning_on_one_line
 
 cdef extern from "src/history.h":
 
-
     ctypedef struct INPUT_INJ_PARAMS:
 
         double pann,               #/* DM annihilation parameter in the smooth background and in haloes */ 
@@ -107,7 +106,7 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
     inj_params.decay = decay
     inj_params.on_the_spot = on_the_spot
     inj_params.Mpbh = Mpbh
-    inj_params.fpbh = fpbh
+    inj_params.fpbh =  fpbh
    
     return inj_params
 
@@ -137,3 +136,13 @@ def init_INPUT_COSMOPARAMS(double h, double T0,
     cosmo.meR = meR
 
     return cosmo;
+
+
+
+cdef extern from "src/energy_injection.h":
+
+    double decay_rate_pmf_turbulences(double z, double tdti, double nB)
+
+
+def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):
+    return decay_rate_pmf_turbulences(z, tdti, nB)

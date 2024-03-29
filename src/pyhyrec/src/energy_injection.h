@@ -22,11 +22,12 @@ typedef struct {
   int on_the_spot;            /* if set to 1 assume energy deposition rate = injection rate */
                               /* Otherwise solves for deposition given injection with simple recipe */
 
-  double ion, exclya;
+  double ion, exclya, dEdtdV_heat;   /* Adding the possibility to have a heating decorrelated from ion and exclya */
   
 } INJ_PARAMS;
 
-void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-                       double nH, double H, INJ_PARAMS *params, double *dEdtdV_dep);
+
+double dEdtdV_inj(double z, double xe, double Tgas, INJ_PARAMS *params);
+double decay_rate_pmf_turbulences(double z, double tdti, double nB); /* decay rate of PMF turbulences*/
 
 #endif

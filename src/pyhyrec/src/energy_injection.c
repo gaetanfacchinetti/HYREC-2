@@ -66,12 +66,17 @@ double dEdtdV_DM_ann(double z, INJ_PARAMS *params){
 
 /***************************************************************************************
 Effect of primordial magnetic fields
-According to Chluba et al. 2015
+According to Kunze and Komatzu 2014
 ***************************************************************************************/
 
-// Energy injection rate due to turbulences
-// H must be in 1/s for a result in eV / cm^3 / s 
-double gamma_turbulences(double z, double H, double B0, double nB)
+/* Mode for a magnetic field with variance sigB0 (nG) on scale lambda (Mpc), normalisation sig, and power index nB */
+double pmf_mode(double sigB0, double nB, double sig, double lambda)
+{
+  return 2 * M_PI * pow(pow(sigB0 / sig, 2) * pow(lambda / 2.0 / M_PI, 3.0 + nB), -1.0/(5.0+nB));
+}
+
+// Energy injection rate due to turbulences in units of Hubble time
+double decay_rate_pmf_turbulences(double z, double tdti, double nB)
 {
   double zi = 1088;
 
@@ -79,11 +84,7 @@ double gamma_turbulences(double z, double H, double B0, double nB)
     return 0;
 
   double m = 2.0*(nB+3.0)/(nB + 5.0);
-  double kd = 286.91 * B0;
-  double titd = 14.8 / B0 / kd;
-  double rhoB = 9.5e-8 * square(B0) * 0.26 * pow(1+z, 4);
- 
-  return 3.0*m/2.0 * pow(log(1+titd), m)/pow(log(1+titd) + 1.5 * log((1+zi)/(1+z)), m+1) * H * rhoB;
+  return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
 }
 
 
@@ -232,50 +233,5 @@ double dEdtdV_inj(double z, double xe, double Tgas, INJ_PARAMS *params){
          + dEdtdV_pbh(params->fpbh, params->Mpbh, z, xe, Tgas);  
 }
 
-
-/**********************************************************************************
-Energy *deposition* rate per unit volume
-Essentially use a very simple ODE solution
-**********************************************************************************/
-
-void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-		       double nH, double H, INJ_PARAMS *params, double *dEdtdV_dep) {
-
-  double inj  = dEdtdV_inj(z_out, xe, Tgas, params);
-  
-  if (params->on_the_spot == 1) *dEdtdV_dep = inj;
-
-  // Else put in your favorite recipe to translate from injection to deposition
-  // Here I assume injected photon spectrum Compton cools at rate dE/dt = - 0.1 n_h c sigma_T E
-  // This is valid for E_photon ~ MeV or so.
-  
-  else { // c sigma_T = 2e-14 (cgs)
-    *dEdtdV_dep = (*dEdtdV_dep *exp(-7.*dlna) + 2e-15* dlna*nH/H *inj)
-                 /(1.+ 2e-15 *dlna*nH/H);                              
-  }       
-}
-
-/*******************************************************************************
-Fraction of energy deposited in the form of heat, ionization and excitations
-*******************************************************************************/
-
-double chi_heat(double xe) { 
-  return (1.+2.*xe)/3.; // Approximate value of Chen & Kamionkowski 2004 
-
-  // fit by Vivian Poulin of columns 1 and 2 in Table V of Galli et al. 2013
-  // overall coefficient slightly changed by YAH so it reaches exactly 1 at xe = 1.  
-  // return (xe < 1.? 1.-pow(1.-pow(xe,0.300134),1.51035) : 1.);
-}
-
-double chi_ion(double xe) {
-  return (1.-xe)/3.; // Approximate value of Chen & Kamionkowski 2004 
-
-  // fit by Vivian Poulin of columns 1 and 4 in Table V of Galli et al. 2013
-  // return 0.369202*pow(1.-pow(xe,0.463929),1.70237); 
-}
-
-double chi_exc(double xe) {
-  return 1. - chi_ion(xe) - chi_heat(xe);
-}
 
 
