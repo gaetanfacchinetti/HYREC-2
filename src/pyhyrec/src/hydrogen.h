@@ -45,6 +45,9 @@
 
 #define EI   13.598286071938324        /* Hydrogen ionization energy in eV, reduced mass, no relativistic corrections */
 
+
+/****** CONSTANTS IN CGS + EV UNIT SYSTEM *******/
+
 /* Energy differences between excited levels of hydrogen -- used often */
 #define E21  10.198714553953742
 #define E31  12.087365397278509
@@ -137,28 +140,6 @@ typedef struct {
 } RADIATION;
 
 
-/* Structure for HYREC-2 internal parameters */
-
-typedef struct {
-  double h;                                         /* Hubble constant */
-  double T0;                                        /* CMB temperature today in K*/
-  double obh2, ocbh2, odeh2, okh2, orh2, onuh2;     /* density parameters */
-  double w0, wa;                                    /* Dark energy equation of state parameters */
-  double Neff;                                      /* total effective number of neutrinos (massive + massless) */
-  double Nur;                                       /* number of massless neutrinos */
-  double Nmnu;                                      /* number of massive neutrinos */
-  double mnu[3];                                    /* neutrino masses */
-  double fHe;                                       /* Helium fraction by number */
-  double nH0;                                       /* density of hydrogen today in cm^{-3} [Changed from m^{-3} in February 2015] */
-  double YHe;                                       /* Helium fraction */
-  double fsR, meR;                                  /* fine-structure constant alpha/alpha(today)
-                                                       and me/me(today) (Added April 2012)*/
-  double dlna, nz;
-
-  INJ_PARAMS *inj_params;                           /* Structure containing all Energy-injection parameters */
-
-} REC_COSMOPARAMS;
-
 /* Structure for HYREC-2 data */
 
 typedef struct{
@@ -217,9 +198,7 @@ double rec_HMLA_2photon_dxedlna(HYREC_DATA *data, double xe, double nH, double H
 double rec_dxHIIdlna(HYREC_DATA *data, int model, double xe, double xHII, double nH, double H, double TM, double TR,
                      unsigned iz, double z);
 
-void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
-           double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat);
+
 
 /************ SWITCHES FOR RADIATIVE TRANSFER. ALL SWITCHES SET TO 1 ARE THE DEFAULT MODEL  ************/
 
