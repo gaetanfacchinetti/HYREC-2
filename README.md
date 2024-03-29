@@ -29,7 +29,7 @@ In this fork we have implement a lightweight python wrapper for HYREC-2 using cy
 
 * The easiest option for installation is to use
   ```
-  pip install hyrec
+  pip install pyhyrec
   ```
 
 ### How to run HYREC-2
