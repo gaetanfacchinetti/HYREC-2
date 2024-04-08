@@ -41,9 +41,8 @@
 #define PION_MAX  1e-2
 
 
-/****** CONSTANTS IN CGS + EV UNIT SYSTEM *******/
 
-#define EI   13.598286071938324        /* Hydrogen ionization energy in eV, reduced mass, no relativistic corrections */
+
 
 
 /****** CONSTANTS IN CGS + EV UNIT SYSTEM *******/

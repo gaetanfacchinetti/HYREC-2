@@ -87,12 +87,27 @@ double decay_rate_pmf_turbulences(double z, double tdti, double nB)
   return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
 }
 
-
-// Energy injection rate due to ambipolar diffusion
-double gamma_ambipolar(double z, double xp, double B0, double nB)
+// Variance of the pmf power spectrum at the Jean's scale
+double sigma_Jeans_pmf(double obh2, double ocbh2)
 {
-  return 0.0;
+  return 2.116 * sqrt(obh2 / 0.02242) * sqrt(ocbh2 / 0.1424);
 }
+
+/*  Energy injection rate due to ambipolar diffusion (result is in eV / cm^3 / s)*/
+double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB)
+{
+
+  double zi = 1088;
+  double smooth = (1.0-tanh((z - zi)/50.0))/2.0; // smoothing the introduction of energy injection from PMF
+
+  double en =  1e-25 / (8.0 * M_PI) * 6.241509e+18 * pow(1+z, 4) * sigmaA * sigmaA * pow(sigmaB/sigmaA, 4.0/(5.0+nB)); // in units of eV / cm^3
+  double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
+  return en * decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth;
+}
+
+
+
+
 
 
 
@@ -257,21 +272,41 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
            double *ion, double *exclya, double *dEdtdV_heat) {
 
+  // Injected energy via particle photons and electrons cascades
   double inj  = dEdtdV_inj(z_out, xe, Tgas, params->inj_params);
   
-  if (params->inj_params->on_the_spot == 1) *dEdtdV_dep = inj;
+  if (params->inj_params->on_the_spot == 1) 
+  {
+    *dEdtdV_dep = inj;
+  }
+  else { 
 
-  // Else put in your favorite recipe to translate from injection to deposition
-  // Here I assume injected photon spectrum Compton cools at rate dE/dt = - 0.1 n_h c sigma_T E
-  // This is valid for E_photon ~ MeV or so.
-  
-  else { // c sigma_T = 2e-14 (cgs)
+    // Else put in your favorite recipe to translate from injection to deposition
+    // Here I assume injected photon spectrum Compton cools at rate dE/dt = - 0.1 n_h c sigma_T E
+    // This is valid for E_photon ~ MeV or so.
+    
+    // c sigma_T = 2e-14 (cgs)
     *dEdtdV_dep = (*dEdtdV_dep *exp(-7.*dlna) + 2e-15* dlna*nH/H *inj)
                  /(1.+ 2e-15 *dlna*nH/H);                              
   }     
 
   *ion     = *dEdtdV_dep / 3. / nH * xH /EI;
   *exclya  = *ion / 0.75;
-  *dEdtdV_heat    = *dEdtdV_dep * chi_heat(xe); 
+  *dEdtdV_heat = *dEdtdV_dep * chi_heat(xe);
+
+  // add the primordial magnetic field contribution
+  double sigmaB = params->inj_params->sigmaB_PMF;
+
+  if (sigmaB > 0)
+  {
+    double sigmaA = params->inj_params->sigmaA_PMF;
+    double nB = params->inj_params->nB_PMF;
+
+ 
+    *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB);
+  
+    //printf("we are here : %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *dEdtdV_heat, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB));
+
+  }
 }
 

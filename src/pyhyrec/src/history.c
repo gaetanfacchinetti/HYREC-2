@@ -111,6 +111,9 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->inj_params->decay       = injection_params.decay;
   param->inj_params->Mpbh        = injection_params.Mpbh;
   param->inj_params->fpbh        = injection_params.fpbh;
+  param->inj_params->sigmaB_PMF  = injection_params.sigmaB_PMF;
+  param->inj_params->nB_PMF      = injection_params.nB_PMF;
+  param->inj_params->sigmaA_PMF  = injection_params.sigmaA_PMF;
 
   param->inj_params->odmh2 = param->ocbh2 - param->obh2;
 
@@ -134,7 +137,7 @@ HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_para
   //sa.sa_flags   = SA_SIGINFO;
 
   //sigaction(SIGSEGV, &sa, NULL);
-  //printf("We are here");
+  //printf("We are here, %e \n", inj_params.fpbh);
 
   HYREC_DATA * data = malloc(sizeof(*data));
 

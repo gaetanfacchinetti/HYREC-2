@@ -85,6 +85,8 @@ typedef struct {
   int on_the_spot;
   double Mpbh, fpbh;
   double decay;
+  double sigmaB_PMF, nB_PMF;
+  double sigmaA_PMF;
 } INPUT_INJ_PARAMS;
 
 void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params);
