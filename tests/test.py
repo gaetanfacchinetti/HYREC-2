@@ -3,12 +3,12 @@ import numpy as np
 
 # Test that we can define INJ_PARAMS and COSMOPARAMS objects
 def test_load():
-    pyhy.init_INPUT_INJ_PARAMS(0., 0., 0., 0., 0., 0., 0., 0, 0., 1., 0.)
+    pyhy.init_INPUT_INJ_PARAMS(0., 0., 0., 0., 0., 0., 0., 0, 0., 1., 0., 0., -2.0, 31.0)
     pyhy.init_INPUT_COSMOPARAMS(6.735837e-01, 2.7255, 0.0494142797907188, 0.31242079216478097, 0., -1, 0, 3.046, 1.0, 0.06, 0., 0., 0.245, 1., 1.)
 
 # Test that we can run the HYREC C code
 def test_call_run():
-    inj_params = pyhy.init_INPUT_INJ_PARAMS(0., 0., 0., 0., 0., 0., 0., 0, 0., 1., 0.)
+    inj_params = pyhy.init_INPUT_INJ_PARAMS(0., 0., 0., 0., 0., 0., 0., 0, 0., 1., 0., 0., -2.0, 31.0)
     cosmo_params = pyhy.init_INPUT_COSMOPARAMS(6.735837e-01, 2.7255, 0.0494142797907188, 0.31242079216478097, 0., -1, 0, 3.046, 1.0, 0.06, 0., 0., 0.245, 1., 1.)
     pyhy.call_run_hyrec(cosmo_params, inj_params)
 
