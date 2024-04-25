@@ -109,11 +109,13 @@ class HyRecInjectionParams(HyRecParamsDefault):
         "ann_var" : 0.0,
         "ann_z_halo" : 0.0,
         "decay" : 0.0,
-        "on_the_spot" : 0.0,
+        "on_the_spot" : 0,
         "Mpbh" : 1.0,
         "fpbh" : 0.0,
         "sigmaB_PMF" : 0.0,
         "nB_PMF" : -2.0,
-        "sigmaA_PMF" : 31.78}
+        "sigmaA_PMF" : 31.78,
+        "smooth_z_PMF" : 0.0,
+        "heat_channel_PMF" : 0}
         
         super().__init__(new_params)

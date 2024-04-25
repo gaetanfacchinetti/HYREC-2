@@ -93,18 +93,116 @@ double sigma_Jeans_pmf(double obh2, double ocbh2)
   return 2.116 * sqrt(obh2 / 0.02242) * sqrt(ocbh2 / 0.1424);
 }
 
-/*  Energy injection rate due to ambipolar diffusion (result is in eV / cm^3 / s)*/
-double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB)
+/*  Energy injection rate due to turbulences (result is in eV / cm^3 / s)
+    - sigmaB (magnetic variance)  in nG
+    - sigmaA (alfven variance) in nG
+    - H in 1/s
+*/
+double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB, double smooth_z)
 {
 
   double zi = 1088;
-  double smooth = (1.0-tanh((z - zi)/50.0))/2.0; // smoothing the introduction of energy injection from PMF
-
+  
   double en =  1e-25 / (8.0 * M_PI) * 6.241509e+18 * pow(1+z, 4) * sigmaA * sigmaA * pow(sigmaB/sigmaA, 4.0/(5.0+nB)); // in units of eV / cm^3
   double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
-  return en * decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth;
+  
+  if (smooth_z > 0)
+  {
+    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+    return en * decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth;
+  }
+  else
+    return (z < zi) ? en * decay_rate_pmf_turbulences(z, tdti, nB) * H : 0.0;
+
 }
 
+double fit_Lorentz_force_average(double x)
+{
+  return 0.416 * (1.0 - 1.020e-2 * x) * pow(x, 1.105);
+}
+
+
+/* Energy injection rate due to ambipolar diffusion (result is in eV / cm^3 / s) */
+double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z)
+{
+
+  double zi = 1088;
+
+  double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
+  double rho_b    = obh2 * 10539.850865068418; // in eV / clight^2 / cm^3
+  double eta_AD = (1.0-xe)/xe / (4*M_PI) / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
+  
+  /* 
+    Note that, assuming Helium ionization history similar to Hydrogen ionization history,
+    the factor (1-xe)/xe above should become (1-3/4*YHe)/(1-YHe) with YHe = rho_He/rho_b
+    and if indeed xe = ne/nH where nH is the total number of hydrogen (neutral and excited),
+    that is nH = nHI + nHII. This factor is exaclty equal to rho_n / rho_+ with
+    rho_n = rho_HI + rho_HeI and rho_+ = rho_HII + rho_HeII (negleting second ionization)
+   */
+  
+  // prefactor sigma(k_A)^4 kA^2
+  double pref = 1.0502650402891526e-49 * pow(sigmaB / sigmaA, 2.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
+
+  // mu_0 in convinient units
+  double mu_0 = 4 * M_PI * 1e+19 * 1.7826619216278999e-34; // in nG^2 * cm * clight^2 * s^2 / eV 
+
+  double res =  pref * pow(1+z, 10) * eta_AD / mu_0 / mu_0 * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  res = res / pow(299792458e+3, 2); // in eV / cm^3 / s 
+
+  if (smooth_z > 0)
+  {
+    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+    return res * smooth;
+  }
+  else 
+    return (z < zi) ? res : 0.0;
+}
+
+
+
+
+// -----------------------------------
+// Functions to call from the python wrapper
+
+
+double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+{
+
+  double sigmaB = inj_params.sigmaB_PMF;
+
+  if (sigmaB > 0)
+  {
+    double sigmaA = inj_params.sigmaA_PMF;
+    double nB = inj_params.nB_PMF;
+    double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
+    double ocbh2 = cosmo_params.Omega_cb * cosmo_params.h * cosmo_params.h;
+
+    return dEdtdV_heat_turbulences_pmf(z, H, obh2, ocbh2, sigmaA, sigmaB, nB, inj_params.smooth_z_PMF);
+  }
+
+  return 0;
+}
+
+
+
+
+
+double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+{
+
+  double sigmaB = inj_params.sigmaB_PMF;
+
+  if (sigmaB > 0)
+  {
+    double sigmaA = inj_params.sigmaA_PMF;
+    double nB = inj_params.nB_PMF;
+    double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
+    
+    return dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, obh2, sigmaA, sigmaB, nB, inj_params.smooth_z_PMF);
+  }
+
+  return 0;
+}
 
 
 
@@ -302,9 +400,12 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
     double sigmaA = params->inj_params->sigmaA_PMF;
     double nB = params->inj_params->nB_PMF;
 
- 
-    *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB);
-  
+    if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
+      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
+    
+    if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 2)
+      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_ambipolar_pmf(z_out, xe, Tgas, params->obh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
+    
     //printf("we are here : %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *dEdtdV_heat, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB));
 
   }

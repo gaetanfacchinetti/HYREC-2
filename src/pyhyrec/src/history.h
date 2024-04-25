@@ -65,29 +65,6 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array);
 // modif here
 
 //----------------------------------------------------//
-typedef struct {
-  double h;
-  double T0;
-  double Omega_b, Omega_cb, Omega_k;
-  double w0, wa; 
-  double Neff; 
-  double Nmnu; 
-  double mnu1, mnu2, mnu3;             
-  double YHe;
-  double fsR, meR;
-} INPUT_COSMOPARAMS;
-
-typedef struct {
-  double pann;
-  double pann_halo; 
-  double ann_z, ann_zmax, ann_zmin, ann_var;
-  double ann_z_halo;
-  int on_the_spot;
-  double Mpbh, fpbh;
-  double decay;
-  double sigmaB_PMF, nB_PMF;
-  double sigmaA_PMF;
-} INPUT_INJ_PARAMS;
 
 void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params);
 HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS global_cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location);

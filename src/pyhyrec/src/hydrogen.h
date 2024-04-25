@@ -41,10 +41,6 @@
 #define PION_MAX  1e-2
 
 
-
-
-
-
 /****** CONSTANTS IN CGS + EV UNIT SYSTEM *******/
 
 /* Energy differences between excited levels of hydrogen -- used often */
@@ -55,7 +51,6 @@
 #define E42  2.5496786384884356
 
 #define hPc       1.239841874331e-04   /* hc in eV cm */
-#define mH        0.93878299831e9      /* Hydrogen atom mass in eV/c^2 */
 #define kBoltz    8.617343e-5          /* Boltzmann constant in eV/K */
 #define L2s1s     8.2206               /* 2s -> 1s two-photon decay rate in s^{-1} (Labzowsky et al 2005) */
 

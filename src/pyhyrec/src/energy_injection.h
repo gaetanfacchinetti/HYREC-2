@@ -9,7 +9,38 @@
 /****** CONSTANTS IN CGS + EV UNIT SYSTEM *******/
 
 #define EI   13.598286071938324        /* Hydrogen ionization energy in eV, reduced mass, no relativistic corrections */
+#define mH   0.93878299831e9           /* Hydrogen atom mass in eV/c^2 */
 
+//------------------------------//
+
+typedef struct {
+  double h;
+  double T0;
+  double Omega_b, Omega_cb, Omega_k;
+  double w0, wa; 
+  double Neff; 
+  double Nmnu; 
+  double mnu1, mnu2, mnu3;             
+  double YHe;
+  double fsR, meR;
+} INPUT_COSMOPARAMS;
+
+typedef struct {
+  double pann;
+  double pann_halo; 
+  double ann_z, ann_zmax, ann_zmin, ann_var;
+  double ann_z_halo;
+  int on_the_spot;
+  double Mpbh, fpbh;
+  double decay;
+  double sigmaB_PMF, nB_PMF;
+  double sigmaA_PMF;
+  double smooth_z_PMF;
+  int heat_channel_PMF;
+} INPUT_INJ_PARAMS;
+
+
+//------------------------------//
 
 typedef struct {
 
@@ -31,7 +62,11 @@ typedef struct {
   double ion, exclya, dEdtdV_heat;   /* Adding the possibility to have a heating decorrelated from ion and exclya */
   
   double sigmaB_PMF, nB_PMF;      /* adding the possibility for Primordial Magnetic Field Heating (sigmaB_PMF in nG)*/
-  double sigmaA_PMF, sigmaJ_PMF;  /* characteristic amplitude of the PMF on Alfven's scale and Jean's scale */
+  double sigmaA_PMF;              /* characteristic amplitude of the PMF on Alfven's scale and Jean's scale */
+  double smooth_z_PMF;            /* smoothing scale for PMF energy injection around recombination*/
+  
+  int heat_channel_PMF;           /* 0 for both ambipolar diffusion and turbulences, 1 for turbulences, 2 for ambipolar diffusion*/
+
 } INJ_PARAMS;
 
 
@@ -62,6 +97,10 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
            double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat);
 double decay_rate_pmf_turbulences(double z, double tdti, double nB); /* decay rate of PMF turbulences*/
-double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB);
+double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB, double smooth_z);
+double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z);
+double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
+double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
+
 
 #endif

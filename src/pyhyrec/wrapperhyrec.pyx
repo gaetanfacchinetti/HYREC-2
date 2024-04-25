@@ -21,7 +21,9 @@ cdef extern from "src/history.h":
         int on_the_spot             #/* if set to 1 assume energy deposition rate = injection rate */ /* Otherwise solves for deposition given injection with simple recipe */
         double Mpbh, fpbh           #/* Mass and fraction of DM made of primordial black holes */
         double decay
-        double sigmaB_PMF, nB_PMF, sigmaA_PMF
+        double sigmaB_PMF, nB_PMF 
+        double sigmaA_PMF, smooth_z_PMF
+        int heat_channel_PMF
 
     ctypedef struct INPUT_COSMOPARAMS:
 
@@ -94,7 +96,9 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
                         double ann_z, double ann_zmax, double ann_zmin, double ann_var, 
                         double ann_z_halo, double decay, int on_the_spot,
                         double Mpbh, double fpbh, 
-                        double sigmaB_PMF, double nB_PMF, double sigmaA_PMF):
+                        double sigmaB_PMF, double nB_PMF, 
+                        double sigmaA_PMF, double smooth_z_PMF,
+                        int heat_channel_PMF):
     
     cdef INPUT_INJ_PARAMS inj_params
     
@@ -112,6 +116,8 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
     inj_params.sigmaB_PMF = sigmaB_PMF
     inj_params.nB_PMF = nB_PMF
     inj_params.sigmaA_PMF = sigmaA_PMF
+    inj_params.smooth_z_PMF = smooth_z_PMF
+    inj_params.heat_channel_PMF = heat_channel_PMF
    
     return inj_params
 
@@ -145,10 +151,15 @@ def init_INPUT_COSMOPARAMS(double h, double T0,
 
 
 cdef extern from "src/energy_injection.h":
-
     double decay_rate_pmf_turbulences(double z, double tdti, double nB)
-
+    double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+    double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
 
 def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):
     return decay_rate_pmf_turbulences(z, tdti, nB)
 
+def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+    return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+
+def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+    return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)

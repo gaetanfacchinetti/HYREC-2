@@ -100,20 +100,22 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->nH0 = 11.223846333047e-6*param->obh2*(1.-param->YHe);  // number density of hudrogen today in cm-3
   param->fHe = param->YHe/(1-param->YHe)/3.97153;              // abundance of helium by number
 
-  param->inj_params->pann        = injection_params.pann;
-  param->inj_params->pann_halo   = injection_params.pann_halo;
-  param->inj_params->ann_z       = injection_params.ann_z;
-  param->inj_params->ann_zmax    = injection_params.ann_zmax;
-  param->inj_params->ann_zmin    = injection_params.ann_zmin;
-  param->inj_params->ann_var     = injection_params.ann_var;
-  param->inj_params->ann_z_halo  = injection_params.ann_z_halo;
-  param->inj_params->on_the_spot = injection_params.on_the_spot;
-  param->inj_params->decay       = injection_params.decay;
-  param->inj_params->Mpbh        = injection_params.Mpbh;
-  param->inj_params->fpbh        = injection_params.fpbh;
-  param->inj_params->sigmaB_PMF  = injection_params.sigmaB_PMF;
-  param->inj_params->nB_PMF      = injection_params.nB_PMF;
-  param->inj_params->sigmaA_PMF  = injection_params.sigmaA_PMF;
+  param->inj_params->pann             = injection_params.pann;
+  param->inj_params->pann_halo        = injection_params.pann_halo;
+  param->inj_params->ann_z            = injection_params.ann_z;
+  param->inj_params->ann_zmax         = injection_params.ann_zmax;
+  param->inj_params->ann_zmin         = injection_params.ann_zmin;
+  param->inj_params->ann_var          = injection_params.ann_var;
+  param->inj_params->ann_z_halo       = injection_params.ann_z_halo;
+  param->inj_params->on_the_spot      = injection_params.on_the_spot;
+  param->inj_params->decay            = injection_params.decay;
+  param->inj_params->Mpbh             = injection_params.Mpbh;
+  param->inj_params->fpbh             = injection_params.fpbh;
+  param->inj_params->sigmaB_PMF       = injection_params.sigmaB_PMF;
+  param->inj_params->nB_PMF           = injection_params.nB_PMF;
+  param->inj_params->sigmaA_PMF       = injection_params.sigmaA_PMF;
+  param->inj_params->smooth_z_PMF     = injection_params.smooth_z_PMF;
+  param->inj_params->heat_channel_PMF = injection_params.heat_channel_PMF;
 
   param->inj_params->odmh2 = param->ocbh2 - param->obh2;
 
@@ -183,6 +185,8 @@ double rec_HubbleRate(REC_COSMOPARAMS *cosmo, double z) {
 
   return( 3.2407792896393e-18 * sqrt(rho) );
 }
+
+
 
 
 /*************************************************************************************************
