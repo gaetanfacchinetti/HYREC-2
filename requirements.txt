@@ -10,5 +10,5 @@ numpy==1.26.4
     # via
     #   pyhyrec (pyproject.toml)
     #   scipy
-scipy==1.14.0
+scipy>=1.13.0
     # via pyhyrec (pyproject.toml)
