@@ -133,13 +133,6 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
 HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location)
 {
 
-  //memset(&sa, 0, sizeof(struct sigaction));
-  //sigemptyset(&sa.sa_mask);
-  //sa.sa_sigaction = segfault_sigaction;
-  //sa.sa_flags   = SA_SIGINFO;
-
-  //sigaction(SIGSEGV, &sa, NULL);
-  //printf("We are here, %e \n", inj_params.fpbh);
 
   HYREC_DATA * data = malloc(sizeof(*data));
 
@@ -151,6 +144,16 @@ HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_para
   return data;
 }
 
+double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+{
+
+  REC_COSMOPARAMS * cosmo  = (REC_COSMOPARAMS *) malloc(sizeof(REC_COSMOPARAMS));
+  cosmo->inj_params = (INJ_PARAMS *)  malloc(sizeof(INJ_PARAMS));
+  init_hyrec(cosmo, cosmo_params, inj_params);
+  double res = rec_HubbleRate(cosmo, z);
+  hyrec_free_cosmo(cosmo);
+  return res;
+}
 
 
 /*************************************************************************************
@@ -949,6 +952,11 @@ void hyrec_allocate(HYREC_DATA * data, double zmax, double zmin) {
   data->Tm_output = create_1D_array(data->Nz, &data->error, data->error_message);
 }
 
+
+void hyrec_free_cosmo(REC_COSMOPARAMS *cosmo){
+  free(cosmo->inj_params);
+  free(cosmo);
+}
 
 void hyrec_free(HYREC_DATA *data) {
   free_atomic(data->atomic);

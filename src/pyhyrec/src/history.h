@@ -68,9 +68,11 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array);
 
 void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS injection_params);
 HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS global_cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location);
+double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
 //----------------------------------------------------//
 
 void hyrec_allocate(HYREC_DATA *data, double zmax, double zmin);
+void hyrec_free_cosmo(REC_COSMOPARAMS *cosmo);
 void hyrec_free(HYREC_DATA *data);
 void hyrec_compute(HYREC_DATA *data, int model);
 double hyrec_xe(double z, HYREC_DATA *data);

@@ -42,10 +42,12 @@ cdef extern from "src/history.h":
         char * error_message
         pass
 
+
     HYREC_DATA * run_hyrec(INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params, double zmax, double zmin, char * table_location)
     void hyrec_free(HYREC_DATA * data)
     double hyrec_xe(double z, HYREC_DATA * data)
     double hyrec_Tm(double z, HYREC_DATA * data)
+    double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params)
     
 
 
@@ -90,8 +92,10 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
     
     return z_array, xe_array, Tm_array
 
-    
 
+def compute_hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+    return compute_Hubble_rate(z, cosmo_params, inj_params)
+    
 def init_INPUT_INJ_PARAMS(double pann, double pann_halo, 
                         double ann_z, double ann_zmax, double ann_zmin, double ann_var, 
                         double ann_z_halo, double decay, int on_the_spot,

@@ -8,6 +8,7 @@ setup.py
 src/pyhyrec/.DS_Store
 src/pyhyrec/__init__.py
 src/pyhyrec/__main__.py
+src/pyhyrec/cosmology.py
 src/pyhyrec/params.py
 src/pyhyrec/wrapperhyrec.c
 src/pyhyrec/wrapperhyrec.cpython-310-darwin.so

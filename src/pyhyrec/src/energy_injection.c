@@ -122,15 +122,24 @@ double fit_Lorentz_force_average(double x)
 }
 
 
-/* Energy injection rate due to ambipolar diffusion (result is in eV / cm^3 / s) */
+/* 
+  Energy injection rate due to ambipolar diffusion (result is in eV / cm^3 / s) 
+  - z       : redshift
+  - xe      : free electron fraction
+  - Tgas    : Temperature of the gas (in K)
+  - obh2    : \Omega_{\rm b} h^2, baryon abundance times hubble parameter squared
+  - sigma_A : alfven magnetic scale (in nG, ~30 nG fixed by the value of the Aflven mode)
+  - sigma_B : \sigma_{B, 0} (in nG),  standard deviation of the PMF spectrum on 1 Mpc scale today
+  - nB      : power index of the PMF spectrum
+*/
 double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z)
 {
 
   double zi = 1088;
 
   double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
-  double rho_b    = obh2 * 10539.850865068418; // in eV / clight^2 / cm^3
-  double eta_AD = (1.0-xe)/xe / (4*M_PI) / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
+  double rho_b    = obh2 * 10539.850865068418 * pow(1+z, 3); // in eV / clight^2 / cm^3
+  double eta_AD = (1.0-xe)/xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
   
   /* 
     Note that, assuming Helium ionization history similar to Hydrogen ionization history,
@@ -140,13 +149,16 @@ double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, 
     rho_n = rho_HI + rho_HeI and rho_+ = rho_HII + rho_HeII (negleting second ionization)
    */
   
-  // prefactor sigma(k_A)^4 kA^2
-  double pref = 1.0502650402891526e-49 * pow(sigmaB / sigmaA, 2.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
+  // prefactor sigma(k_A)^4 kA^2 in convinient units
+  double sA4kA2 = 1.0502650402891526e-49 * pow(sigmaB / sigmaA, 2.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
 
   // mu_0 in convinient units
   double mu_0 = 4 * M_PI * 1e+19 * 1.7826619216278999e-34; // in nG^2 * cm * clight^2 * s^2 / eV 
 
-  double res =  pref * pow(1+z, 10) * eta_AD / mu_0 / mu_0 * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  // result
+  double res =  sA4kA2 * pow(1+z, 10) * eta_AD / mu_0 / mu_0 * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  
+  // result in the correct output units (devide by speed of light factors)
   res = res / pow(299792458e+3, 2); // in eV / cm^3 / s 
 
   if (smooth_z > 0)
