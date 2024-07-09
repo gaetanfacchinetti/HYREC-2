@@ -6,12 +6,13 @@ setup.py
 ./src/pyhyrec/wrapperhyrec.c
 ./src/pyhyrec/src/hyrec.c
 src/pyhyrec/.DS_Store
+src/pyhyrec/.nfs0000000001bc79a30000d3f1
 src/pyhyrec/__init__.py
 src/pyhyrec/__main__.py
 src/pyhyrec/cosmology.py
 src/pyhyrec/params.py
 src/pyhyrec/wrapperhyrec.c
-src/pyhyrec/wrapperhyrec.cpython-310-darwin.so
+src/pyhyrec/wrapperhyrec.cpython-311-x86_64-linux-gnu.so
 src/pyhyrec/wrapperhyrec.pyx
 src/pyhyrec.egg-info/PKG-INFO
 src/pyhyrec.egg-info/SOURCES.txt

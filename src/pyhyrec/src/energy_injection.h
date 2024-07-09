@@ -10,6 +10,10 @@
 
 #define EI   13.598286071938324        /* Hydrogen ionization energy in eV, reduced mass, no relativistic corrections */
 #define mH   0.93878299831e9           /* Hydrogen atom mass in eV/c^2 */
+#define _RHO_CRITICAL_ (double) (10536.723728399931) /* critical density on the universe in units of h^2 * eV / clight^2 / cm^3 */
+#define _MPC_TO_CM_ (double) (3.085677581491367e+24) /* conversion factor between Mpc and cm */
+#define _MU_0_ (double) (2.2401590387281866e-14) // clight^2 / eV * cm * nG^2 * s^2
+#define _C_LIGHT_ (double) (2.99792458e+10) // cm / s
 
 //------------------------------//
 

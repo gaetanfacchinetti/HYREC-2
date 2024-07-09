@@ -118,7 +118,7 @@ double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2
 
 double fit_Lorentz_force_average(double x)
 {
-  return 0.416 * (1.0 - 1.020e-2 * x) * pow(x, 1.105);
+  return 0.104 * pow(x, 2.70)/(0.0103 + pow(x, 1.62));
 }
 
 
@@ -136,30 +136,27 @@ double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, 
 {
 
   double zi = 1088;
-
+  
   double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
-  double rho_b    = obh2 * 10539.850865068418 * pow(1+z, 3); // in eV / clight^2 / cm^3
+  double rho_b    = obh2 * _RHO_CRITICAL_ * pow(1+z, 3); // in eV / clight^2 / cm^3
   double eta_AD = (1.0-xe)/xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
   
   /* 
     Note that, assuming Helium ionization history similar to Hydrogen ionization history,
-    the factor (1-xe)/xe above should become (1-3/4*YHe)/(1-YHe) with YHe = rho_He/rho_b
+    the factor (1-xe)/xe above should become (1-3/4*YHe)/(1-YHe) ? with YHe = rho_He/rho_b
     and if indeed xe = ne/nH where nH is the total number of hydrogen (neutral and excited),
     that is nH = nHI + nHII. This factor is exaclty equal to rho_n / rho_+ with
     rho_n = rho_HI + rho_HeI and rho_+ = rho_HII + rho_HeII (negleting second ionization)
    */
   
   // prefactor sigma(k_A)^4 kA^2 in convinient units
-  double sA4kA2 = 1.0502650402891526e-49 * pow(sigmaB / sigmaA, 2.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
-
-  // mu_0 in convinient units
-  double mu_0 = 4 * M_PI * 1e+19 * 1.7826619216278999e-34; // in nG^2 * cm * clight^2 * s^2 / eV 
+  double sA4kA2 = 1.0 / _MPC_TO_CM_ / _MPC_TO_CM_ * pow(sigmaB / sigmaA, 4.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
 
   // result
-  double res =  sA4kA2 * pow(1+z, 10) * eta_AD / mu_0 / mu_0 * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  double res =  sA4kA2 * pow(1+z, 10) * eta_AD / _MU_0_ / _MU_0_ * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
   
   // result in the correct output units (devide by speed of light factors)
-  res = res / pow(299792458e+3, 2); // in eV / cm^3 / s 
+  res = res / pow(_C_LIGHT_, 2); // in eV / cm^3 / s 
 
   if (smooth_z > 0)
   {
