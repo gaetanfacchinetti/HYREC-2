@@ -47,6 +47,7 @@ cdef extern from "src/history.h":
     void hyrec_free(HYREC_DATA * data)
     double hyrec_xe(double z, HYREC_DATA * data)
     double hyrec_Tm(double z, HYREC_DATA * data)
+    double hyrec_en_pmf(double z, HYREC_DATA * data)
     double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params)
     
 
@@ -78,19 +79,21 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
         print(str(data.error_message.decode('utf-8')))
 
     # Define numpy arrays to store the data
-    z_array = np.linspace(np.max([zmin, 1.0]), zmax, nz)
-    xe_array = np.zeros(nz)
-    Tm_array = np.zeros(nz)
+    z_array      = np.linspace(np.max([zmin, 1.0]), zmax, nz)
+    xe_array     = np.zeros(nz)
+    Tm_array     = np.zeros(nz)
+    en_pmf_array = np.zeros(nz)
     
     # Transfering the data from the C code to the numpy arrays
     for iz, z in enumerate(z_array):
-        xe_array[iz] = hyrec_xe(z, data)
-        Tm_array[iz] = hyrec_Tm(z, data)
+        xe_array[iz]     = hyrec_xe(z, data)
+        Tm_array[iz]     = hyrec_Tm(z, data)
+        en_pmf_array[iz] = hyrec_en_pmf(z, data)
     
     # Free the memory at the end
     hyrec_free(data)
     
-    return z_array, xe_array, Tm_array
+    return z_array, xe_array, Tm_array, en_pmf_array
 
 
 def compute_hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):

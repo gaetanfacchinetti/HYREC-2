@@ -144,6 +144,7 @@ typedef struct{
   long int Nz;
   double *xe_output;
   double *Tm_output;
+  double *pmf_en;
   int error;
   int quasi_eq;
   int loop_after_quasi;

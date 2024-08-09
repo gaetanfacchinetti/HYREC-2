@@ -139,7 +139,9 @@ def compute_z_rec(cosmo = HyRecCosmoParams()):
 def acoustic_damping_scale(z, xe, cosmo):
     
     # get the value of the recombination redshift
-    z_reco = z_rec(z, xe, cosmo)
+    z_reco = 1088 # fix the value of the recombination redshift by hand 
+    #z_reco = z_rec(z, xe, cosmo) # use this line to consistently compute it (may be wrong, to be checked)
+    
     iz_min = np.argmin(np.abs(z - z_reco)) 
     
     # restrict the redshift and free electron fraction 

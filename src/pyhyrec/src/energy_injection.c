@@ -150,13 +150,16 @@ double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, 
    */
   
   // prefactor sigma(k_A)^4 kA^2 in convinient units
-  double sA4kA2 = 1.0 / _MPC_TO_CM_ / _MPC_TO_CM_ * pow(sigmaB / sigmaA, 4.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
+  double sA4kA2 = 1.0 / _MPC_TO_CM_ / _MPC_TO_CM_ * pow(sigmaB / sigmaA, 4.0/(5.0+nB)) * pow(sigmaA, 4) * 4.0 * M_PI * M_PI; // in nG^4 / cm^2
 
   // result
-  double res =  sA4kA2 * pow(1+z, 10) * eta_AD / _MU_0_ / _MU_0_ * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  double res = sA4kA2 * pow(1+z, 10) * eta_AD / _MU_0_ / _MU_0_ * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
   
   // result in the correct output units (devide by speed of light factors)
   res = res / pow(_C_LIGHT_, 2); // in eV / cm^3 / s 
+
+  double eVc2_to_g = 1.7826619216278975e-33;
+  printf("HYREC: z=%e, xe=%e, Tgas=%e, obh2=%e, sigmaA=%e, sigmaB=%e, nB=%e, rhob=%e, eta_AD=%e, sA4kA2=%e\n", z, xe, Tgas, obh2, sigmaA, sigmaB, nB, rho_b * eVc2_to_g, eta_AD / eVc2_to_g, sA4kA2);
 
   if (smooth_z > 0)
   {
@@ -376,8 +379,8 @@ Essentially use a very simple ODE solution
 **********************************************************************************/
 
 void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
-           double *ion, double *exclya, double *dEdtdV_heat) {
+		       double nH, double xH, double H, double pmf_en, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
+           double *ion, double *exclya, double *dEdtdV_heat, double *dEdtdV_pmf) {
 
   // Injected energy via particle photons and electrons cascades
   double inj  = dEdtdV_inj(z_out, xe, Tgas, params->inj_params);
@@ -402,21 +405,27 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
   *dEdtdV_heat = *dEdtdV_dep * chi_heat(xe);
 
   // add the primordial magnetic field contribution
-  double sigmaB = params->inj_params->sigmaB_PMF;
+  // accounting for the decrease of B
+  double sigmaB = sqrt(2.0 * _MU_0_ * _C_LIGHT_ * _C_LIGHT_ * pmf_en);//params->inj_params->sigmaB_PMF;
+  //printf("We update: sigma_B = %e nG\n", sigmaB);
 
-  if (sigmaB > 0)
+  *dEdtdV_pmf = 0.0;
+
+  if (params->inj_params->sigmaB_PMF > 0)
   {
     double sigmaA = params->inj_params->sigmaA_PMF;
     double nB = params->inj_params->nB_PMF;
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
-      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
-    
+      *dEdtdV_pmf = *dEdtdV_pmf + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
+
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 2)
-      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_ambipolar_pmf(z_out, xe, Tgas, params->obh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
+      *dEdtdV_pmf = *dEdtdV_pmf + dEdtdV_heat_ambipolar_pmf(z_out, xe, Tgas, params->obh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
     
-    //printf("we are here : %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *dEdtdV_heat, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB));
+    //printf("we are here : %e %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *dEdtdV_pmf, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF), pmf_en);
 
   }
+
+  *dEdtdV_heat = *dEdtdV_heat + *dEdtdV_pmf;
 }
 

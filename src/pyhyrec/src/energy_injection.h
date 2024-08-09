@@ -63,7 +63,7 @@ typedef struct {
   int on_the_spot;            /* if set to 1 assume energy deposition rate = injection rate */
                               /* Otherwise solves for deposition given injection with simple recipe */
 
-  double ion, exclya, dEdtdV_heat;   /* Adding the possibility to have a heating decorrelated from ion and exclya */
+  double ion, exclya, dEdtdV_heat, dEdtdV_pmf;   /* Adding the possibility to have a heating decorrelated from ion and exclya */
   
   double sigmaB_PMF, nB_PMF;      /* adding the possibility for Primordial Magnetic Field Heating (sigmaB_PMF in nG)*/
   double sigmaA_PMF;              /* characteristic amplitude of the PMF on Alfven's scale and Jean's scale */
@@ -98,8 +98,8 @@ typedef struct {
 
 double dEdtdV_inj(double z, double xe, double Tgas, INJ_PARAMS *params);
 void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
-           double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat);
+		       double nH, double xH, double H, double pmf_en, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
+           double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat, double *dEdtdV_pmf);
 double decay_rate_pmf_turbulences(double z, double tdti, double nB); /* decay rate of PMF turbulences*/
 double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB, double smooth_z);
 double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z);
