@@ -21,7 +21,7 @@ cdef extern from "src/history.h":
         int on_the_spot             #/* if set to 1 assume energy deposition rate = injection rate */ /* Otherwise solves for deposition given injection with simple recipe */
         double Mpbh, fpbh           #/* Mass and fraction of DM made of primordial black holes */
         double decay
-        double sigmaB_PMF, nB_PMF 
+        double sB_PMF, nB_PMF 
         double sigmaA_PMF, smooth_z_PMF
         int heat_channel_PMF
 
@@ -47,7 +47,7 @@ cdef extern from "src/history.h":
     void hyrec_free(HYREC_DATA * data)
     double hyrec_xe(double z, HYREC_DATA * data)
     double hyrec_Tm(double z, HYREC_DATA * data)
-    double hyrec_en_pmf(double z, HYREC_DATA * data)
+    double hyrec_chiB(double z, HYREC_DATA * data)
     double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params)
     
 
@@ -82,18 +82,18 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
     z_array      = np.linspace(np.max([zmin, 1.0]), zmax, nz)
     xe_array     = np.zeros(nz)
     Tm_array     = np.zeros(nz)
-    en_pmf_array = np.zeros(nz)
+    chiB_array = np.zeros(nz)
     
     # Transfering the data from the C code to the numpy arrays
     for iz, z in enumerate(z_array):
-        xe_array[iz]     = hyrec_xe(z, data)
-        Tm_array[iz]     = hyrec_Tm(z, data)
-        en_pmf_array[iz] = hyrec_en_pmf(z, data)
+        xe_array[iz]   = hyrec_xe(z, data)
+        Tm_array[iz]   = hyrec_Tm(z, data)
+        chiB_array[iz] = hyrec_chiB(z, data)
     
     # Free the memory at the end
     hyrec_free(data)
     
-    return z_array, xe_array, Tm_array, en_pmf_array
+    return z_array, xe_array, Tm_array, chiB_array
 
 
 def compute_hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
@@ -103,7 +103,7 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
                         double ann_z, double ann_zmax, double ann_zmin, double ann_var, 
                         double ann_z_halo, double decay, int on_the_spot,
                         double Mpbh, double fpbh, 
-                        double sigmaB_PMF, double nB_PMF, 
+                        double sB_PMF, double nB_PMF, 
                         double sigmaA_PMF, double smooth_z_PMF,
                         int heat_channel_PMF):
     
@@ -120,7 +120,7 @@ def init_INPUT_INJ_PARAMS(double pann, double pann_halo,
     inj_params.on_the_spot = on_the_spot
     inj_params.Mpbh = Mpbh
     inj_params.fpbh =  fpbh
-    inj_params.sigmaB_PMF = sigmaB_PMF
+    inj_params.sB_PMF = sB_PMF
     inj_params.nB_PMF = nB_PMF
     inj_params.sigmaA_PMF = sigmaA_PMF
     inj_params.smooth_z_PMF = smooth_z_PMF
@@ -159,14 +159,14 @@ def init_INPUT_COSMOPARAMS(double h, double T0,
 
 cdef extern from "src/energy_injection.h":
     double decay_rate_pmf_turbulences(double z, double tdti, double nB)
-    double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
-    double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+    double compute_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+    double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
 
 def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):
     return decay_rate_pmf_turbulences(z, tdti, nB)
 
-def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
-    return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+    return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
 
-def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
-    return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)
+def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+    return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)

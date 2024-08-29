@@ -2212,6 +2212,7 @@ static const char __pyx_k_Mpbh[] = "Mpbh";
 static const char __pyx_k_Neff[] = "Neff";
 static const char __pyx_k_Nmnu[] = "Nmnu";
 static const char __pyx_k_Tgas[] = "Tgas";
+static const char __pyx_k_chiB[] = "chiB";
 static const char __pyx_k_data[] = "data/";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_fpbh[] = "fpbh";
@@ -2243,6 +2244,7 @@ static const char __pyx_k_file_2[] = "__file__";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_lineno[] = "lineno";
 static const char __pyx_k_nB_PMF[] = "nB_PMF";
+static const char __pyx_k_sB_PMF[] = "sB_PMF";
 static const char __pyx_k_Omega_b[] = "Omega_b";
 static const char __pyx_k_Omega_k[] = "Omega_k";
 static const char __pyx_k_ann_var[] = "ann_var";
@@ -2266,13 +2268,12 @@ static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_pann_halo[] = "pann_halo";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_ann_z_halo[] = "ann_z_halo";
+static const char __pyx_k_chiB_array[] = "chiB_array";
 static const char __pyx_k_filename_2[] = "_filename";
 static const char __pyx_k_inj_params[] = "inj_params";
 static const char __pyx_k_sigmaA_PMF[] = "sigmaA_PMF";
-static const char __pyx_k_sigmaB_PMF[] = "sigmaB_PMF";
 static const char __pyx_k_on_the_spot[] = "on_the_spot";
 static const char __pyx_k_cosmo_params[] = "cosmo_params";
-static const char __pyx_k_en_pmf_array[] = "en_pmf_array";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
 static const char __pyx_k_smooth_z_PMF[] = "smooth_z_PMF";
@@ -2289,10 +2290,10 @@ static const char __pyx_k_pyhyrec_wrapperhyrec[] = "pyhyrec.wrapperhyrec";
 static const char __pyx_k_init_INPUT_INJ_PARAMS[] = "init_INPUT_INJ_PARAMS";
 static const char __pyx_k_init_INPUT_COSMOPARAMS[] = "init_INPUT_COSMOPARAMS";
 static const char __pyx_k_src_pyhyrec_wrapperhyrec_pyx[] = "src/pyhyrec/wrapperhyrec.pyx";
-static const char __pyx_k_call_dEdtdV_heat_ambipolar_pmf[] = "call_dEdtdV_heat_ambipolar_pmf";
 static const char __pyx_k_call_decay_rate_pmf_turbulences[] = "call_decay_rate_pmf_turbulences";
 static const char __pyx_k_No_value_specified_for_struct_at[] = "No value specified for struct attribute 'h'";
-static const char __pyx_k_call_dEdtdV_heat_turbulences_pmf[] = "call_dEdtdV_heat_turbulences_pmf";
+static const char __pyx_k_call_decay_rate_heat_ambipolar_p[] = "call_decay_rate_heat_ambipolar_pmf";
+static const char __pyx_k_call_decay_rate_heat_turbulences[] = "call_decay_rate_heat_turbulences_pmf";
 static const char __pyx_k_No_value_specified_for_struct_at_2[] = "No value specified for struct attribute 'T0'";
 static const char __pyx_k_No_value_specified_for_struct_at_3[] = "No value specified for struct attribute 'Omega_b'";
 static const char __pyx_k_No_value_specified_for_struct_at_4[] = "No value specified for struct attribute 'Omega_cb'";
@@ -2318,7 +2319,7 @@ static const char __pyx_k_No_value_specified_for_struct_at_23[] = "No value spec
 static const char __pyx_k_No_value_specified_for_struct_at_24[] = "No value specified for struct attribute 'Mpbh'";
 static const char __pyx_k_No_value_specified_for_struct_at_25[] = "No value specified for struct attribute 'fpbh'";
 static const char __pyx_k_No_value_specified_for_struct_at_26[] = "No value specified for struct attribute 'decay'";
-static const char __pyx_k_No_value_specified_for_struct_at_27[] = "No value specified for struct attribute 'sigmaB_PMF'";
+static const char __pyx_k_No_value_specified_for_struct_at_27[] = "No value specified for struct attribute 'sB_PMF'";
 static const char __pyx_k_No_value_specified_for_struct_at_28[] = "No value specified for struct attribute 'nB_PMF'";
 static const char __pyx_k_No_value_specified_for_struct_at_29[] = "No value specified for struct attribute 'sigmaA_PMF'";
 static const char __pyx_k_No_value_specified_for_struct_at_30[] = "No value specified for struct attribute 'smooth_z_PMF'";
@@ -2327,11 +2328,11 @@ static const char __pyx_k_No_value_specified_for_struct_at_31[] = "No value spec
 static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_warning_on_one_line(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_message, PyObject *__pyx_v_category, PyObject *__pyx_v_filename, PyObject *__pyx_v_lineno, CYTHON_UNUSED PyObject *__pyx_v_file, CYTHON_UNUSED PyObject *__pyx_v_line); /* proto */
 static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED PyObject *__pyx_self, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params, double __pyx_v_zmax, double __pyx_v_zmin, int __pyx_v_nz); /* proto */
 static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_4compute_hubble_rate(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params); /* proto */
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_pann, double __pyx_v_pann_halo, double __pyx_v_ann_z, double __pyx_v_ann_zmax, double __pyx_v_ann_zmin, double __pyx_v_ann_var, double __pyx_v_ann_z_halo, double __pyx_v_decay, int __pyx_v_on_the_spot, double __pyx_v_Mpbh, double __pyx_v_fpbh, double __pyx_v_sigmaB_PMF, double __pyx_v_nB_PMF, double __pyx_v_sigmaA_PMF, double __pyx_v_smooth_z_PMF, int __pyx_v_heat_channel_PMF); /* proto */
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_pann, double __pyx_v_pann_halo, double __pyx_v_ann_z, double __pyx_v_ann_zmax, double __pyx_v_ann_zmin, double __pyx_v_ann_var, double __pyx_v_ann_z_halo, double __pyx_v_decay, int __pyx_v_on_the_spot, double __pyx_v_Mpbh, double __pyx_v_fpbh, double __pyx_v_sB_PMF, double __pyx_v_nB_PMF, double __pyx_v_sigmaA_PMF, double __pyx_v_smooth_z_PMF, int __pyx_v_heat_channel_PMF); /* proto */
 static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_8init_INPUT_COSMOPARAMS(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_h, double __pyx_v_T0, double __pyx_v_Omega_b, double __pyx_v_Omega_cb, double __pyx_v_Omega_k, double __pyx_v_w0, double __pyx_v_wa, double __pyx_v_Neff, double __pyx_v_Nmnu, double __pyx_v_mnu1, double __pyx_v_mnu2, double __pyx_v_mnu3, double __pyx_v_YHe, double __pyx_v_fsR, double __pyx_v_meR); /* proto */
 static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_10call_decay_rate_pmf_turbulences(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_tdti, double __pyx_v_nB); /* proto */
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_dEdtdV_heat_turbulences_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_H, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params); /* proto */
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_14call_dEdtdV_heat_ambipolar_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_xe, double __pyx_v_Tgas, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params); /* proto */
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_decay_rate_heat_turbulences_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_H, double __pyx_v_chiB, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params); /* proto */
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_14call_decay_rate_heat_ambipolar_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_xe, double __pyx_v_Tgas, double __pyx_v_chiB, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params); /* proto */
 /* #### Code section: late_includes ### */
 /* #### Code section: module_state ### */
 typedef struct {
@@ -2414,11 +2415,13 @@ typedef struct {
   PyObject *__pyx_n_s_ann_zmax;
   PyObject *__pyx_n_s_ann_zmin;
   PyObject *__pyx_n_s_asyncio_coroutines;
-  PyObject *__pyx_n_s_call_dEdtdV_heat_ambipolar_pmf;
-  PyObject *__pyx_n_s_call_dEdtdV_heat_turbulences_pmf;
+  PyObject *__pyx_n_s_call_decay_rate_heat_ambipolar_p;
+  PyObject *__pyx_n_s_call_decay_rate_heat_turbulences;
   PyObject *__pyx_n_s_call_decay_rate_pmf_turbulences;
   PyObject *__pyx_n_s_call_run_hyrec;
   PyObject *__pyx_n_s_category;
+  PyObject *__pyx_n_s_chiB;
+  PyObject *__pyx_n_s_chiB_array;
   PyObject *__pyx_n_s_cline_in_traceback;
   PyObject *__pyx_n_s_compute_hubble_rate;
   PyObject *__pyx_n_s_cosmo;
@@ -2428,7 +2431,6 @@ typedef struct {
   PyObject *__pyx_n_s_data_2;
   PyObject *__pyx_n_s_decay;
   PyObject *__pyx_n_s_dirname;
-  PyObject *__pyx_n_s_en_pmf_array;
   PyObject *__pyx_n_s_encode;
   PyObject *__pyx_n_s_enumerate;
   PyObject *__pyx_n_s_file;
@@ -2473,9 +2475,9 @@ typedef struct {
   PyObject *__pyx_kp_s_pyhyrec;
   PyObject *__pyx_n_s_pyhyrec_wrapperhyrec;
   PyObject *__pyx_n_s_realpath;
+  PyObject *__pyx_n_s_sB_PMF;
   PyObject *__pyx_kp_s_s_s_s_s;
   PyObject *__pyx_n_s_sigmaA_PMF;
-  PyObject *__pyx_n_s_sigmaB_PMF;
   PyObject *__pyx_n_s_smooth_z_PMF;
   PyObject *__pyx_n_s_spec;
   PyObject *__pyx_n_s_split;
@@ -2641,11 +2643,13 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_ann_zmax);
   Py_CLEAR(clear_module_state->__pyx_n_s_ann_zmin);
   Py_CLEAR(clear_module_state->__pyx_n_s_asyncio_coroutines);
-  Py_CLEAR(clear_module_state->__pyx_n_s_call_dEdtdV_heat_ambipolar_pmf);
-  Py_CLEAR(clear_module_state->__pyx_n_s_call_dEdtdV_heat_turbulences_pmf);
+  Py_CLEAR(clear_module_state->__pyx_n_s_call_decay_rate_heat_ambipolar_p);
+  Py_CLEAR(clear_module_state->__pyx_n_s_call_decay_rate_heat_turbulences);
   Py_CLEAR(clear_module_state->__pyx_n_s_call_decay_rate_pmf_turbulences);
   Py_CLEAR(clear_module_state->__pyx_n_s_call_run_hyrec);
   Py_CLEAR(clear_module_state->__pyx_n_s_category);
+  Py_CLEAR(clear_module_state->__pyx_n_s_chiB);
+  Py_CLEAR(clear_module_state->__pyx_n_s_chiB_array);
   Py_CLEAR(clear_module_state->__pyx_n_s_cline_in_traceback);
   Py_CLEAR(clear_module_state->__pyx_n_s_compute_hubble_rate);
   Py_CLEAR(clear_module_state->__pyx_n_s_cosmo);
@@ -2655,7 +2659,6 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_data_2);
   Py_CLEAR(clear_module_state->__pyx_n_s_decay);
   Py_CLEAR(clear_module_state->__pyx_n_s_dirname);
-  Py_CLEAR(clear_module_state->__pyx_n_s_en_pmf_array);
   Py_CLEAR(clear_module_state->__pyx_n_s_encode);
   Py_CLEAR(clear_module_state->__pyx_n_s_enumerate);
   Py_CLEAR(clear_module_state->__pyx_n_s_file);
@@ -2700,9 +2703,9 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_s_pyhyrec);
   Py_CLEAR(clear_module_state->__pyx_n_s_pyhyrec_wrapperhyrec);
   Py_CLEAR(clear_module_state->__pyx_n_s_realpath);
+  Py_CLEAR(clear_module_state->__pyx_n_s_sB_PMF);
   Py_CLEAR(clear_module_state->__pyx_kp_s_s_s_s_s);
   Py_CLEAR(clear_module_state->__pyx_n_s_sigmaA_PMF);
-  Py_CLEAR(clear_module_state->__pyx_n_s_sigmaB_PMF);
   Py_CLEAR(clear_module_state->__pyx_n_s_smooth_z_PMF);
   Py_CLEAR(clear_module_state->__pyx_n_s_spec);
   Py_CLEAR(clear_module_state->__pyx_n_s_split);
@@ -2846,11 +2849,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_ann_zmax);
   Py_VISIT(traverse_module_state->__pyx_n_s_ann_zmin);
   Py_VISIT(traverse_module_state->__pyx_n_s_asyncio_coroutines);
-  Py_VISIT(traverse_module_state->__pyx_n_s_call_dEdtdV_heat_ambipolar_pmf);
-  Py_VISIT(traverse_module_state->__pyx_n_s_call_dEdtdV_heat_turbulences_pmf);
+  Py_VISIT(traverse_module_state->__pyx_n_s_call_decay_rate_heat_ambipolar_p);
+  Py_VISIT(traverse_module_state->__pyx_n_s_call_decay_rate_heat_turbulences);
   Py_VISIT(traverse_module_state->__pyx_n_s_call_decay_rate_pmf_turbulences);
   Py_VISIT(traverse_module_state->__pyx_n_s_call_run_hyrec);
   Py_VISIT(traverse_module_state->__pyx_n_s_category);
+  Py_VISIT(traverse_module_state->__pyx_n_s_chiB);
+  Py_VISIT(traverse_module_state->__pyx_n_s_chiB_array);
   Py_VISIT(traverse_module_state->__pyx_n_s_cline_in_traceback);
   Py_VISIT(traverse_module_state->__pyx_n_s_compute_hubble_rate);
   Py_VISIT(traverse_module_state->__pyx_n_s_cosmo);
@@ -2860,7 +2865,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_data_2);
   Py_VISIT(traverse_module_state->__pyx_n_s_decay);
   Py_VISIT(traverse_module_state->__pyx_n_s_dirname);
-  Py_VISIT(traverse_module_state->__pyx_n_s_en_pmf_array);
   Py_VISIT(traverse_module_state->__pyx_n_s_encode);
   Py_VISIT(traverse_module_state->__pyx_n_s_enumerate);
   Py_VISIT(traverse_module_state->__pyx_n_s_file);
@@ -2905,9 +2909,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_s_pyhyrec);
   Py_VISIT(traverse_module_state->__pyx_n_s_pyhyrec_wrapperhyrec);
   Py_VISIT(traverse_module_state->__pyx_n_s_realpath);
+  Py_VISIT(traverse_module_state->__pyx_n_s_sB_PMF);
   Py_VISIT(traverse_module_state->__pyx_kp_s_s_s_s_s);
   Py_VISIT(traverse_module_state->__pyx_n_s_sigmaA_PMF);
-  Py_VISIT(traverse_module_state->__pyx_n_s_sigmaB_PMF);
   Py_VISIT(traverse_module_state->__pyx_n_s_smooth_z_PMF);
   Py_VISIT(traverse_module_state->__pyx_n_s_spec);
   Py_VISIT(traverse_module_state->__pyx_n_s_split);
@@ -3061,11 +3065,13 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_ann_zmax __pyx_mstate_global->__pyx_n_s_ann_zmax
 #define __pyx_n_s_ann_zmin __pyx_mstate_global->__pyx_n_s_ann_zmin
 #define __pyx_n_s_asyncio_coroutines __pyx_mstate_global->__pyx_n_s_asyncio_coroutines
-#define __pyx_n_s_call_dEdtdV_heat_ambipolar_pmf __pyx_mstate_global->__pyx_n_s_call_dEdtdV_heat_ambipolar_pmf
-#define __pyx_n_s_call_dEdtdV_heat_turbulences_pmf __pyx_mstate_global->__pyx_n_s_call_dEdtdV_heat_turbulences_pmf
+#define __pyx_n_s_call_decay_rate_heat_ambipolar_p __pyx_mstate_global->__pyx_n_s_call_decay_rate_heat_ambipolar_p
+#define __pyx_n_s_call_decay_rate_heat_turbulences __pyx_mstate_global->__pyx_n_s_call_decay_rate_heat_turbulences
 #define __pyx_n_s_call_decay_rate_pmf_turbulences __pyx_mstate_global->__pyx_n_s_call_decay_rate_pmf_turbulences
 #define __pyx_n_s_call_run_hyrec __pyx_mstate_global->__pyx_n_s_call_run_hyrec
 #define __pyx_n_s_category __pyx_mstate_global->__pyx_n_s_category
+#define __pyx_n_s_chiB __pyx_mstate_global->__pyx_n_s_chiB
+#define __pyx_n_s_chiB_array __pyx_mstate_global->__pyx_n_s_chiB_array
 #define __pyx_n_s_cline_in_traceback __pyx_mstate_global->__pyx_n_s_cline_in_traceback
 #define __pyx_n_s_compute_hubble_rate __pyx_mstate_global->__pyx_n_s_compute_hubble_rate
 #define __pyx_n_s_cosmo __pyx_mstate_global->__pyx_n_s_cosmo
@@ -3075,7 +3081,6 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_data_2 __pyx_mstate_global->__pyx_n_s_data_2
 #define __pyx_n_s_decay __pyx_mstate_global->__pyx_n_s_decay
 #define __pyx_n_s_dirname __pyx_mstate_global->__pyx_n_s_dirname
-#define __pyx_n_s_en_pmf_array __pyx_mstate_global->__pyx_n_s_en_pmf_array
 #define __pyx_n_s_encode __pyx_mstate_global->__pyx_n_s_encode
 #define __pyx_n_s_enumerate __pyx_mstate_global->__pyx_n_s_enumerate
 #define __pyx_n_s_file __pyx_mstate_global->__pyx_n_s_file
@@ -3120,9 +3125,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_s_pyhyrec __pyx_mstate_global->__pyx_kp_s_pyhyrec
 #define __pyx_n_s_pyhyrec_wrapperhyrec __pyx_mstate_global->__pyx_n_s_pyhyrec_wrapperhyrec
 #define __pyx_n_s_realpath __pyx_mstate_global->__pyx_n_s_realpath
+#define __pyx_n_s_sB_PMF __pyx_mstate_global->__pyx_n_s_sB_PMF
 #define __pyx_kp_s_s_s_s_s __pyx_mstate_global->__pyx_kp_s_s_s_s_s
 #define __pyx_n_s_sigmaA_PMF __pyx_mstate_global->__pyx_n_s_sigmaA_PMF
-#define __pyx_n_s_sigmaB_PMF __pyx_mstate_global->__pyx_n_s_sigmaB_PMF
 #define __pyx_n_s_smooth_z_PMF __pyx_mstate_global->__pyx_n_s_smooth_z_PMF
 #define __pyx_n_s_spec __pyx_mstate_global->__pyx_n_s_spec
 #define __pyx_n_s_split __pyx_mstate_global->__pyx_n_s_split
@@ -5972,7 +5977,7 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
  *         raise ValueError("No value specified for struct attribute 'decay'")
  *     result.decay = value             # <<<<<<<<<<<<<<
  *     try:
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  */
   __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 71, __pyx_L1_error)
   __pyx_v_result.decay = __pyx_t_10;
@@ -5981,7 +5986,7 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
  *         raise ValueError("No value specified for struct attribute 'decay'")
  *     result.decay = value
  *     try:             # <<<<<<<<<<<<<<
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:
  */
   {
@@ -5996,11 +6001,11 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
       /* "FromPyStructUtility":73
  *     result.decay = value
  *     try:
- *         value = obj['sigmaB_PMF']             # <<<<<<<<<<<<<<
+ *         value = obj['sB_PMF']             # <<<<<<<<<<<<<<
  *     except KeyError:
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
  */
-      __pyx_t_8 = __Pyx_PyObject_Dict_GetItem(__pyx_v_obj, __pyx_n_s_sigmaB_PMF); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 73, __pyx_L92_error)
+      __pyx_t_8 = __Pyx_PyObject_Dict_GetItem(__pyx_v_obj, __pyx_n_s_sB_PMF); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 73, __pyx_L92_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF_SET(__pyx_v_value, __pyx_t_8);
       __pyx_t_8 = 0;
@@ -6009,7 +6014,7 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
  *         raise ValueError("No value specified for struct attribute 'decay'")
  *     result.decay = value
  *     try:             # <<<<<<<<<<<<<<
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:
  */
     }
@@ -6025,10 +6030,10 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
 
     /* "FromPyStructUtility":74
  *     try:
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:             # <<<<<<<<<<<<<<
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
+ *     result.sB_PMF = value
  */
     __pyx_t_2 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_KeyError);
     if (__pyx_t_2) {
@@ -6039,10 +6044,10 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
       __Pyx_XGOTREF(__pyx_t_6);
 
       /* "FromPyStructUtility":75
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")             # <<<<<<<<<<<<<<
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")             # <<<<<<<<<<<<<<
+ *     result.sB_PMF = value
  *     try:
  */
       __pyx_t_9 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__27, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 75, __pyx_L94_except_error)
@@ -6057,7 +6062,7 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
  *         raise ValueError("No value specified for struct attribute 'decay'")
  *     result.decay = value
  *     try:             # <<<<<<<<<<<<<<
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:
  */
     __pyx_L94_except_error:;
@@ -6071,17 +6076,17 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
 
   /* "FromPyStructUtility":76
  *     except KeyError:
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
- *     result.sigmaB_PMF = value             # <<<<<<<<<<<<<<
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
+ *     result.sB_PMF = value             # <<<<<<<<<<<<<<
  *     try:
  *         value = obj['nB_PMF']
  */
   __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_v_value); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 76, __pyx_L1_error)
-  __pyx_v_result.sigmaB_PMF = __pyx_t_10;
+  __pyx_v_result.sB_PMF = __pyx_t_10;
 
   /* "FromPyStructUtility":77
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
+ *     result.sB_PMF = value
  *     try:             # <<<<<<<<<<<<<<
  *         value = obj['nB_PMF']
  *     except KeyError:
@@ -6096,7 +6101,7 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
     /*try:*/ {
 
       /* "FromPyStructUtility":78
- *     result.sigmaB_PMF = value
+ *     result.sB_PMF = value
  *     try:
  *         value = obj['nB_PMF']             # <<<<<<<<<<<<<<
  *     except KeyError:
@@ -6108,8 +6113,8 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
       __pyx_t_6 = 0;
 
       /* "FromPyStructUtility":77
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
+ *     result.sB_PMF = value
  *     try:             # <<<<<<<<<<<<<<
  *         value = obj['nB_PMF']
  *     except KeyError:
@@ -6156,8 +6161,8 @@ static INPUT_INJ_PARAMS __pyx_convert__from_py_INPUT_INJ_PARAMS(PyObject *__pyx_
     goto __pyx_L102_except_error;
 
     /* "FromPyStructUtility":77
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")
+ *     result.sB_PMF = value
  *     try:             # <<<<<<<<<<<<<<
  *         value = obj['nB_PMF']
  *     except KeyError:
@@ -6983,7 +6988,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
   PyObject *__pyx_v_z_array = NULL;
   PyObject *__pyx_v_xe_array = NULL;
   PyObject *__pyx_v_Tm_array = NULL;
-  PyObject *__pyx_v_en_pmf_array = NULL;
+  PyObject *__pyx_v_chiB_array = NULL;
   PyObject *__pyx_v_iz = NULL;
   PyObject *__pyx_v_z = NULL;
   PyObject *__pyx_r = NULL;
@@ -7281,7 +7286,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
  *     z_array      = np.linspace(np.max([zmin, 1.0]), zmax, nz)
  *     xe_array     = np.zeros(nz)             # <<<<<<<<<<<<<<
  *     Tm_array     = np.zeros(nz)
- *     en_pmf_array = np.zeros(nz)
+ *     chiB_array = np.zeros(nz)
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -7320,7 +7325,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
  *     z_array      = np.linspace(np.max([zmin, 1.0]), zmax, nz)
  *     xe_array     = np.zeros(nz)
  *     Tm_array     = np.zeros(nz)             # <<<<<<<<<<<<<<
- *     en_pmf_array = np.zeros(nz)
+ *     chiB_array = np.zeros(nz)
  * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 84, __pyx_L1_error)
@@ -7359,7 +7364,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
   /* "pyhyrec/wrapperhyrec.pyx":85
  *     xe_array     = np.zeros(nz)
  *     Tm_array     = np.zeros(nz)
- *     en_pmf_array = np.zeros(nz)             # <<<<<<<<<<<<<<
+ *     chiB_array = np.zeros(nz)             # <<<<<<<<<<<<<<
  * 
  *     # Transfering the data from the C code to the numpy arrays
  */
@@ -7393,15 +7398,15 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
-  __pyx_v_en_pmf_array = __pyx_t_1;
+  __pyx_v_chiB_array = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "pyhyrec/wrapperhyrec.pyx":88
  * 
  *     # Transfering the data from the C code to the numpy arrays
  *     for iz, z in enumerate(z_array):             # <<<<<<<<<<<<<<
- *         xe_array[iz]     = hyrec_xe(z, data)
- *         Tm_array[iz]     = hyrec_Tm(z, data)
+ *         xe_array[iz]   = hyrec_xe(z, data)
+ *         Tm_array[iz]   = hyrec_Tm(z, data)
  */
   __Pyx_INCREF(__pyx_int_0);
   __pyx_t_1 = __pyx_int_0;
@@ -7470,9 +7475,9 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
     /* "pyhyrec/wrapperhyrec.pyx":89
  *     # Transfering the data from the C code to the numpy arrays
  *     for iz, z in enumerate(z_array):
- *         xe_array[iz]     = hyrec_xe(z, data)             # <<<<<<<<<<<<<<
- *         Tm_array[iz]     = hyrec_Tm(z, data)
- *         en_pmf_array[iz] = hyrec_en_pmf(z, data)
+ *         xe_array[iz]   = hyrec_xe(z, data)             # <<<<<<<<<<<<<<
+ *         Tm_array[iz]   = hyrec_Tm(z, data)
+ *         chiB_array[iz] = hyrec_chiB(z, data)
  */
     __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_v_z); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
     __pyx_t_3 = PyFloat_FromDouble(hyrec_xe(__pyx_t_14, __pyx_v_data)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
@@ -7482,9 +7487,9 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
 
     /* "pyhyrec/wrapperhyrec.pyx":90
  *     for iz, z in enumerate(z_array):
- *         xe_array[iz]     = hyrec_xe(z, data)
- *         Tm_array[iz]     = hyrec_Tm(z, data)             # <<<<<<<<<<<<<<
- *         en_pmf_array[iz] = hyrec_en_pmf(z, data)
+ *         xe_array[iz]   = hyrec_xe(z, data)
+ *         Tm_array[iz]   = hyrec_Tm(z, data)             # <<<<<<<<<<<<<<
+ *         chiB_array[iz] = hyrec_chiB(z, data)
  * 
  */
     __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_v_z); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L1_error)
@@ -7494,24 +7499,24 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "pyhyrec/wrapperhyrec.pyx":91
- *         xe_array[iz]     = hyrec_xe(z, data)
- *         Tm_array[iz]     = hyrec_Tm(z, data)
- *         en_pmf_array[iz] = hyrec_en_pmf(z, data)             # <<<<<<<<<<<<<<
+ *         xe_array[iz]   = hyrec_xe(z, data)
+ *         Tm_array[iz]   = hyrec_Tm(z, data)
+ *         chiB_array[iz] = hyrec_chiB(z, data)             # <<<<<<<<<<<<<<
  * 
  *     # Free the memory at the end
  */
     __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_v_z); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
-    __pyx_t_3 = PyFloat_FromDouble(hyrec_en_pmf(__pyx_t_14, __pyx_v_data)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(hyrec_chiB(__pyx_t_14, __pyx_v_data)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (unlikely((PyObject_SetItem(__pyx_v_en_pmf_array, __pyx_v_iz, __pyx_t_3) < 0))) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely((PyObject_SetItem(__pyx_v_chiB_array, __pyx_v_iz, __pyx_t_3) < 0))) __PYX_ERR(0, 91, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "pyhyrec/wrapperhyrec.pyx":88
  * 
  *     # Transfering the data from the C code to the numpy arrays
  *     for iz, z in enumerate(z_array):             # <<<<<<<<<<<<<<
- *         xe_array[iz]     = hyrec_xe(z, data)
- *         Tm_array[iz]     = hyrec_Tm(z, data)
+ *         xe_array[iz]   = hyrec_xe(z, data)
+ *         Tm_array[iz]   = hyrec_Tm(z, data)
  */
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -7522,14 +7527,14 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
  *     # Free the memory at the end
  *     hyrec_free(data)             # <<<<<<<<<<<<<<
  * 
- *     return z_array, xe_array, Tm_array, en_pmf_array
+ *     return z_array, xe_array, Tm_array, chiB_array
  */
   hyrec_free(__pyx_v_data);
 
   /* "pyhyrec/wrapperhyrec.pyx":96
  *     hyrec_free(data)
  * 
- *     return z_array, xe_array, Tm_array, en_pmf_array             # <<<<<<<<<<<<<<
+ *     return z_array, xe_array, Tm_array, chiB_array             # <<<<<<<<<<<<<<
  * 
  * 
  */
@@ -7545,9 +7550,9 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
   __Pyx_INCREF(__pyx_v_Tm_array);
   __Pyx_GIVEREF(__pyx_v_Tm_array);
   if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_Tm_array)) __PYX_ERR(0, 96, __pyx_L1_error);
-  __Pyx_INCREF(__pyx_v_en_pmf_array);
-  __Pyx_GIVEREF(__pyx_v_en_pmf_array);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_v_en_pmf_array)) __PYX_ERR(0, 96, __pyx_L1_error);
+  __Pyx_INCREF(__pyx_v_chiB_array);
+  __Pyx_GIVEREF(__pyx_v_chiB_array);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_v_chiB_array)) __PYX_ERR(0, 96, __pyx_L1_error);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
@@ -7578,7 +7583,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
   __Pyx_XDECREF(__pyx_v_z_array);
   __Pyx_XDECREF(__pyx_v_xe_array);
   __Pyx_XDECREF(__pyx_v_Tm_array);
-  __Pyx_XDECREF(__pyx_v_en_pmf_array);
+  __Pyx_XDECREF(__pyx_v_chiB_array);
   __Pyx_XDECREF(__pyx_v_iz);
   __Pyx_XDECREF(__pyx_v_z);
   __Pyx_XGIVEREF(__pyx_r);
@@ -7797,7 +7802,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   int __pyx_v_on_the_spot;
   double __pyx_v_Mpbh;
   double __pyx_v_fpbh;
-  double __pyx_v_sigmaB_PMF;
+  double __pyx_v_sB_PMF;
   double __pyx_v_nB_PMF;
   double __pyx_v_sigmaA_PMF;
   double __pyx_v_smooth_z_PMF;
@@ -7822,7 +7827,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pann,&__pyx_n_s_pann_halo,&__pyx_n_s_ann_z,&__pyx_n_s_ann_zmax,&__pyx_n_s_ann_zmin,&__pyx_n_s_ann_var,&__pyx_n_s_ann_z_halo,&__pyx_n_s_decay,&__pyx_n_s_on_the_spot,&__pyx_n_s_Mpbh,&__pyx_n_s_fpbh,&__pyx_n_s_sigmaB_PMF,&__pyx_n_s_nB_PMF,&__pyx_n_s_sigmaA_PMF,&__pyx_n_s_smooth_z_PMF,&__pyx_n_s_heat_channel_PMF,0};
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_pann,&__pyx_n_s_pann_halo,&__pyx_n_s_ann_z,&__pyx_n_s_ann_zmax,&__pyx_n_s_ann_zmin,&__pyx_n_s_ann_var,&__pyx_n_s_ann_z_halo,&__pyx_n_s_decay,&__pyx_n_s_on_the_spot,&__pyx_n_s_Mpbh,&__pyx_n_s_fpbh,&__pyx_n_s_sB_PMF,&__pyx_n_s_nB_PMF,&__pyx_n_s_sigmaA_PMF,&__pyx_n_s_smooth_z_PMF,&__pyx_n_s_heat_channel_PMF,0};
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
       switch (__pyx_nargs) {
@@ -7972,7 +7977,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         }
         CYTHON_FALLTHROUGH;
         case 11:
-        if (likely((values[11] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_sigmaB_PMF)) != 0)) {
+        if (likely((values[11] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_sB_PMF)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[11]);
           kw_args--;
         }
@@ -8056,7 +8061,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
     __pyx_v_on_the_spot = __Pyx_PyInt_As_int(values[8]); if (unlikely((__pyx_v_on_the_spot == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L3_error)
     __pyx_v_Mpbh = __pyx_PyFloat_AsDouble(values[9]); if (unlikely((__pyx_v_Mpbh == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L3_error)
     __pyx_v_fpbh = __pyx_PyFloat_AsDouble(values[10]); if (unlikely((__pyx_v_fpbh == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L3_error)
-    __pyx_v_sigmaB_PMF = __pyx_PyFloat_AsDouble(values[11]); if (unlikely((__pyx_v_sigmaB_PMF == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
+    __pyx_v_sB_PMF = __pyx_PyFloat_AsDouble(values[11]); if (unlikely((__pyx_v_sB_PMF == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
     __pyx_v_nB_PMF = __pyx_PyFloat_AsDouble(values[12]); if (unlikely((__pyx_v_nB_PMF == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L3_error)
     __pyx_v_sigmaA_PMF = __pyx_PyFloat_AsDouble(values[13]); if (unlikely((__pyx_v_sigmaA_PMF == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L3_error)
     __pyx_v_smooth_z_PMF = __pyx_PyFloat_AsDouble(values[14]); if (unlikely((__pyx_v_smooth_z_PMF == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L3_error)
@@ -8078,7 +8083,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(__pyx_self, __pyx_v_pann, __pyx_v_pann_halo, __pyx_v_ann_z, __pyx_v_ann_zmax, __pyx_v_ann_zmin, __pyx_v_ann_var, __pyx_v_ann_z_halo, __pyx_v_decay, __pyx_v_on_the_spot, __pyx_v_Mpbh, __pyx_v_fpbh, __pyx_v_sigmaB_PMF, __pyx_v_nB_PMF, __pyx_v_sigmaA_PMF, __pyx_v_smooth_z_PMF, __pyx_v_heat_channel_PMF);
+  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(__pyx_self, __pyx_v_pann, __pyx_v_pann_halo, __pyx_v_ann_z, __pyx_v_ann_zmax, __pyx_v_ann_zmin, __pyx_v_ann_var, __pyx_v_ann_z_halo, __pyx_v_decay, __pyx_v_on_the_spot, __pyx_v_Mpbh, __pyx_v_fpbh, __pyx_v_sB_PMF, __pyx_v_nB_PMF, __pyx_v_sigmaA_PMF, __pyx_v_smooth_z_PMF, __pyx_v_heat_channel_PMF);
 
   /* function exit code */
   {
@@ -8091,7 +8096,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_pann, double __pyx_v_pann_halo, double __pyx_v_ann_z, double __pyx_v_ann_zmax, double __pyx_v_ann_zmin, double __pyx_v_ann_var, double __pyx_v_ann_z_halo, double __pyx_v_decay, int __pyx_v_on_the_spot, double __pyx_v_Mpbh, double __pyx_v_fpbh, double __pyx_v_sigmaB_PMF, double __pyx_v_nB_PMF, double __pyx_v_sigmaA_PMF, double __pyx_v_smooth_z_PMF, int __pyx_v_heat_channel_PMF) {
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_pann, double __pyx_v_pann_halo, double __pyx_v_ann_z, double __pyx_v_ann_zmax, double __pyx_v_ann_zmin, double __pyx_v_ann_var, double __pyx_v_ann_z_halo, double __pyx_v_decay, int __pyx_v_on_the_spot, double __pyx_v_Mpbh, double __pyx_v_fpbh, double __pyx_v_sB_PMF, double __pyx_v_nB_PMF, double __pyx_v_sigmaA_PMF, double __pyx_v_smooth_z_PMF, int __pyx_v_heat_channel_PMF) {
   INPUT_INJ_PARAMS __pyx_v_inj_params;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8187,7 +8192,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_
  *     inj_params.on_the_spot = on_the_spot
  *     inj_params.Mpbh = Mpbh             # <<<<<<<<<<<<<<
  *     inj_params.fpbh =  fpbh
- *     inj_params.sigmaB_PMF = sigmaB_PMF
+ *     inj_params.sB_PMF = sB_PMF
  */
   __pyx_v_inj_params.Mpbh = __pyx_v_Mpbh;
 
@@ -8195,7 +8200,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_
  *     inj_params.on_the_spot = on_the_spot
  *     inj_params.Mpbh = Mpbh
  *     inj_params.fpbh =  fpbh             # <<<<<<<<<<<<<<
- *     inj_params.sigmaB_PMF = sigmaB_PMF
+ *     inj_params.sB_PMF = sB_PMF
  *     inj_params.nB_PMF = nB_PMF
  */
   __pyx_v_inj_params.fpbh = __pyx_v_fpbh;
@@ -8203,15 +8208,15 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_
   /* "pyhyrec/wrapperhyrec.pyx":123
  *     inj_params.Mpbh = Mpbh
  *     inj_params.fpbh =  fpbh
- *     inj_params.sigmaB_PMF = sigmaB_PMF             # <<<<<<<<<<<<<<
+ *     inj_params.sB_PMF = sB_PMF             # <<<<<<<<<<<<<<
  *     inj_params.nB_PMF = nB_PMF
  *     inj_params.sigmaA_PMF = sigmaA_PMF
  */
-  __pyx_v_inj_params.sigmaB_PMF = __pyx_v_sigmaB_PMF;
+  __pyx_v_inj_params.sB_PMF = __pyx_v_sB_PMF;
 
   /* "pyhyrec/wrapperhyrec.pyx":124
  *     inj_params.fpbh =  fpbh
- *     inj_params.sigmaB_PMF = sigmaB_PMF
+ *     inj_params.sB_PMF = sB_PMF
  *     inj_params.nB_PMF = nB_PMF             # <<<<<<<<<<<<<<
  *     inj_params.sigmaA_PMF = sigmaA_PMF
  *     inj_params.smooth_z_PMF = smooth_z_PMF
@@ -8219,7 +8224,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_6init_INPUT_INJ_PARAMS(CYTHON_
   __pyx_v_inj_params.nB_PMF = __pyx_v_nB_PMF;
 
   /* "pyhyrec/wrapperhyrec.pyx":125
- *     inj_params.sigmaB_PMF = sigmaB_PMF
+ *     inj_params.sB_PMF = sB_PMF
  *     inj_params.nB_PMF = nB_PMF
  *     inj_params.sigmaA_PMF = sigmaA_PMF             # <<<<<<<<<<<<<<
  *     inj_params.smooth_z_PMF = smooth_z_PMF
@@ -8771,7 +8776,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_8init_INPUT_COSMOPARAMS(CYTHON
 }
 
 /* "pyhyrec/wrapperhyrec.pyx":165
- *     double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+ *     double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
  * 
  * def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):             # <<<<<<<<<<<<<<
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
@@ -8918,7 +8923,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_10call_decay_rate_pmf_turbulen
  * def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):
  *     return decay_rate_pmf_turbulences(z, tdti, nB)             # <<<<<<<<<<<<<<
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyFloat_FromDouble(decay_rate_pmf_turbulences(__pyx_v_z, __pyx_v_tdti, __pyx_v_nB)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
@@ -8928,7 +8933,7 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_10call_decay_rate_pmf_turbulen
   goto __pyx_L0;
 
   /* "pyhyrec/wrapperhyrec.pyx":165
- *     double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+ *     double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
  * 
  * def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):             # <<<<<<<<<<<<<<
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
@@ -8949,21 +8954,21 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_10call_decay_rate_pmf_turbulen
 /* "pyhyrec/wrapperhyrec.pyx":168
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_13call_dEdtdV_heat_turbulences_pmf(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_13call_decay_rate_heat_turbulences_pmf(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7pyhyrec_12wrapperhyrec_13call_dEdtdV_heat_turbulences_pmf = {"call_dEdtdV_heat_turbulences_pmf", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7pyhyrec_12wrapperhyrec_13call_dEdtdV_heat_turbulences_pmf, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_13call_dEdtdV_heat_turbulences_pmf(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_7pyhyrec_12wrapperhyrec_13call_decay_rate_heat_turbulences_pmf = {"call_decay_rate_heat_turbulences_pmf", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7pyhyrec_12wrapperhyrec_13call_decay_rate_heat_turbulences_pmf, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_13call_decay_rate_heat_turbulences_pmf(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -8972,19 +8977,20 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ) {
   double __pyx_v_z;
   double __pyx_v_H;
+  double __pyx_v_chiB;
   INPUT_COSMOPARAMS __pyx_v_cosmo_params;
   INPUT_INJ_PARAMS __pyx_v_inj_params;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[4] = {0,0,0,0};
+  PyObject* values[5] = {0,0,0,0,0};
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("call_dEdtdV_heat_turbulences_pmf (wrapper)", 0);
+  __Pyx_RefNannySetupContext("call_decay_rate_heat_turbulences_pmf (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_MACROS
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -8994,10 +9000,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_z,&__pyx_n_s_H,&__pyx_n_s_cosmo_params,&__pyx_n_s_inj_params,0};
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_z,&__pyx_n_s_H,&__pyx_n_s_chiB,&__pyx_n_s_cosmo_params,&__pyx_n_s_inj_params,0};
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
       switch (__pyx_nargs) {
+        case  5: values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
         case  4: values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
         CYTHON_FALLTHROUGH;
         case  3: values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
@@ -9026,49 +9034,61 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_turbulences_pmf", 1, 4, 4, 1); __PYX_ERR(0, 168, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_turbulences_pmf", 1, 5, 5, 1); __PYX_ERR(0, 168, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_cosmo_params)) != 0)) {
+        if (likely((values[2] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_chiB)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_turbulences_pmf", 1, 4, 4, 2); __PYX_ERR(0, 168, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_turbulences_pmf", 1, 5, 5, 2); __PYX_ERR(0, 168, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_inj_params)) != 0)) {
+        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_cosmo_params)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_turbulences_pmf", 1, 4, 4, 3); __PYX_ERR(0, 168, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_turbulences_pmf", 1, 5, 5, 3); __PYX_ERR(0, 168, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_inj_params)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_turbulences_pmf", 1, 5, 5, 4); __PYX_ERR(0, 168, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "call_dEdtdV_heat_turbulences_pmf") < 0)) __PYX_ERR(0, 168, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "call_decay_rate_heat_turbulences_pmf") < 0)) __PYX_ERR(0, 168, __pyx_L3_error)
       }
-    } else if (unlikely(__pyx_nargs != 4)) {
+    } else if (unlikely(__pyx_nargs != 5)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
       values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
+      values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
     }
     __pyx_v_z = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_z == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
     __pyx_v_H = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_H == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
-    __pyx_v_cosmo_params = __pyx_convert__from_py_INPUT_COSMOPARAMS(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
-    __pyx_v_inj_params = __pyx_convert__from_py_INPUT_INJ_PARAMS(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
+    __pyx_v_chiB = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_chiB == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
+    __pyx_v_cosmo_params = __pyx_convert__from_py_INPUT_COSMOPARAMS(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
+    __pyx_v_inj_params = __pyx_convert__from_py_INPUT_INJ_PARAMS(values[4]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_turbulences_pmf", 1, 4, 4, __pyx_nargs); __PYX_ERR(0, 168, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_turbulences_pmf", 1, 5, 5, __pyx_nargs); __PYX_ERR(0, 168, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9078,11 +9098,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_dEdtdV_heat_turbulences_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_decay_rate_heat_turbulences_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_12call_dEdtdV_heat_turbulences_pmf(__pyx_self, __pyx_v_z, __pyx_v_H, __pyx_v_cosmo_params, __pyx_v_inj_params);
+  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_12call_decay_rate_heat_turbulences_pmf(__pyx_self, __pyx_v_z, __pyx_v_H, __pyx_v_chiB, __pyx_v_cosmo_params, __pyx_v_inj_params);
 
   /* function exit code */
   {
@@ -9095,24 +9115,24 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_dEdtdV_heat_turbulences_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_H, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params) {
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_decay_rate_heat_turbulences_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_H, double __pyx_v_chiB, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("call_dEdtdV_heat_turbulences_pmf", 1);
+  __Pyx_RefNannySetupContext("call_decay_rate_heat_turbulences_pmf", 1);
 
   /* "pyhyrec/wrapperhyrec.pyx":169
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)             # <<<<<<<<<<<<<<
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)             # <<<<<<<<<<<<<<
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(compute_dEdtdV_heat_turbulences_pmf(__pyx_v_z, __pyx_v_H, __pyx_v_cosmo_params, __pyx_v_inj_params)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(compute_decay_rate_heat_turbulences_pmf(__pyx_v_z, __pyx_v_H, __pyx_v_chiB, __pyx_v_cosmo_params, __pyx_v_inj_params)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9121,15 +9141,15 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_dEdtdV_heat_turbulences
   /* "pyhyrec/wrapperhyrec.pyx":168
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_dEdtdV_heat_turbulences_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_decay_rate_heat_turbulences_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9138,22 +9158,22 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_12call_dEdtdV_heat_turbulences
 }
 
 /* "pyhyrec/wrapperhyrec.pyx":171
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_15call_dEdtdV_heat_ambipolar_pmf(PyObject *__pyx_self, 
+static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_15call_decay_rate_heat_ambipolar_pmf(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_7pyhyrec_12wrapperhyrec_15call_dEdtdV_heat_ambipolar_pmf = {"call_dEdtdV_heat_ambipolar_pmf", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7pyhyrec_12wrapperhyrec_15call_dEdtdV_heat_ambipolar_pmf, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_15call_dEdtdV_heat_ambipolar_pmf(PyObject *__pyx_self, 
+static PyMethodDef __pyx_mdef_7pyhyrec_12wrapperhyrec_15call_decay_rate_heat_ambipolar_pmf = {"call_decay_rate_heat_ambipolar_pmf", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_7pyhyrec_12wrapperhyrec_15call_decay_rate_heat_ambipolar_pmf, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_7pyhyrec_12wrapperhyrec_15call_decay_rate_heat_ambipolar_pmf(PyObject *__pyx_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -9163,19 +9183,20 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   double __pyx_v_z;
   double __pyx_v_xe;
   double __pyx_v_Tgas;
+  double __pyx_v_chiB;
   INPUT_COSMOPARAMS __pyx_v_cosmo_params;
   INPUT_INJ_PARAMS __pyx_v_inj_params;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
-  PyObject* values[5] = {0,0,0,0,0};
+  PyObject* values[6] = {0,0,0,0,0,0};
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("call_dEdtdV_heat_ambipolar_pmf (wrapper)", 0);
+  __Pyx_RefNannySetupContext("call_decay_rate_heat_ambipolar_pmf (wrapper)", 0);
   #if !CYTHON_METH_FASTCALL
   #if CYTHON_ASSUME_SAFE_MACROS
   __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
@@ -9185,10 +9206,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   #endif
   __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
   {
-    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_z,&__pyx_n_s_xe,&__pyx_n_s_Tgas,&__pyx_n_s_cosmo_params,&__pyx_n_s_inj_params,0};
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_z,&__pyx_n_s_xe,&__pyx_n_s_Tgas,&__pyx_n_s_chiB,&__pyx_n_s_cosmo_params,&__pyx_n_s_inj_params,0};
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
       switch (__pyx_nargs) {
+        case  6: values[5] = __Pyx_Arg_FASTCALL(__pyx_args, 5);
+        CYTHON_FALLTHROUGH;
         case  5: values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
         CYTHON_FALLTHROUGH;
         case  4: values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
@@ -9219,7 +9242,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_ambipolar_pmf", 1, 5, 5, 1); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, 1); __PYX_ERR(0, 171, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -9229,34 +9252,44 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_ambipolar_pmf", 1, 5, 5, 2); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, 2); __PYX_ERR(0, 171, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
-        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_cosmo_params)) != 0)) {
+        if (likely((values[3] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_chiB)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_ambipolar_pmf", 1, 5, 5, 3); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, 3); __PYX_ERR(0, 171, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
-        if (likely((values[4] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_inj_params)) != 0)) {
+        if (likely((values[4] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_cosmo_params)) != 0)) {
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
         else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_ambipolar_pmf", 1, 5, 5, 4); __PYX_ERR(0, 171, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, 4); __PYX_ERR(0, 171, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  5:
+        if (likely((values[5] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_inj_params)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[5]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, 5); __PYX_ERR(0, 171, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "call_dEdtdV_heat_ambipolar_pmf") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "call_decay_rate_heat_ambipolar_pmf") < 0)) __PYX_ERR(0, 171, __pyx_L3_error)
       }
-    } else if (unlikely(__pyx_nargs != 5)) {
+    } else if (unlikely(__pyx_nargs != 6)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
@@ -9264,16 +9297,18 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
       values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
       values[4] = __Pyx_Arg_FASTCALL(__pyx_args, 4);
+      values[5] = __Pyx_Arg_FASTCALL(__pyx_args, 5);
     }
     __pyx_v_z = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_z == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
     __pyx_v_xe = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_xe == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
     __pyx_v_Tgas = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_Tgas == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
-    __pyx_v_cosmo_params = __pyx_convert__from_py_INPUT_COSMOPARAMS(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
-    __pyx_v_inj_params = __pyx_convert__from_py_INPUT_INJ_PARAMS(values[4]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
+    __pyx_v_chiB = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_chiB == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
+    __pyx_v_cosmo_params = __pyx_convert__from_py_INPUT_COSMOPARAMS(values[4]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
+    __pyx_v_inj_params = __pyx_convert__from_py_INPUT_INJ_PARAMS(values[5]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 171, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("call_dEdtdV_heat_ambipolar_pmf", 1, 5, 5, __pyx_nargs); __PYX_ERR(0, 171, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("call_decay_rate_heat_ambipolar_pmf", 1, 6, 6, __pyx_nargs); __PYX_ERR(0, 171, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9283,11 +9318,11 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
     }
   }
-  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_dEdtdV_heat_ambipolar_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_decay_rate_heat_ambipolar_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_14call_dEdtdV_heat_ambipolar_pmf(__pyx_self, __pyx_v_z, __pyx_v_xe, __pyx_v_Tgas, __pyx_v_cosmo_params, __pyx_v_inj_params);
+  __pyx_r = __pyx_pf_7pyhyrec_12wrapperhyrec_14call_decay_rate_heat_ambipolar_pmf(__pyx_self, __pyx_v_z, __pyx_v_xe, __pyx_v_Tgas, __pyx_v_chiB, __pyx_v_cosmo_params, __pyx_v_inj_params);
 
   /* function exit code */
   {
@@ -9300,38 +9335,38 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_14call_dEdtdV_heat_ambipolar_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_xe, double __pyx_v_Tgas, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params) {
+static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_14call_decay_rate_heat_ambipolar_pmf(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_z, double __pyx_v_xe, double __pyx_v_Tgas, double __pyx_v_chiB, INPUT_COSMOPARAMS __pyx_v_cosmo_params, INPUT_INJ_PARAMS __pyx_v_inj_params) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("call_dEdtdV_heat_ambipolar_pmf", 1);
+  __Pyx_RefNannySetupContext("call_decay_rate_heat_ambipolar_pmf", 1);
 
   /* "pyhyrec/wrapperhyrec.pyx":172
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
- *     return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)             # <<<<<<<<<<<<<<
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
+ *     return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(compute_dEdtdV_heat_ambipolar_pmf(__pyx_v_z, __pyx_v_xe, __pyx_v_Tgas, __pyx_v_cosmo_params, __pyx_v_inj_params)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(compute_decay_rate_heat_ambipolar_pmf(__pyx_v_z, __pyx_v_xe, __pyx_v_Tgas, __pyx_v_chiB, __pyx_v_cosmo_params, __pyx_v_inj_params)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 172, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "pyhyrec/wrapperhyrec.pyx":171
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_dEdtdV_heat_ambipolar_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pyhyrec.wrapperhyrec.call_decay_rate_heat_ambipolar_pmf", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -9408,11 +9443,13 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_ann_zmax, __pyx_k_ann_zmax, sizeof(__pyx_k_ann_zmax), 0, 0, 1, 1},
     {&__pyx_n_s_ann_zmin, __pyx_k_ann_zmin, sizeof(__pyx_k_ann_zmin), 0, 0, 1, 1},
     {&__pyx_n_s_asyncio_coroutines, __pyx_k_asyncio_coroutines, sizeof(__pyx_k_asyncio_coroutines), 0, 0, 1, 1},
-    {&__pyx_n_s_call_dEdtdV_heat_ambipolar_pmf, __pyx_k_call_dEdtdV_heat_ambipolar_pmf, sizeof(__pyx_k_call_dEdtdV_heat_ambipolar_pmf), 0, 0, 1, 1},
-    {&__pyx_n_s_call_dEdtdV_heat_turbulences_pmf, __pyx_k_call_dEdtdV_heat_turbulences_pmf, sizeof(__pyx_k_call_dEdtdV_heat_turbulences_pmf), 0, 0, 1, 1},
+    {&__pyx_n_s_call_decay_rate_heat_ambipolar_p, __pyx_k_call_decay_rate_heat_ambipolar_p, sizeof(__pyx_k_call_decay_rate_heat_ambipolar_p), 0, 0, 1, 1},
+    {&__pyx_n_s_call_decay_rate_heat_turbulences, __pyx_k_call_decay_rate_heat_turbulences, sizeof(__pyx_k_call_decay_rate_heat_turbulences), 0, 0, 1, 1},
     {&__pyx_n_s_call_decay_rate_pmf_turbulences, __pyx_k_call_decay_rate_pmf_turbulences, sizeof(__pyx_k_call_decay_rate_pmf_turbulences), 0, 0, 1, 1},
     {&__pyx_n_s_call_run_hyrec, __pyx_k_call_run_hyrec, sizeof(__pyx_k_call_run_hyrec), 0, 0, 1, 1},
     {&__pyx_n_s_category, __pyx_k_category, sizeof(__pyx_k_category), 0, 0, 1, 1},
+    {&__pyx_n_s_chiB, __pyx_k_chiB, sizeof(__pyx_k_chiB), 0, 0, 1, 1},
+    {&__pyx_n_s_chiB_array, __pyx_k_chiB_array, sizeof(__pyx_k_chiB_array), 0, 0, 1, 1},
     {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
     {&__pyx_n_s_compute_hubble_rate, __pyx_k_compute_hubble_rate, sizeof(__pyx_k_compute_hubble_rate), 0, 0, 1, 1},
     {&__pyx_n_s_cosmo, __pyx_k_cosmo, sizeof(__pyx_k_cosmo), 0, 0, 1, 1},
@@ -9422,7 +9459,6 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_data_2, __pyx_k_data_2, sizeof(__pyx_k_data_2), 0, 0, 1, 1},
     {&__pyx_n_s_decay, __pyx_k_decay, sizeof(__pyx_k_decay), 0, 0, 1, 1},
     {&__pyx_n_s_dirname, __pyx_k_dirname, sizeof(__pyx_k_dirname), 0, 0, 1, 1},
-    {&__pyx_n_s_en_pmf_array, __pyx_k_en_pmf_array, sizeof(__pyx_k_en_pmf_array), 0, 0, 1, 1},
     {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
     {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
     {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
@@ -9467,9 +9503,9 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_s_pyhyrec, __pyx_k_pyhyrec, sizeof(__pyx_k_pyhyrec), 0, 0, 1, 0},
     {&__pyx_n_s_pyhyrec_wrapperhyrec, __pyx_k_pyhyrec_wrapperhyrec, sizeof(__pyx_k_pyhyrec_wrapperhyrec), 0, 0, 1, 1},
     {&__pyx_n_s_realpath, __pyx_k_realpath, sizeof(__pyx_k_realpath), 0, 0, 1, 1},
+    {&__pyx_n_s_sB_PMF, __pyx_k_sB_PMF, sizeof(__pyx_k_sB_PMF), 0, 0, 1, 1},
     {&__pyx_kp_s_s_s_s_s, __pyx_k_s_s_s_s, sizeof(__pyx_k_s_s_s_s), 0, 0, 1, 0},
     {&__pyx_n_s_sigmaA_PMF, __pyx_k_sigmaA_PMF, sizeof(__pyx_k_sigmaA_PMF), 0, 0, 1, 1},
-    {&__pyx_n_s_sigmaB_PMF, __pyx_k_sigmaB_PMF, sizeof(__pyx_k_sigmaB_PMF), 0, 0, 1, 1},
     {&__pyx_n_s_smooth_z_PMF, __pyx_k_smooth_z_PMF, sizeof(__pyx_k_smooth_z_PMF), 0, 0, 1, 1},
     {&__pyx_n_s_spec, __pyx_k_spec, sizeof(__pyx_k_spec), 0, 0, 1, 1},
     {&__pyx_n_s_split, __pyx_k_split, sizeof(__pyx_k_split), 0, 0, 1, 1},
@@ -9796,10 +9832,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__26);
 
   /* "FromPyStructUtility":75
- *         value = obj['sigmaB_PMF']
+ *         value = obj['sB_PMF']
  *     except KeyError:
- *         raise ValueError("No value specified for struct attribute 'sigmaB_PMF'")             # <<<<<<<<<<<<<<
- *     result.sigmaB_PMF = value
+ *         raise ValueError("No value specified for struct attribute 'sB_PMF'")             # <<<<<<<<<<<<<<
+ *     result.sB_PMF = value
  *     try:
  */
   __pyx_tuple__27 = PyTuple_Pack(1, __pyx_kp_s_No_value_specified_for_struct_at_27); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(1, 75, __pyx_L1_error)
@@ -9872,7 +9908,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *     str_table_location = os.path.join( os.path.dirname(os.path.realpath(__file__)), 'data/')
  */
-  __pyx_tuple__37 = PyTuple_Pack(14, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params, __pyx_n_s_zmax, __pyx_n_s_zmin, __pyx_n_s_nz, __pyx_n_s_str_table_location, __pyx_n_s_cstr_table_location, __pyx_n_s_data_2, __pyx_n_s_z_array, __pyx_n_s_xe_array, __pyx_n_s_Tm_array, __pyx_n_s_en_pmf_array, __pyx_n_s_iz, __pyx_n_s_z); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_tuple__37 = PyTuple_Pack(14, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params, __pyx_n_s_zmax, __pyx_n_s_zmin, __pyx_n_s_nz, __pyx_n_s_str_table_location, __pyx_n_s_cstr_table_location, __pyx_n_s_data_2, __pyx_n_s_z_array, __pyx_n_s_xe_array, __pyx_n_s_Tm_array, __pyx_n_s_chiB_array, __pyx_n_s_iz, __pyx_n_s_z); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__37);
   __Pyx_GIVEREF(__pyx_tuple__37);
   __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(5, 0, 0, 14, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_call_run_hyrec, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 69, __pyx_L1_error)
@@ -9896,7 +9932,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                         double ann_z, double ann_zmax, double ann_zmin, double ann_var,
  *                         double ann_z_halo, double decay, int on_the_spot,
  */
-  __pyx_tuple__41 = PyTuple_Pack(17, __pyx_n_s_pann, __pyx_n_s_pann_halo, __pyx_n_s_ann_z, __pyx_n_s_ann_zmax, __pyx_n_s_ann_zmin, __pyx_n_s_ann_var, __pyx_n_s_ann_z_halo, __pyx_n_s_decay, __pyx_n_s_on_the_spot, __pyx_n_s_Mpbh, __pyx_n_s_fpbh, __pyx_n_s_sigmaB_PMF, __pyx_n_s_nB_PMF, __pyx_n_s_sigmaA_PMF, __pyx_n_s_smooth_z_PMF, __pyx_n_s_heat_channel_PMF, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(17, __pyx_n_s_pann, __pyx_n_s_pann_halo, __pyx_n_s_ann_z, __pyx_n_s_ann_zmax, __pyx_n_s_ann_zmin, __pyx_n_s_ann_var, __pyx_n_s_ann_z_halo, __pyx_n_s_decay, __pyx_n_s_on_the_spot, __pyx_n_s_Mpbh, __pyx_n_s_fpbh, __pyx_n_s_sB_PMF, __pyx_n_s_nB_PMF, __pyx_n_s_sigmaA_PMF, __pyx_n_s_smooth_z_PMF, __pyx_n_s_heat_channel_PMF, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__41);
   __Pyx_GIVEREF(__pyx_tuple__41);
   __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(16, 0, 0, 17, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_init_INPUT_INJ_PARAMS, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 102, __pyx_L1_error)
@@ -9914,7 +9950,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(15, 0, 0, 16, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_init_INPUT_COSMOPARAMS, 132, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 132, __pyx_L1_error)
 
   /* "pyhyrec/wrapperhyrec.pyx":165
- *     double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+ *     double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
  * 
  * def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):             # <<<<<<<<<<<<<<
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
@@ -9928,25 +9964,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "pyhyrec/wrapperhyrec.pyx":168
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
  */
-  __pyx_tuple__47 = PyTuple_Pack(4, __pyx_n_s_z, __pyx_n_s_H, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(5, __pyx_n_s_z, __pyx_n_s_H, __pyx_n_s_chiB, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__47);
   __Pyx_GIVEREF(__pyx_tuple__47);
-  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_call_dEdtdV_heat_turbulences_pmf, 168, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(5, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_call_decay_rate_heat_turbulences, 168, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 168, __pyx_L1_error)
 
   /* "pyhyrec/wrapperhyrec.pyx":171
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)
  */
-  __pyx_tuple__49 = PyTuple_Pack(5, __pyx_n_s_z, __pyx_n_s_xe, __pyx_n_s_Tgas, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_tuple__49 = PyTuple_Pack(6, __pyx_n_s_z, __pyx_n_s_xe, __pyx_n_s_Tgas, __pyx_n_s_chiB, __pyx_n_s_cosmo_params, __pyx_n_s_inj_params); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__49);
   __Pyx_GIVEREF(__pyx_tuple__49);
-  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(5, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_call_dEdtdV_heat_ambipolar_pmf, 171, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(6, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_pyhyrec_wrapperhyrec_pyx, __pyx_n_s_call_decay_rate_heat_ambipolar_p, 171, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -10447,7 +10483,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "pyhyrec/wrapperhyrec.pyx":165
- *     double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+ *     double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
  * 
  * def call_decay_rate_pmf_turbulences(double z, double tdti, double nB):             # <<<<<<<<<<<<<<
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
@@ -10461,24 +10497,24 @@ if (!__Pyx_RefNanny) {
   /* "pyhyrec/wrapperhyrec.pyx":168
  *     return decay_rate_pmf_turbulences(z, tdti, nB)
  * 
- * def call_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ * def call_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7pyhyrec_12wrapperhyrec_13call_dEdtdV_heat_turbulences_pmf, 0, __pyx_n_s_call_dEdtdV_heat_turbulences_pmf, NULL, __pyx_n_s_pyhyrec_wrapperhyrec, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 168, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7pyhyrec_12wrapperhyrec_13call_decay_rate_heat_turbulences_pmf, 0, __pyx_n_s_call_decay_rate_heat_turbulences, NULL, __pyx_n_s_pyhyrec_wrapperhyrec, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_call_dEdtdV_heat_turbulences_pmf, __pyx_t_4) < 0) __PYX_ERR(0, 168, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_call_decay_rate_heat_turbulences, __pyx_t_4) < 0) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "pyhyrec/wrapperhyrec.pyx":171
- *     return compute_dEdtdV_heat_turbulences_pmf(z, H, cosmo_params, inj_params)
+ *     return compute_decay_rate_heat_turbulences_pmf(z, H, chiB, cosmo_params, inj_params)
  * 
- * def call_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
- *     return compute_dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, cosmo_params, inj_params)
+ * def call_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):             # <<<<<<<<<<<<<<
+ *     return compute_decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, cosmo_params, inj_params)
  */
-  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7pyhyrec_12wrapperhyrec_15call_dEdtdV_heat_ambipolar_pmf, 0, __pyx_n_s_call_dEdtdV_heat_ambipolar_pmf, NULL, __pyx_n_s_pyhyrec_wrapperhyrec, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 171, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_7pyhyrec_12wrapperhyrec_15call_decay_rate_heat_ambipolar_pmf, 0, __pyx_n_s_call_decay_rate_heat_ambipolar_p, NULL, __pyx_n_s_pyhyrec_wrapperhyrec, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_call_dEdtdV_heat_ambipolar_pmf, __pyx_t_4) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_call_decay_rate_heat_ambipolar_p, __pyx_t_4) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "pyhyrec/wrapperhyrec.pyx":2
@@ -13932,8 +13968,8 @@ static PyObject* __pyx_convert__to_py_INPUT_INJ_PARAMS(INPUT_INJ_PARAMS s) {
   member = PyFloat_FromDouble(s.decay); if (unlikely(!member)) goto bad;
   if (unlikely(PyDict_SetItem(res, __pyx_n_s_decay, member) < 0)) goto bad;
   Py_DECREF(member);
-  member = PyFloat_FromDouble(s.sigmaB_PMF); if (unlikely(!member)) goto bad;
-  if (unlikely(PyDict_SetItem(res, __pyx_n_s_sigmaB_PMF, member) < 0)) goto bad;
+  member = PyFloat_FromDouble(s.sB_PMF); if (unlikely(!member)) goto bad;
+  if (unlikely(PyDict_SetItem(res, __pyx_n_s_sB_PMF, member) < 0)) goto bad;
   Py_DECREF(member);
   member = PyFloat_FromDouble(s.nB_PMF); if (unlikely(!member)) goto bad;
   if (unlikely(PyDict_SetItem(res, __pyx_n_s_nB_PMF, member) < 0)) goto bad;

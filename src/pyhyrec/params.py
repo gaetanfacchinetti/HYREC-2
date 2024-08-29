@@ -112,7 +112,7 @@ class HyRecInjectionParams(HyRecParamsDefault):
         "on_the_spot" : 0,
         "Mpbh" : 1.0,
         "fpbh" : 0.0,
-        "sigmaB_PMF" : 0.0,
+        "sB_PMF" : 0.0,
         "nB_PMF" : -2.0,
         "sigmaA_PMF" : 31.78,
         "smooth_z_PMF" : 0.0,
