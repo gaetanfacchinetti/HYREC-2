@@ -83,8 +83,12 @@ double decay_rate_pmf_turbulences(double z, double tdti, double nB)
   if (z > zi)
     return 0;
 
-  double m = 2.0*(nB+3.0)/(nB + 5.0);
-  return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
+  double m = 2.0*(nB+3.0)/(nB+5.0);
+  double r = pow(1+tdti, -2.0/3.0);
+  //return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
+  //return 3.0 * m / 2.0  / (log(1+tdti) + 1.5 * log((1+zi)/(1+z)));
+  return - m / log(r*(1+z)/(1+zi));
+  // ATTENTION NEED TO CHANGE HISTORY.C AND AMBIPOLAR TERM ACCORDINGLY
 }
 
 // Variance of the pmf power spectrum at the Jean's scale
@@ -105,7 +109,8 @@ double dEdtdV_heat_turbulences_pmf_old(double z, double H, double obh2, double o
   
   double en =  1e-25 / (8.0 * M_PI) * 6.241509e+18 * pow(1+z, 4) * sigmaA * sigmaA * pow(sigmaB/sigmaA, 4.0/(5.0+nB)); // in units of eV / cm^3
   double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
-  
+  //double tdti = 0.05;
+
   if (smooth_z > 0)
   {
     double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
@@ -121,16 +126,28 @@ double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double o
 {
 
   double zi = 1088;
+
+  if (z > zi)
+    return 0;
+
+  // td ~ 1/(k_\gamma c) ~ ...
+  double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
+  //double tdti = 0.05;
+
+  double m   = 2.0*(nB+3.0)/(nB+5.0);
+  double r   = pow(1+tdti, -2.0/3.0);
+  double res = - m / log(r*(1+z)/(1+zi)) * H * pow(chiB, 2);
+
+  //printf("z = %e, H = %e, chiB = %e, m=%e, r=%e, val=%e, decay/H=%e\n", z, H, chiB, m, r, - m / log(r*(1+z)/(1+zi)) * pow(chiB, 2), res/H);
   
-  double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA / chiB;
-  
+
   if (smooth_z > 0)
   {
     double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
-    return decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth * pow(1+z, 4) * pow(chiB, 2);
+    return res * smooth;
   }
   else
-    return (z < zi) ? decay_rate_pmf_turbulences(z, tdti, nB) * H * pow(1+z, 4) * pow(chiB, 2) : 0.0;
+    return (z < zi) ? res : 0.0;
 
 }
 
@@ -194,7 +211,7 @@ double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double ch
     double zi = 1088;
   
     double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
-    double rho_b    = obh2 * _RHO_CRITICAL_ * pow(1+z, 3); // in eV / clight^2 / cm^3
+    double rho_b    = obh2 * _RHO_CRITICAL_; // in eV / clight^2 / cm^3
     double eta_AD = (1.0-xe) / xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
     
     /* 
@@ -208,7 +225,7 @@ double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double ch
     double rhoA   = sigmaA * sigmaA / (2.0 * _MU_0_); // in 1  eV / cm / s^2 / clight^2
     
     // result
-    double res = pow(4.0 * M_PI, 2) * rhoA * eta_AD * fit_Lorentz_force_average(nB + 3.0) * pow(chiB, 4) * pow(1+z, 10) * pow(_MPC_TO_CM_, -2); // in 1/s
+    double res = pow(4.0 * M_PI, 2) * rhoA * eta_AD * fit_Lorentz_force_average(nB + 3.0) * pow(chiB, 4) * pow(_MPC_TO_CM_, -2); // in 1/s
     
     // result in the correct output units (devide by speed of light factors)
     // res = res / pow(_C_LIGHT_, 2); // in eV / cm^3 / s 
@@ -473,6 +490,7 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
       *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_turbulences_pmf(z_out, H, chiB, params->obh2, params->ocbh2, sigmaA, sB, nB, params->inj_params->smooth_z_PMF);
+      // double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double smooth_z
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 2)
       *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_ambipolar_pmf(z_out, xe, Tgas, chiB, params->obh2, sigmaA, sB, nB, params->inj_params->smooth_z_PMF);
@@ -481,8 +499,6 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 
   }
 
-
-
-  *dEdtdV_heat = *dEdtdV_heat + rho_B_t * (*decay_rate_PMF);
+  *dEdtdV_heat = *dEdtdV_heat + rho_B_t * (*decay_rate_PMF) * pow(1+z_out, 4);
 }
 
