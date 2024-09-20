@@ -105,6 +105,6 @@ double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double o
 double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double smooth_z);
 double compute_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
 double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
-
+void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params, double h);
 
 #endif

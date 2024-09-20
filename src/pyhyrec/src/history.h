@@ -78,5 +78,6 @@ void hyrec_compute(HYREC_DATA *data, int model);
 double hyrec_xe(double z, HYREC_DATA *data);
 double hyrec_Tm(double z, HYREC_DATA *data);
 double hyrec_chiB(double z, HYREC_DATA *data);
+double hyrec_MB(double z, HYREC_DATA *data);
 
 #endif

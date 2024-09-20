@@ -166,5 +166,14 @@ def acoustic_damping_scale(z, xe, cosmo):
     return np.sqrt(1/ld2)
 
 def compute_acoustic_damping_scale(cosmo = HyRecCosmoParams()):
-    z, xe, _ = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 10000, zmin = 500, nz = 40000)
-    return acoustic_damping_scale(z, xe, cosmo)
+    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 10000, zmin = 500, nz = 40000)
+    return acoustic_damping_scale(res['z'], res['xe'], cosmo)
+
+
+def t_vs_z(z:float, cosmo = HyRecCosmoParams()):
+    """
+    Time (in s) since the "big bang"
+    """
+    lna = np.linspace(0, 1/(1+z), 500)
+    e_a = hubble_factor(np.exp(-lna) - 1, cosmo)
+    return integrate.trapezoid(1.0/e_a, lna) / (100 * cosmo.h * 1e+3 * _M_TO_MPC_)

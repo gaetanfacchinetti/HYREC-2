@@ -145,6 +145,7 @@ typedef struct{
   double *xe_output;
   double *Tm_output;
   double *chiB;
+  double *MB;
   int error;
   int quasi_eq;
   int loop_after_quasi;

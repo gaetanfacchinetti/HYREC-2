@@ -486,7 +486,7 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
   if (params->inj_params->sB_PMF > 0)
   {
 
-    rho_B_t = S_B * S_B / (2.0 * _MU_0_) / pow(_C_LIGHT_, 2);   // in 1  eV / cm^3
+    rho_B_t = S_B * S_B / (2.0 * _MU_0_) / pow(_C_LIGHT_, 2);   // in  eV / cm^3
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
       *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_turbulences_pmf(z_out, H, chiB, params->obh2, params->ocbh2, sigmaA, sB, nB, params->inj_params->smooth_z_PMF);
@@ -502,3 +502,32 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
   *dEdtdV_heat = *dEdtdV_heat + rho_B_t * (*decay_rate_PMF) * pow(1+z_out, 4);
 }
 
+
+void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params, double h)
+{
+  if (z >= 1080)
+    return;
+
+  double z_p = z;
+
+  if (z < 1e-2)
+    z_p = 1e-2;
+
+  double x = -log(1+z_p);
+
+  double hz2 = params->ocbh2 * pow(1+z_p, 3) + params->orh2 * pow(1+z_p, 4) + params->odeh2 + params->okh2 * pow(1+z, 2);
+  double omz = params->ocbh2 * pow(1+z_p, 3) / hz2;
+  double orz = params->orh2  * pow(1+z_p, 4) / hz2;
+
+  double pn1 = -(4.0 - 3.0/2.0 * omz - 2.0 * orz);
+  double qn1 = -(3.0* (1.0 - omz) - 2.0 * orz);
+  double rn1 = omz / params->ocbh2 * h * h * exp(-x) * pow(chiB, 2);
+
+  double disc = 1.0 - dlna * pn1 - dlna * dlna * qn1;
+  double y_new  = (dlna * (*dy) + (1.0 - dlna * pn1) * (*y)) / disc;
+  double dy_new = ((*dy)  + dlna * rn1 + dlna * qn1 * (*y)) / disc;
+
+  *y  = y_new;
+  *dy = dy_new;
+
+}

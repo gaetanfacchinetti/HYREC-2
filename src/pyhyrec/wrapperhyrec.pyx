@@ -48,6 +48,7 @@ cdef extern from "src/history.h":
     double hyrec_xe(double z, HYREC_DATA * data)
     double hyrec_Tm(double z, HYREC_DATA * data)
     double hyrec_chiB(double z, HYREC_DATA * data)
+    double hyrec_MB(double z, HYREC_DATA * data)
     double compute_Hubble_rate(double z, INPUT_COSMOPARAMS cosmo, INPUT_INJ_PARAMS inj_params)
     
 
@@ -82,18 +83,21 @@ def call_run_hyrec(INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params, 
     z_array      = np.linspace(np.max([zmin, 1.0]), zmax, nz)
     xe_array     = np.zeros(nz)
     Tm_array     = np.zeros(nz)
-    chiB_array = np.zeros(nz)
+    chiB_array   = np.zeros(nz)
+    MB_array     = np.zeros(nz)
     
     # Transfering the data from the C code to the numpy arrays
     for iz, z in enumerate(z_array):
         xe_array[iz]   = hyrec_xe(z, data)
         Tm_array[iz]   = hyrec_Tm(z, data)
         chiB_array[iz] = hyrec_chiB(z, data)
+        MB_array[iz]   = hyrec_MB(z, data)
+
     
     # Free the memory at the end
     hyrec_free(data)
-    
-    return z_array, xe_array, Tm_array, chiB_array
+
+    return {'z': z_array, 'xe' : xe_array, 'Tm' : Tm_array, 'chiB' : chiB_array, 'MB' : MB_array}
 
 
 def compute_hubble_rate(double z, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params):
