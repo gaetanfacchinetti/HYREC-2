@@ -114,7 +114,7 @@ class HyRecInjectionParams(HyRecParamsDefault):
         "fpbh" : 0.0,
         "sB_PMF" : 0.0,
         "nB_PMF" : -2.0,
-        "sigmaA_PMF" : 31.78,
+        "sigmaA_PMF" : 45.0,
         "smooth_z_PMF" : 0.0,
         "heat_channel_PMF" : 0}
         

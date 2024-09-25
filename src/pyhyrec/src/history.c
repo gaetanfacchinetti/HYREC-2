@@ -846,8 +846,8 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
 
     chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1])*DLNA;
     
-    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo, H / 1e+7 / _MPC_TO_CM_); // H is in s -> convert it to get h
-    MB[iz]  = c_y_MB / (1+z) / pow(H, 2);
+    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+    MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
     //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
 
     Tm_output[iz] = rec_Tmss(z, xe_output[iz], cosmo, *dEdtdV_heat, H);
@@ -890,8 +890,8 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
 
       chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1]) * DLNA;
       
-      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo, H / 1e+7 / _MPC_TO_CM_); // H is in s -> convert it to get h
-      MB[iz]  = c_y_MB / (1+z) / pow(H, 2);
+      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+      MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
       //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
     }
 
@@ -911,8 +911,8 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
 
       chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1]) * DLNA;
 
-      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo, H / 1e+7 * _MPC_TO_CM_); // H is in s -> convert it to get h
-      MB[iz]  = c_y_MB / (1+z) / pow(H, 2);
+      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+      MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
       //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
       
       update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, chiB[iz], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
@@ -960,8 +960,9 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
 
     chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1])*DLNA;
 
-    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo, H / 1e+7 / _MPC_TO_CM_); // H is in s -> convert it to get h
-    MB[iz]  = c_y_MB / (1+z) / pow(H, 2);
+    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+    MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
+    
     //printf("iz=%ld, z=%e, H = %e, chiB here is %e (with decay_rate_PMF/H)=%e, | %e \n", iz, z, H, chiB[iz], *decay_rate_PMF/H, -2.0*(nB+3.0)/(nB+5.0)/log(pow(1+0.05, -2.0/3.0) * (1+z)/1089) * chiB[iz] * chiB[iz]);
     
     update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, chiB[iz], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);

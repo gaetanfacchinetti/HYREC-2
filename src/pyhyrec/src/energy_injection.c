@@ -503,8 +503,13 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 }
 
 
-void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params, double h)
+void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params)
 {
+
+  /*
+    x = ln(a) = -ln(1+z)
+    y = M/a*H0^2
+  */ 
   if (z >= 1080)
     return;
 
@@ -515,6 +520,7 @@ void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double c
 
   double x = -log(1+z_p);
 
+  double h   = params->h;
   double hz2 = params->ocbh2 * pow(1+z_p, 3) + params->orh2 * pow(1+z_p, 4) + params->odeh2 + params->okh2 * pow(1+z, 2);
   double omz = params->ocbh2 * pow(1+z_p, 3) / hz2;
   double orz = params->orh2  * pow(1+z_p, 4) / hz2;

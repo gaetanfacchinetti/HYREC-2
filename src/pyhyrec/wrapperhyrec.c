@@ -7574,7 +7574,8 @@ static PyObject *__pyx_pf_7pyhyrec_12wrapperhyrec_2call_run_hyrec(CYTHON_UNUSED 
  * 
  * 
  */
-    __pyx_t_6 = PyFloat_FromDouble(hyrec_MB(__pyx_v_z, __pyx_v_data)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_14 = __pyx_PyFloat_AsDouble(__pyx_v_z); if (unlikely((__pyx_t_14 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_6 = PyFloat_FromDouble(hyrec_MB(__pyx_t_14, __pyx_v_data)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 94, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (unlikely((PyObject_SetItem(__pyx_v_MB_array, __pyx_v_iz, __pyx_t_6) < 0))) __PYX_ERR(0, 94, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
