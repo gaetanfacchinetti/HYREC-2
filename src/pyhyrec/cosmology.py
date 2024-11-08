@@ -113,7 +113,7 @@ def optical_depth(z, xe, cosmo = HyRecCosmoParams()):
 
     # fast trapezoid integration scheme
     integrand = xe * (1+z)**2 / e_z
-    trapz = (integrand[1:] + integrand[:-1])/2.0
+    trapz = (integrand[:-1] + integrand[1:])/2.0
     dz = np.diff(z)
 
     res = np.zeros(len(z))
@@ -126,16 +126,31 @@ def optical_depth(z, xe, cosmo = HyRecCosmoParams()):
 
 def visibility_function(z, xe, cosmo):
     pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) / (cosmo.h * 3.2407792896393e-18)
-    return pref * (1 + z)**2 / hubble_factor(z) * xe * np.exp(-optical_depth(z, xe, cosmo))
+    return pref * (1 + z)**4 / hubble_factor(z) * xe * np.exp(-optical_depth(z, xe, cosmo))
+
+def compute_visibility_function(cosmo = HyRecCosmoParams()):
+    res = call_run_hyrec(cosmo(), HyRecInjectionParams()(), zmax = 8000, zmin = 100, nz = 40000)
+    return {'z' : res['z'], 'g' : visibility_function(res['z'], res['xe'], cosmo)}
+
+def integral_visibility_function(cosmo = HyRecCosmoParams()):
+    res = compute_visibility_function(cosmo)
+    # fast trapezoid integration scheme
+    integrand = res['g']/((1+res['z'])**2)
+    trapz = (integrand[:-1] + integrand[1:])/2.0
+    dz = np.diff(res['z'])
+    return np.sum(trapz*dz, axis=-1)
 
 def z_rec(z, xe, cosmo):
     vis = visibility_function(z, xe, cosmo)
     return z[np.argmax(vis)]
 
 def compute_z_rec(cosmo = HyRecCosmoParams()):
-    z, xe, _ = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)
-    return z_rec(z, xe, cosmo)
-    
+    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)
+    return z_rec(res['z'], res['xe'], cosmo)
+
+
+
+
 def acoustic_damping_scale(z, xe, cosmo):
     
     # get the value of the recombination redshift

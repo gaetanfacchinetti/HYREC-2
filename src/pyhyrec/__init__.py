@@ -14,6 +14,7 @@ from .cosmology import (
     hubble_factor, 
     z_rec, 
     visibility_function, 
+    compute_visibility_function,
     optical_depth, 
     compute_z_rec, 
     acoustic_damping_scale, 
