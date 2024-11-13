@@ -36,6 +36,7 @@ cdef extern from "src/history.h":
         double mnu1, mnu2, mnu3                          #/* neutrino masses */
         double YHe                                       #/* Helium fraction */
         double fsR, meR                                  #/* fine-structure constant alpha/alpha(today) and me/me(today) (Added April 2012)*/
+        double zrec
 
     ctypedef struct HYREC_DATA:
         int error
@@ -137,7 +138,7 @@ def init_INPUT_COSMOPARAMS(double h, double T0,
         double Omega_b, double Omega_cb, double Omega_k, 
         double w0, double wa, double Neff, double Nmnu,
         double mnu1, double mnu2, double mnu3,
-        double YHe, double fsR, double meR):
+        double YHe, double fsR, double meR, double zrec):
 
     cdef INPUT_COSMOPARAMS cosmo
 
@@ -148,6 +149,7 @@ def init_INPUT_COSMOPARAMS(double h, double T0,
     cosmo.Omega_k = Omega_k
     cosmo.w0 = w0
     cosmo.wa = wa
+    cosmo.zrec = zrec
     cosmo.Neff = Neff
     cosmo.Nmnu = Nmnu
     cosmo.mnu1 = mnu1

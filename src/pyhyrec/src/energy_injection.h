@@ -27,6 +27,7 @@ typedef struct {
   double mnu1, mnu2, mnu3;             
   double YHe;
   double fsR, meR;
+  double zrec;
 } INPUT_COSMOPARAMS;
 
 typedef struct {
@@ -90,6 +91,7 @@ typedef struct {
   double YHe;                                       /* Helium fraction */
   double fsR, meR;                                  /* fine-structure constant alpha/alpha(today)
                                                        and me/me(today) (Added April 2012)*/
+  double zrec;
   double dlna, nz;
 
   INJ_PARAMS *inj_params;                           /* Structure containing all Energy-injection parameters */
@@ -101,8 +103,8 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
 		       double nH, double xH, double H, double chiB, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
            double *dEdtdV_ion, double *dEdtdV_exclya, double *dEdtdV_heat, double *decay_rate_PMF);
 double decay_rate_pmf_turbulences(double z, double tdti, double nB); /* decay rate of PMF turbulences*/
-double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double smooth_z);
-double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double smooth_z);
+double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double zi, double smooth_z);
+double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double zi, double smooth_z);
 double compute_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
 double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params);
 void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params);

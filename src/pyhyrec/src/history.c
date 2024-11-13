@@ -61,12 +61,12 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->h  = cosmo_params.h;
   param->T0 = cosmo_params.T0;
 
-  Omega_b   = cosmo_params.Omega_b;
-  Omega_cb  = cosmo_params.Omega_cb;
-  Omega_k   = cosmo_params.Omega_k;
-  param->w0 = cosmo_params.w0;
-  param->wa = cosmo_params.wa;
-
+  Omega_b     = cosmo_params.Omega_b;
+  Omega_cb    = cosmo_params.Omega_cb;
+  Omega_k     = cosmo_params.Omega_k;
+  param->w0   = cosmo_params.w0;
+  param->wa   = cosmo_params.wa;
+  param->zrec = cosmo_params.zrec;
 
   param->mnu[0] = cosmo_params.mnu1;
   param->mnu[1] = cosmo_params.mnu2;
@@ -115,6 +115,7 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->inj_params->nB_PMF           = injection_params.nB_PMF;
   param->inj_params->sigmaA_PMF       = injection_params.sigmaA_PMF;
   param->inj_params->smooth_z_PMF     = injection_params.smooth_z_PMF;
+  param->inj_params->heat_channel_PMF = injection_params.heat_channel_PMF;
   param->inj_params->heat_channel_PMF = injection_params.heat_channel_PMF;
 
   param->inj_params->odmh2 = param->ocbh2 - param->obh2;

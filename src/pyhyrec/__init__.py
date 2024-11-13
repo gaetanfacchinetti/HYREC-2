@@ -16,6 +16,7 @@ from .cosmology import (
     visibility_function, 
     compute_visibility_function,
     optical_depth, 
+    compute_optical_depth,
     compute_z_rec, 
     acoustic_damping_scale, 
     n_baryons, 
@@ -23,4 +24,5 @@ from .cosmology import (
     rho_radiation, 
     rho_gamma,
     compute_acoustic_damping_scale,
+    compute_sigma_A,
     )

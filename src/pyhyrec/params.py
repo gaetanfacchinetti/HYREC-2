@@ -70,8 +70,8 @@ class HyRecCosmoParams(HyRecParamsDefault):
         self._defaults = {
         "h" : 6.735837e-01, 
         "T0" : 2.7255,
-        "Omega_b" : 0.0494142797907188,
-        "Omega_cb" : 0.31242079216478097,
+        "Omega_b" : 0.04897,
+        "Omega_cb" : 0.3111,
         "Omega_k" : 0.0,
         "w0" : -1.0,
         "wa" : 0.0,
@@ -82,7 +82,8 @@ class HyRecCosmoParams(HyRecParamsDefault):
         "mnu3" : 0.0, 
         "YHe"  : 0.245,
         "fsR"  : 1.0,
-        "meR"  : 1.0,}
+        "meR"  : 1.0,
+        "zrec": 1088.0,}
 
         super().__init__(new_params)
 

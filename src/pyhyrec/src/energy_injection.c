@@ -122,10 +122,8 @@ double dEdtdV_heat_turbulences_pmf_old(double z, double H, double obh2, double o
 }
 
 
-double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double smooth_z)
+double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double zi, double smooth_z)
 {
-
-  double zi = 1088;
 
   if (z > zi)
     return 0;
@@ -206,10 +204,9 @@ double dEdtdV_heat_ambipolar_pmf_old(double z, double xe, double Tgas, double ob
 }
 
 
-double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double smooth_z)
+double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double zi, double smooth_z)
 {
-    double zi = 1088;
-  
+ 
     double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
     double rho_b    = obh2 * _RHO_CRITICAL_; // in eV / clight^2 / cm^3
     double eta_AD = (1.0-xe) / xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
@@ -222,7 +219,7 @@ double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double ch
       rho_n = rho_HI + rho_HeI and rho_+ = rho_HII + rho_HeII (negleting second ionization)
     */
     
-    double rhoA   = sigmaA * sigmaA / (2.0 * _MU_0_); // in 1  eV / cm / s^2 / clight^2
+    double rhoA  = sigmaA * sigmaA / (2.0 * _MU_0_); // in 1  eV / cm / s^2 / clight^2
     
     // result
     double res = pow(4.0 * M_PI, 2) * rhoA * eta_AD * fit_Lorentz_force_average(nB + 3.0) * pow(chiB, 4) * pow(_MPC_TO_CM_, -2); // in 1/s
@@ -258,7 +255,7 @@ double compute_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, 
     double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
     double ocbh2 = cosmo_params.Omega_cb * cosmo_params.h * cosmo_params.h;
 
-    return decay_rate_heat_turbulences_pmf(z, H, chiB, obh2, ocbh2, sigmaA, sB, nB, inj_params.smooth_z_PMF);
+    return decay_rate_heat_turbulences_pmf(z, H, chiB, obh2, ocbh2, sigmaA, sB, nB, cosmo_params.zrec, inj_params.smooth_z_PMF);
   }
 
   return 0;
@@ -279,7 +276,7 @@ double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, d
     double nB = inj_params.nB_PMF;
     double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
     
-    return decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, obh2, sigmaA, sB, nB, inj_params.smooth_z_PMF);
+    return decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, obh2, sigmaA, sB, nB, cosmo_params.zrec, inj_params.smooth_z_PMF);
   }
 
   return 0;
@@ -489,11 +486,11 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
     rho_B_t = S_B * S_B / (2.0 * _MU_0_) / pow(_C_LIGHT_, 2);   // in  eV / cm^3
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
-      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_turbulences_pmf(z_out, H, chiB, params->obh2, params->ocbh2, sigmaA, sB, nB, params->inj_params->smooth_z_PMF);
+      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_turbulences_pmf(z_out, H, chiB, params->obh2, params->ocbh2, sigmaA, sB, nB, params->zrec, params->inj_params->smooth_z_PMF);
       // double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double smooth_z
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 2)
-      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_ambipolar_pmf(z_out, xe, Tgas, chiB, params->obh2, sigmaA, sB, nB, params->inj_params->smooth_z_PMF);
+      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_ambipolar_pmf(z_out, xe, Tgas, chiB, params->obh2, sigmaA, sB, nB, params->zrec, params->inj_params->smooth_z_PMF);
     
     //printf("we are here : %e %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *decay_rate_PMF, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF), pmf_en);
 

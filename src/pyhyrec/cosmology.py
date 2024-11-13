@@ -21,7 +21,7 @@ _MASS_PROTON_   = 0.938272e+9 # in eV
 _MASS_HELIUM_   = 3.728400e+9 # in eV
 _SIGMA_THOMSON_ = 6.6524616e-29 # in m^2
 _C_LIGHT_       = 299792458 # in m / s
-
+_MU_0_          = 4 * np.pi * 1e+19 / _KG_TO_EV_ # in m * nG^2 * s^2 / eV
 
 def hubble_rate(z, cosmo = HyRecCosmoParams()):
     """
@@ -120,42 +120,54 @@ def optical_depth(z, xe, cosmo = HyRecCosmoParams()):
     for i in range(len(z)-1):
         res[i+1] = res[i] + trapz[i] * dz[i]
 
-    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) / (cosmo.h * 3.2407792896393e-18)
+    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) / (100 * cosmo.h * _KM_TO_MPC_)
     return pref * res
 
 
-def visibility_function(z, xe, cosmo):
-    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) / (cosmo.h * 3.2407792896393e-18)
-    return pref * (1 + z)**4 / hubble_factor(z) * xe * np.exp(-optical_depth(z, xe, cosmo))
+def compute_optical_depth(cosmo = HyRecCosmoParams()):
+    res = call_run_hyrec(cosmo(), HyRecInjectionParams()(), zmax = 8000, zmin = 1, nz = 40000)
+    return {'z' : res['z'], 'tau' : optical_depth(res['z'], res['xe'], cosmo)}
 
-def compute_visibility_function(cosmo = HyRecCosmoParams()):
+def visibility_function(z, xe, cosmo, conformal: bool = False):
+    """
+    dtau/dt * exp(-tau) with t the cosmic (default) or conformal time in s^{-1}
+    """
+    conv = (1+z) if conformal is False else 1.0
+    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) * conv
+    return pref * (1 + z)**2 * xe * np.exp(-optical_depth(z, xe, cosmo))
+
+def compute_visibility_function(cosmo = HyRecCosmoParams(), conformal: bool = False):
     res = call_run_hyrec(cosmo(), HyRecInjectionParams()(), zmax = 8000, zmin = 100, nz = 40000)
-    return {'z' : res['z'], 'g' : visibility_function(res['z'], res['xe'], cosmo)}
+    return {'z' : res['z'], 'g' : visibility_function(res['z'], res['xe'], cosmo, conformal)}
 
-def integral_visibility_function(cosmo = HyRecCosmoParams()):
-    res = compute_visibility_function(cosmo)
+def integral_visibility_function(cosmo = HyRecCosmoParams(), conformal: bool = False ):
+    res = compute_visibility_function(cosmo, conformal)
+    conv = (1+res['z']) if conformal is False else 1.0
+    dtdz = 1.0 / hubble_rate(res['z']) / conv
     # fast trapezoid integration scheme
-    integrand = res['g']/((1+res['z'])**2)
+    integrand = res['g'] * dtdz
     trapz = (integrand[:-1] + integrand[1:])/2.0
     dz = np.diff(res['z'])
     return np.sum(trapz*dz, axis=-1)
 
-def z_rec(z, xe, cosmo):
-    vis = visibility_function(z, xe, cosmo)
+def z_rec(z, xe, cosmo, conformal: bool = False):
+    vis = visibility_function(z, xe, cosmo, conformal)
     return z[np.argmax(vis)]
 
-def compute_z_rec(cosmo = HyRecCosmoParams()):
+def compute_z_rec(cosmo = HyRecCosmoParams(), conformal: bool = False):
     res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)
-    return z_rec(res['z'], res['xe'], cosmo)
-
+    return z_rec(res['z'], res['xe'], cosmo, conformal)
 
 
 
 def acoustic_damping_scale(z, xe, cosmo):
+    """
+    acoustic damping scale in 1/Mpc
+    """
     
     # get the value of the recombination redshift
-    z_reco = 1088 # fix the value of the recombination redshift by hand 
-    #z_reco = z_rec(z, xe, cosmo) # use this line to consistently compute it (may be wrong, to be checked)
+    #z_reco = 1088 # fix the value of the recombination redshift by hand 
+    z_reco = z_rec(z, xe, cosmo, False) # use this line to consistently compute it (may be wrong, to be checked)
     
     iz_min = np.argmin(np.abs(z - z_reco)) 
     
@@ -184,7 +196,6 @@ def compute_acoustic_damping_scale(cosmo = HyRecCosmoParams()):
     res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 10000, zmin = 500, nz = 40000)
     return acoustic_damping_scale(res['z'], res['xe'], cosmo)
 
-
 def t_vs_z(z:float, cosmo = HyRecCosmoParams()):
     """
     Time (in s) since the "big bang"
@@ -192,3 +203,19 @@ def t_vs_z(z:float, cosmo = HyRecCosmoParams()):
     lna = np.linspace(0, 1/(1+z), 500)
     e_a = hubble_factor(np.exp(-lna) - 1, cosmo)
     return integrate.trapezoid(1.0/e_a, lna) / (100 * cosmo.h * 1e+3 * _M_TO_MPC_)
+
+
+def compute_sigma_A(cosmo = HyRecCosmoParams()):
+    
+    """
+        compute_sigma_A(HYREC cosmology)
+
+    give the Alfven scale sigma_A from HYREC (is installed, otherwise returns None)
+    """
+
+    # compute the typical Alfven magnetic scale sigma_A
+    vA_sigmaB0 = 1./np.sqrt(rho_gamma(cosmo) * _MU_0_ * _C_LIGHT_**2 * 4/3) # in nG^{-1}
+    k_gamma = compute_acoustic_damping_scale(cosmo) # in Mpc^{-1}, this makes a first call to HYREC C-code without exotic energy injection
+    sigma_A = k_gamma/vA_sigmaB0/(2.0*np.pi) # in nG
+    
+    return sigma_A
