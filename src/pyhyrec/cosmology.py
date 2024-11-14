@@ -77,7 +77,10 @@ def rho_baryons(cosmo = HyRecCosmoParams()):
     return 2.7754e+11 * cosmo.Omega_b * cosmo.h**2 * _MSUN_TO_KG_ * _KG_TO_EV_ / _MPC_TO_M_**3 # in eV / m^3
 
 def n_baryons(cosmo = HyRecCosmoParams()):
-    return rho_baryons(cosmo) / _MASS_PROTON_ / (1 + cosmo.YHe / 4 * (_MASS_HELIUM_/_MASS_HYDROGEN_ -1)) # in 1/m^3
+    return rho_baryons(cosmo) / _MASS_HYDROGEN_ / (1 + cosmo.YHe / 4 * (_MASS_HELIUM_/_MASS_HYDROGEN_ -1)) # in 1/m^3
+
+def n_hydrogen(cosmo = HyRecCosmoParams()):
+    return n_baryons(cosmo) * (1.0-cosmo.YHe/4.0)
 
 def rho_gamma(cosmo = HyRecCosmoParams()):
     omega_gamma = 4.48162687719e-7 * cosmo.T0**4 / cosmo.h**2
@@ -111,16 +114,18 @@ def optical_depth(z, xe, cosmo = HyRecCosmoParams()):
     
     e_z = hubble_factor(z)
 
+    # NOTE THAT xe = ne/nH
+
     # fast trapezoid integration scheme
-    integrand = xe * (1+z)**2 / e_z
+    integrand = xe * (1+z)**3 / e_z
     trapz = (integrand[:-1] + integrand[1:])/2.0
-    dz = np.diff(z)
+    dz = np.diff(np.log(1+z))
 
     res = np.zeros(len(z))
     for i in range(len(z)-1):
         res[i+1] = res[i] + trapz[i] * dz[i]
 
-    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) / (100 * cosmo.h * _KM_TO_MPC_)
+    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_hydrogen(cosmo) / (100 * cosmo.h * _KM_TO_MPC_)
     return pref * res
 
 
@@ -133,7 +138,7 @@ def visibility_function(z, xe, cosmo, conformal: bool = False):
     dtau/dt * exp(-tau) with t the cosmic (default) or conformal time in s^{-1}
     """
     conv = (1+z) if conformal is False else 1.0
-    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_baryons(cosmo) * conv
+    pref = _C_LIGHT_ * _SIGMA_THOMSON_ * n_hydrogen(cosmo) * conv
     return pref * (1 + z)**2 * xe * np.exp(-optical_depth(z, xe, cosmo))
 
 def compute_visibility_function(cosmo = HyRecCosmoParams(), conformal: bool = False):
@@ -168,7 +173,7 @@ def acoustic_damping_scale(z, xe, cosmo):
     # get the value of the recombination redshift
     #z_reco = 1088 # fix the value of the recombination redshift by hand 
     z_reco = z_rec(z, xe, cosmo, False) # use this line to consistently compute it (may be wrong, to be checked)
-    
+
     iz_min = np.argmin(np.abs(z - z_reco)) 
     
     # restrict the redshift and free electron fraction 
@@ -182,18 +187,18 @@ def acoustic_damping_scale(z, xe, cosmo):
     r_arr = 3./4. * rho_b / rho_g
 
     # evaluate the Thomson scattering length
-    l_scatt = 1.0/(_SIGMA_THOMSON_ * xe_int * n_baryons(cosmo) * (1+z_int)**3 ) * _M_TO_MPC_ # in Mpc
+    l_scatt = 1.0/(_SIGMA_THOMSON_ * xe_int * n_hydrogen(cosmo) * (1+z_int)**3 ) * _M_TO_MPC_ # in Mpc
 
     # hubble rate in 1/Mpc
     h_z = hubble_rate(z_int) /_M_TO_MPC_ / _C_LIGHT_ # in 1/Mpc
 
     # damping length square
-    ld2 = integrate.trapezoid((1+z_int)/(1+ r_arr)/h_z * l_scatt * (16.0/15.0 + r_arr**2/(1+r_arr)), z_int)/6.0
+    ld2 = integrate.trapezoid((1+z_int)**2/(1+ r_arr)/h_z * l_scatt * (16.0/15.0 + r_arr**2/(1+r_arr)), np.log(z_int))/6.0
     
     return np.sqrt(1/ld2)
 
 def compute_acoustic_damping_scale(cosmo = HyRecCosmoParams()):
-    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 10000, zmin = 500, nz = 40000)
+    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 100000, zmin = 500, nz = 100000)
     return acoustic_damping_scale(res['z'], res['xe'], cosmo)
 
 def t_vs_z(z:float, cosmo = HyRecCosmoParams()):
