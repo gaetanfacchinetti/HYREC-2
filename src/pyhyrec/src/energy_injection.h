@@ -28,6 +28,7 @@ typedef struct {
   double YHe;
   double fsR, meR;
   double zrec;
+  double dlna;
 } INPUT_COSMOPARAMS;
 
 typedef struct {

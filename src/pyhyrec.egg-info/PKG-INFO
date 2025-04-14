@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: pyhyrec
 Version: 1.0.0
 Summary: A code for cosmological recombination history
@@ -694,6 +694,7 @@ Requires-Dist: cython
 Requires-Dist: numpy
 Requires-Dist: scipy>=1.13.0
 Provides-Extra: dev
+Dynamic: license-file
 
 # HYREC-2
 

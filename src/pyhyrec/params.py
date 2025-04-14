@@ -83,7 +83,8 @@ class HyRecCosmoParams(HyRecParamsDefault):
         "YHe"  : 0.245,
         "fsR"  : 1.0,
         "meR"  : 1.0,
-        "zrec": 1088.0,}
+        "zrec": 1088.0,
+        "dlna": -1.0}
 
         super().__init__(new_params)
 

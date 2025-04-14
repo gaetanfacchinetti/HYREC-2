@@ -113,7 +113,7 @@ double dEdtdV_heat_turbulences_pmf_old(double z, double H, double obh2, double o
 
   if (smooth_z > 0)
   {
-    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+    double smooth = (1.0-tanh((z - zi)/smooth_z)+2.0)/2.0; // smoothing the introduction of energy injection from PMF
     return en * decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth;
   }
   else
@@ -141,7 +141,7 @@ double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double o
 
   if (smooth_z > 0)
   {
-    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+    double smooth = (1.0-tanh((z - zi)/smooth_z + 2.0))/2.0; // smoothing the introduction of energy injection from PMF
     return res * smooth;
   }
   else
@@ -196,7 +196,7 @@ double dEdtdV_heat_ambipolar_pmf_old(double z, double xe, double Tgas, double ob
 
   if (smooth_z > 0)
   {
-    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+    double smooth = (1.0-tanh((z - zi)/smooth_z)+2.0)/2.0; // smoothing the introduction of energy injection from PMF
     return res * smooth;
   }
   else 
@@ -229,7 +229,7 @@ double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double ch
 
     if (smooth_z > 0)
     {
-      double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
+      double smooth = (1.0-tanh((z - zi)/smooth_z)+2.0)/2.0; // smoothing the introduction of energy injection from PMF
       return res * smooth;
     }
     else 

@@ -120,8 +120,14 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
 
   param->inj_params->odmh2 = param->ocbh2 - param->obh2;
 
-  if (MODEL == SWIFT) param->dlna = DLNA_SWIFT;
-  else param->dlna = DLNA_HYREC;
+  if (cosmo_params.dlna <= 0.0){
+    if (MODEL == SWIFT) param->dlna = DLNA_SWIFT;
+    else param->dlna = DLNA_HYREC;
+  }
+  else{
+    param->dlna = cosmo_params.dlna;
+  }
+ 
 }
 
 //void segfault_sigaction(int signal, siginfo_t *si, void *arg)

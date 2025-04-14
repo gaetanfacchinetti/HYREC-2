@@ -81,7 +81,7 @@
 #define NDIFF    80
 
 #define DLNA_HYREC   8.49e-5    /* Timestep for FULL mode. Maximum compatible with these tables is 8.49e-5 */
-//#define DLNA_HYREC   2.e-6    /* Timestep used in FULL mode for SWIFT correction function calculation*/
+//#define DLNA_HYREC   1.e-6       /* Timestep used in FULL mode for SWIFT correction function calculation*/
 #define DLNA_SWIFT   4.e-3      /* Timestep for any other mode.*/
 
 #define SIZE_ErrorM   2048

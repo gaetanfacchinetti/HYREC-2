@@ -10,7 +10,7 @@ src/pyhyrec/__main__.py
 src/pyhyrec/cosmology.py
 src/pyhyrec/params.py
 src/pyhyrec/wrapperhyrec.c
-src/pyhyrec/wrapperhyrec.cpython-311-x86_64-linux-gnu.so
+src/pyhyrec/wrapperhyrec.cpython-311-darwin.so
 src/pyhyrec/wrapperhyrec.pyx
 src/pyhyrec.egg-info/PKG-INFO
 src/pyhyrec.egg-info/SOURCES.txt
