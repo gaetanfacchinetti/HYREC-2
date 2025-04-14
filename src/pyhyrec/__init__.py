@@ -24,5 +24,8 @@ from .cosmology import (
     rho_radiation, 
     rho_gamma,
     compute_acoustic_damping_scale,
+    sigma_A,
     compute_sigma_A,
+    delta_z_rec,
+    compute_delta_z_rec,
     )

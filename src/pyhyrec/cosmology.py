@@ -163,6 +163,24 @@ def compute_z_rec(cosmo = HyRecCosmoParams(), conformal: bool = False):
     res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)
     return z_rec(res['z'], res['xe'], cosmo, conformal)
 
+def delta_z_rec(z, xe, cosmo=HyRecCosmoParams(), conformal: bool = False):
+    
+    g =  visibility_function(z, xe, cosmo, conformal)
+    max_g = np.max(g)
+    
+    i_rec = np.argmax(g)
+    
+    z_rec = z[np.argmax(g)]
+    z_0 = z[np.argmin(np.abs(g[:i_rec]/max_g - 0.5))]
+    z_1 = z[i_rec + np.argmin(np.abs(g[i_rec:]/max_g - 0.5))]
+
+    return z_1 - z_0, z_rec
+
+def compute_delta_z_rec(cosmo = HyRecCosmoParams(), conformal: bool = False):
+    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)
+    return delta_z_rec(res['z'], res['xe'], cosmo, conformal)
+    
+
 
 
 def acoustic_damping_scale(z, xe, cosmo):
@@ -193,7 +211,7 @@ def acoustic_damping_scale(z, xe, cosmo):
     h_z = hubble_rate(z_int) /_M_TO_MPC_ / _C_LIGHT_ # in 1/Mpc
 
     # damping length square
-    ld2 = integrate.trapezoid((1+z_int)**2/(1+ r_arr)/h_z * l_scatt * (16.0/15.0 + r_arr**2/(1+r_arr)), np.log(z_int))/6.0
+    ld2 = integrate.trapezoid((1+z_int)**2/(1+ r_arr)/h_z * l_scatt * (16.0/15.0 + r_arr**2/(1+r_arr)), np.log(1+z_int))/6.0
     
     return np.sqrt(1/ld2)
 
@@ -210,17 +228,20 @@ def t_vs_z(z:float, cosmo = HyRecCosmoParams()):
     return integrate.trapezoid(1.0/e_a, lna) / (100 * cosmo.h * 1e+3 * _M_TO_MPC_)
 
 
-def compute_sigma_A(cosmo = HyRecCosmoParams()):
-    
+def sigma_A(z, xe, cosmo = HyRecCosmoParams()):
     """
-        compute_sigma_A(HYREC cosmology)
+        sigma_A(HYREC cosmology)
 
     give the Alfven scale sigma_A from HYREC (is installed, otherwise returns None)
     """
 
     # compute the typical Alfven magnetic scale sigma_A
     vA_sigmaB0 = 1./np.sqrt(rho_gamma(cosmo) * _MU_0_ * _C_LIGHT_**2 * 4/3) # in nG^{-1}
-    k_gamma = compute_acoustic_damping_scale(cosmo) # in Mpc^{-1}, this makes a first call to HYREC C-code without exotic energy injection
+    k_gamma = acoustic_damping_scale(z, xe, cosmo) # in Mpc^{-1}, this makes a first call to HYREC C-code without exotic energy injection
     sigma_A = k_gamma/vA_sigmaB0/(2.0*np.pi) # in nG
     
     return sigma_A
+
+def compute_sigma_A(cosmo = HyRecCosmoParams()):
+    res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 100000, zmin = 500, nz = 100000)
+    return sigma_A(res['z'], res['xe'], cosmo)
