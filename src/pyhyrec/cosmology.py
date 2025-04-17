@@ -174,7 +174,7 @@ def delta_z_rec(z, xe, cosmo=HyRecCosmoParams(), conformal: bool = False):
     z_0 = z[np.argmin(np.abs(g[:i_rec]/max_g - 0.5))]
     z_1 = z[i_rec + np.argmin(np.abs(g[i_rec:]/max_g - 0.5))]
 
-    return z_1 - z_0, z_rec
+    return z_rec - z_0, z_rec, z_1 - z_rec
 
 def compute_delta_z_rec(cosmo = HyRecCosmoParams(), conformal: bool = False):
     res = call_run_hyrec(cosmo(),  HyRecInjectionParams()(), zmax = 8000, zmin = 500, nz = 40000)

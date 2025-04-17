@@ -62,7 +62,7 @@
 #define ALPHA_FILE  "Alpha_inf.dat"                 /* Effective recombination coefficients to 2s and 2p */
 #define RR_FILE     "R_inf.dat"                     /* Effective transfer rate R_{2p,2s} */
 #define TR_MIN 0.004                                /* Minimum Tr in eV */
-#define TR_MAX 0.4                                  /* Maximum Tr in eV */
+#define TR_MAX 0.4                                 /* Maximum Tr in eV */
 #define NTR    100                                  /* Number of Tr values */
 #define T_RATIO_MIN 0.1                             /* T_RATIO is min(Tm/Tr, Tr/Tm) */
 #define T_RATIO_MAX 1.0
