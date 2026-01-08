@@ -19,15 +19,15 @@ def test_default_output():
     cosmo = pyhy.HyRecCosmoParams()
     inj  = pyhy.HyRecInjectionParams()
 
-    _, xe, Tm = pyhy.call_run_hyrec(cosmo(), inj())
+    res = pyhy.call_run_hyrec(cosmo(), inj())
 
     data = np.loadtxt("./tests/output_xe.dat")
 
     xe_c = np.flip(data[:, 1])
     Tm_c = np.flip(data[:, 2])
 
-    assert all(abs(xe-xe_c)/xe_c < 1e-6) 
-    assert all(abs(Tm-Tm_c)/Tm_c < 1e-6) 
+    assert all(abs(res['xe']-xe_c)/xe_c < 1e-6) 
+    assert all(abs(res['Tm']-Tm_c)/Tm_c < 1e-6) 
 
 
 

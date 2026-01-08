@@ -62,7 +62,7 @@
 #define ALPHA_FILE  "Alpha_inf.dat"                 /* Effective recombination coefficients to 2s and 2p */
 #define RR_FILE     "R_inf.dat"                     /* Effective transfer rate R_{2p,2s} */
 #define TR_MIN 0.004                                /* Minimum Tr in eV */
-#define TR_MAX 0.4                                  /* Maximum Tr in eV */
+#define TR_MAX 0.4                                 /* Maximum Tr in eV */
 #define NTR    100                                  /* Number of Tr values */
 #define T_RATIO_MIN 0.1                             /* T_RATIO is min(Tm/Tr, Tr/Tm) */
 #define T_RATIO_MAX 1.0
@@ -81,7 +81,7 @@
 #define NDIFF    80
 
 #define DLNA_HYREC   8.49e-5    /* Timestep for FULL mode. Maximum compatible with these tables is 8.49e-5 */
-//#define DLNA_HYREC   2.e-6    /* Timestep used in FULL mode for SWIFT correction function calculation*/
+//#define DLNA_HYREC   1.e-6       /* Timestep used in FULL mode for SWIFT correction function calculation*/
 #define DLNA_SWIFT   4.e-3      /* Timestep for any other mode.*/
 
 #define SIZE_ErrorM   2048
@@ -144,6 +144,8 @@ typedef struct{
   long int Nz;
   double *xe_output;
   double *Tm_output;
+  double *chiB;
+  double *MB;
   int error;
   int quasi_eq;
   int loop_after_quasi;

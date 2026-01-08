@@ -83,8 +83,12 @@ double decay_rate_pmf_turbulences(double z, double tdti, double nB)
   if (z > zi)
     return 0;
 
-  double m = 2.0*(nB+3.0)/(nB + 5.0);
-  return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
+  double m = 2.0*(nB+3.0)/(nB+5.0);
+  double r = pow(1+tdti, -2.0/3.0);
+  //return 3.0*m/2.0 * pow(log(1+tdti), m)/pow(log(1+tdti) + 1.5 * log((1+zi)/(1+z)), m+1);
+  //return 3.0 * m / 2.0  / (log(1+tdti) + 1.5 * log((1+zi)/(1+z)));
+  return - m / log(r*(1+z)/(1+zi));
+  // ATTENTION NEED TO CHANGE HISTORY.C AND AMBIPOLAR TERM ACCORDINGLY
 }
 
 // Variance of the pmf power spectrum at the Jean's scale
@@ -98,21 +102,51 @@ double sigma_Jeans_pmf(double obh2, double ocbh2)
     - sigmaA (alfven variance) in nG
     - H in 1/s
 */
-double dEdtdV_heat_turbulences_pmf(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB, double smooth_z)
+double dEdtdV_heat_turbulences_pmf_old(double z, double H, double obh2, double ocbh2, double sigmaA, double sigmaB, double nB, double smooth_z)
 {
 
   double zi = 1088;
   
   double en =  1e-25 / (8.0 * M_PI) * 6.241509e+18 * pow(1+z, 4) * sigmaA * sigmaA * pow(sigmaB/sigmaA, 4.0/(5.0+nB)); // in units of eV / cm^3
   double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
-  
-  if (smooth_z > 0)
+  //double tdti = 0.05;
+
+  double res = en * decay_rate_pmf_turbulences(z, tdti, nB) * H;
+
+  if (smooth_z > 0.0)
   {
-    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
-    return en * decay_rate_pmf_turbulences(z, tdti, nB) * H * smooth;
+    double smooth = exp(- 25.0 * (z-zi + smooth_z)*( z- zi + smooth_z)/2.0/smooth_z/smooth_z);
+    return (z > zi-smooth_z) ? res * smooth : res;
   }
   else
-    return (z < zi) ? en * decay_rate_pmf_turbulences(z, tdti, nB) * H : 0.0;
+    return (z < zi) ? res : 0.0;
+
+}
+
+
+double decay_rate_heat_turbulences_pmf(double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double zi, double smooth_z)
+{
+
+  if (z > zi)
+    return 0.0;
+
+  // td ~ 1/(k_\gamma c) ~ ...
+  double tdti = sigma_Jeans_pmf(obh2, ocbh2) / sigmaA;
+  //double tdti = 0.05;
+
+  double m   = 2.0*(nB+3.0)/(nB+5.0);
+  double r   = pow(1+tdti, -2.0/3.0);
+  double res = - m / log(r*(1+z)/(1+zi)) * H * pow(chiB, 2);
+
+  //printf("z = %e, H = %e, chiB = %e, m=%e, r=%e, val=%e, decay/H=%e\n", z, H, chiB, m, r, - m / log(r*(1+z)/(1+zi)) * pow(chiB, 2), res/H);
+  
+  if (smooth_z > 0.0)
+  {
+    double smooth = exp(- 25.0 * (z-zi + smooth_z)*( z- zi + smooth_z)/2.0/smooth_z/smooth_z);
+    return (z > zi-smooth_z) ? res * smooth : res;
+  }
+  else
+    return (z < zi) ? res : 0.0;
 
 }
 
@@ -132,14 +166,14 @@ double fit_Lorentz_force_average(double x)
   - sigma_B : \sigma_{B, 0} (in nG),  standard deviation of the PMF spectrum on 1 Mpc scale today
   - nB      : power index of the PMF spectrum
 */
-double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z)
+double dEdtdV_heat_ambipolar_pmf_old(double z, double xe, double Tgas, double obh2, double sigmaA, double sigmaB, double nB, double smooth_z)
 {
 
   double zi = 1088;
   
   double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
   double rho_b    = obh2 * _RHO_CRITICAL_ * pow(1+z, 3); // in eV / clight^2 / cm^3
-  double eta_AD = (1.0-xe)/xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
+  double eta_AD = (1.0-xe) / xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
   
   /* 
     Note that, assuming Helium ionization history similar to Hydrogen ionization history,
@@ -150,21 +184,57 @@ double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, 
    */
   
   // prefactor sigma(k_A)^4 kA^2 in convinient units
-  double sA4kA2 = 1.0 / _MPC_TO_CM_ / _MPC_TO_CM_ * pow(sigmaB / sigmaA, 4.0/(5.0+nB)) * pow(sigmaA, 4) * 4 * M_PI * M_PI; // in nG^4 / cm^2
+  double sA4kA2 = 1.0 / _MPC_TO_CM_ / _MPC_TO_CM_ * pow(sigmaB / sigmaA, 4.0/(5.0+nB)) * pow(sigmaA, 4) * 4.0 * M_PI * M_PI; // in nG^4 / cm^2
 
   // result
-  double res =  sA4kA2 * pow(1+z, 10) * eta_AD / _MU_0_ / _MU_0_ * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
+  double res = sA4kA2 * pow(1+z, 10) * eta_AD / _MU_0_ / _MU_0_ * fit_Lorentz_force_average(nB + 3.0); // in eV / s^3 / cm / clight^2 
   
   // result in the correct output units (devide by speed of light factors)
   res = res / pow(_C_LIGHT_, 2); // in eV / cm^3 / s 
 
-  if (smooth_z > 0)
+  double eVc2_to_g = 1.7826619216278975e-33;
+  // printf("HYREC: z=%e, xe=%e, Tgas=%e, obh2=%e, sigmaA=%e, sigmaB=%e, nB=%e, rhob=%e, eta_AD=%e, sA4kA2=%e\n", z, xe, Tgas, obh2, sigmaA, sigmaB, nB, rho_b * eVc2_to_g, eta_AD / eVc2_to_g, sA4kA2);
+
+  if (smooth_z > 0.0)
   {
-    double smooth = (1.0-tanh((z - zi)/smooth_z))/2.0; // smoothing the introduction of energy injection from PMF
-    return res * smooth;
+    double smooth = exp(- 25.0 * (z-zi + smooth_z)*( z- zi + smooth_z)/2.0/smooth_z/smooth_z);
+    return (z > zi-smooth_z) ? res * smooth : res;
   }
   else 
     return (z < zi) ? res : 0.0;
+}
+
+
+double decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, double obh2, double sigmaA, double sB, double nB, double zi, double smooth_z)
+{
+ 
+    double gamma_AD = 6.49e-10 * pow(Tgas, 0.375) / (2.0 * mH); // in cm^3 * clight^2 / s / eV
+    double rho_b    = obh2 * _RHO_CRITICAL_; // in eV / clight^2 / cm^3
+    double eta_AD = (1.0-xe) / xe / rho_b / rho_b / gamma_AD; // in s * clight^2 / eV * cm^3  
+    
+    /* 
+      Note that, assuming Helium ionization history similar to Hydrogen ionization history,
+      the factor (1-xe)/xe above should become (1-3/4*YHe)/(1-YHe) ? with YHe = rho_He/rho_b
+      and if indeed xe = ne/nH where nH is the total number of hydrogen (neutral and excited),
+      that is nH = nHI + nHII. This factor is exaclty equal to rho_n / rho_+ with
+      rho_n = rho_HI + rho_HeI and rho_+ = rho_HII + rho_HeII (negleting second ionization)
+    */
+    
+    double rhoA  = sigmaA * sigmaA / (2.0 * _MU_0_); // in 1  eV / cm / s^2 / clight^2
+    
+    // result
+    double res = pow(4.0 * M_PI, 2) * rhoA * eta_AD * fit_Lorentz_force_average(nB + 3.0) * pow(chiB, 4) * pow(_MPC_TO_CM_, -2); // in 1/s
+    
+    // result in the correct output units (devide by speed of light factors)
+    // res = res / pow(_C_LIGHT_, 2); // in eV / cm^3 / s 
+
+    if (smooth_z > 0.0)
+    {
+      double smooth = exp(- 25.0 * (z-zi + smooth_z)*( z- zi + smooth_z)/2.0/smooth_z/smooth_z);
+      return (z > zi-smooth_z) ? res * smooth : res;
+    }
+    else 
+      return (z < zi) ? res : 0.0;
 }
 
 
@@ -174,19 +244,19 @@ double dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, double obh2, 
 // Functions to call from the python wrapper
 
 
-double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+double compute_decay_rate_heat_turbulences_pmf(double z, double H, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
 {
 
-  double sigmaB = inj_params.sigmaB_PMF;
+  double sB = inj_params.sB_PMF;
 
-  if (sigmaB > 0)
+  if (sB > 0)
   {
     double sigmaA = inj_params.sigmaA_PMF;
     double nB = inj_params.nB_PMF;
     double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
     double ocbh2 = cosmo_params.Omega_cb * cosmo_params.h * cosmo_params.h;
 
-    return dEdtdV_heat_turbulences_pmf(z, H, obh2, ocbh2, sigmaA, sigmaB, nB, inj_params.smooth_z_PMF);
+    return decay_rate_heat_turbulences_pmf(z, H, chiB, obh2, ocbh2, sigmaA, sB, nB, cosmo_params.zrec, inj_params.smooth_z_PMF);
   }
 
   return 0;
@@ -196,18 +266,18 @@ double compute_dEdtdV_heat_turbulences_pmf(double z, double H, INPUT_COSMOPARAMS
 
 
 
-double compute_dEdtdV_heat_ambipolar_pmf(double z, double xe, double Tgas, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
+double compute_decay_rate_heat_ambipolar_pmf(double z, double xe, double Tgas, double chiB, INPUT_COSMOPARAMS cosmo_params, INPUT_INJ_PARAMS inj_params)
 {
 
-  double sigmaB = inj_params.sigmaB_PMF;
+  double sB = inj_params.sB_PMF;
 
-  if (sigmaB > 0)
+  if (sB > 0)
   {
     double sigmaA = inj_params.sigmaA_PMF;
     double nB = inj_params.nB_PMF;
     double obh2 = cosmo_params.Omega_b * cosmo_params.h * cosmo_params.h;
     
-    return dEdtdV_heat_ambipolar_pmf(z, xe, Tgas, obh2, sigmaA, sigmaB, nB, inj_params.smooth_z_PMF);
+    return decay_rate_heat_ambipolar_pmf(z, xe, Tgas, chiB, obh2, sigmaA, sB, nB, cosmo_params.zrec, inj_params.smooth_z_PMF);
   }
 
   return 0;
@@ -376,8 +446,8 @@ Essentially use a very simple ODE solution
 **********************************************************************************/
 
 void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
-		       double nH, double xH, double H, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
-           double *ion, double *exclya, double *dEdtdV_heat) {
+		       double nH, double xH, double H, double chiB, REC_COSMOPARAMS *params, double *dEdtdV_dep, 
+           double *ion, double *exclya, double *dEdtdV_heat, double *decay_rate_PMF) {
 
   // Injected energy via particle photons and electrons cascades
   double inj  = dEdtdV_inj(z_out, xe, Tgas, params->inj_params);
@@ -402,21 +472,66 @@ void update_dEdtdV_dep(double z_out, double dlna, double xe, double Tgas,
   *dEdtdV_heat = *dEdtdV_dep * chi_heat(xe);
 
   // add the primordial magnetic field contribution
-  double sigmaB = params->inj_params->sigmaB_PMF;
+  // accounting for the decrease of B
+  double sigmaA = params->inj_params->sigmaA_PMF;
+  double nB  = params->inj_params->nB_PMF;
+  double sB  = params->inj_params->sB_PMF;
+  double S_B = sigmaA * pow(sB/sigmaA, 2.0/(5.0+nB));
+  double rho_B_t = 0; 
 
-  if (sigmaB > 0)
+  *decay_rate_PMF = 0.0;
+
+  if (params->inj_params->sB_PMF > 0)
   {
-    double sigmaA = params->inj_params->sigmaA_PMF;
-    double nB = params->inj_params->nB_PMF;
+
+    rho_B_t = S_B * S_B / (2.0 * _MU_0_) / pow(_C_LIGHT_, 2);   // in  eV / cm^3
 
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 1)
-      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
-    
+      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_turbulences_pmf(z_out, H, chiB, params->obh2, params->ocbh2, sigmaA, sB, nB, params->zrec, params->inj_params->smooth_z_PMF);
+      // double z, double H, double chiB, double obh2, double ocbh2, double sigmaA, double sB, double nB, double smooth_z
+
     if (params->inj_params->heat_channel_PMF == 0 || params->inj_params->heat_channel_PMF == 2)
-      *dEdtdV_heat = *dEdtdV_heat + dEdtdV_heat_ambipolar_pmf(z_out, xe, Tgas, params->obh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF);
+      *decay_rate_PMF = *decay_rate_PMF + decay_rate_heat_ambipolar_pmf(z_out, xe, Tgas, chiB, params->obh2, sigmaA, sB, nB, params->zrec, params->inj_params->smooth_z_PMF);
     
-    //printf("we are here : %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *dEdtdV_heat, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB));
+    //printf("we are here : %e %e %e %e %e %e\n ", sigmaB, sigmaA, nB, *decay_rate_PMF, dEdtdV_heat_turbulences_pmf(z_out, H, params->obh2, params->ocbh2, sigmaA, sigmaB, nB, params->inj_params->smooth_z_PMF), pmf_en);
 
   }
+
+  *dEdtdV_heat = *dEdtdV_heat + rho_B_t * (*decay_rate_PMF) * pow(1+z_out, 4);
 }
 
+
+void update_y_MB_one_step(double *y, double *dy, double z, double dlna, double chiB, REC_COSMOPARAMS *params)
+{
+
+  /*
+    x = ln(a) = -ln(1+z)
+    y = M/a*H0^2
+  */ 
+  if (z >= 1080)
+    return;
+
+  double z_p = z;
+
+  if (z < 1e-2)
+    z_p = 1e-2;
+
+  double x = -log(1+z_p);
+
+  double h   = params->h;
+  double hz2 = params->ocbh2 * pow(1+z_p, 3) + params->orh2 * pow(1+z_p, 4) + params->odeh2 + params->okh2 * pow(1+z, 2);
+  double omz = params->ocbh2 * pow(1+z_p, 3) / hz2;
+  double orz = params->orh2  * pow(1+z_p, 4) / hz2;
+
+  double pn1 = -(4.0 - 3.0/2.0 * omz - 2.0 * orz);
+  double qn1 = -(3.0* (1.0 - omz) - 2.0 * orz);
+  double rn1 = omz / params->ocbh2 * h * h * exp(-x) * pow(chiB, 2);
+
+  double disc = 1.0 - dlna * pn1 - dlna * dlna * qn1;
+  double y_new  = (dlna * (*dy) + (1.0 - dlna * pn1) * (*y)) / disc;
+  double dy_new = ((*dy)  + dlna * rn1 + dlna * qn1 * (*y)) / disc;
+
+  *y  = y_new;
+  *dy = dy_new;
+
+}

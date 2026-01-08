@@ -61,12 +61,12 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->h  = cosmo_params.h;
   param->T0 = cosmo_params.T0;
 
-  Omega_b   = cosmo_params.Omega_b;
-  Omega_cb  = cosmo_params.Omega_cb;
-  Omega_k   = cosmo_params.Omega_k;
-  param->w0 = cosmo_params.w0;
-  param->wa = cosmo_params.wa;
-
+  Omega_b     = cosmo_params.Omega_b;
+  Omega_cb    = cosmo_params.Omega_cb;
+  Omega_k     = cosmo_params.Omega_k;
+  param->w0   = cosmo_params.w0;
+  param->wa   = cosmo_params.wa;
+  param->zrec = cosmo_params.zrec;
 
   param->mnu[0] = cosmo_params.mnu1;
   param->mnu[1] = cosmo_params.mnu2;
@@ -111,16 +111,23 @@ void init_hyrec(REC_COSMOPARAMS * param, INPUT_COSMOPARAMS cosmo_params, INPUT_I
   param->inj_params->decay            = injection_params.decay;
   param->inj_params->Mpbh             = injection_params.Mpbh;
   param->inj_params->fpbh             = injection_params.fpbh;
-  param->inj_params->sigmaB_PMF       = injection_params.sigmaB_PMF;
+  param->inj_params->sB_PMF           = injection_params.sB_PMF;
   param->inj_params->nB_PMF           = injection_params.nB_PMF;
   param->inj_params->sigmaA_PMF       = injection_params.sigmaA_PMF;
   param->inj_params->smooth_z_PMF     = injection_params.smooth_z_PMF;
   param->inj_params->heat_channel_PMF = injection_params.heat_channel_PMF;
+  param->inj_params->heat_channel_PMF = injection_params.heat_channel_PMF;
 
   param->inj_params->odmh2 = param->ocbh2 - param->obh2;
 
-  if (MODEL == SWIFT) param->dlna = DLNA_SWIFT;
-  else param->dlna = DLNA_HYREC;
+  if (cosmo_params.dlna <= 0.0){
+    if (MODEL == SWIFT) param->dlna = DLNA_SWIFT;
+    else param->dlna = DLNA_HYREC;
+  }
+  else{
+    param->dlna = cosmo_params.dlna;
+  }
+ 
 }
 
 //void segfault_sigaction(int signal, siginfo_t *si, void *arg)
@@ -687,6 +694,7 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
   int *error = &data->error;
 
   double *xe_output = data->xe_output, *Tm_output = data->Tm_output;
+  double *chiB = data->chiB, *MB = data->MB;
   int Nz = data->Nz;
   double zstart = data->zmax, zend = data->zmin;
   long iz;
@@ -696,15 +704,30 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
   double *ion = &cosmo->inj_params->ion;
   double *exclya = &cosmo->inj_params->exclya;
   double *dEdtdV_heat = &cosmo->inj_params->dEdtdV_heat;
+  double *decay_rate_PMF  = &cosmo->inj_params->decay_rate_PMF;
   double z_out=0., H_next;
+  double sigmaA = cosmo->inj_params->sigmaA_PMF;
+  double sB = cosmo->inj_params->sB_PMF;
+  double nB     = cosmo->inj_params->nB_PMF;
   int flag=10;
   double xe_i, Tm_i;
+
+  double c_y_MB;
+  double c_dy_MB;
 
   DLNA = cosmo->dlna;
   dz = zstart/Nz;
   // Index at which we start integrating Hydrogen recombination, and corresponding redshift
   data->rad->iz_rad_0  = (long) floor(1 + log(kBoltz*cosmo->T0/square(cosmo->fsR)/cosmo->meR*(1.+zstart)/TR_MAX)/DLNA);
   data->rad->z0   = (1.+zstart)*exp(-data->rad->iz_rad_0 * DLNA) - 1.;
+
+  // set the initial energy density [comoving, i.e., divided by (1+z)^4] of the primordial magnetic field
+  double chiB_init  = 1.0;
+  c_y_MB  = 0.0;
+  c_dy_MB = 0.0;
+  
+  //pow(cosmo->inj_params->sB_PMF, 2) / (2.0 * _MU_0_ * _C_LIGHT_ * _C_LIGHT_); // in eV / cm^3 
+  //printf("The initial magnetic field comoving energy density is: %e\n", chiB_init);
 
   z = zstart;
   /********* He III -> II Saha phase. Tm = Tr. Stop when xHeIII = 1e-8 *********/
@@ -713,6 +736,12 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
     z = (1.+zstart)*exp(-cosmo->dlna*iz) - 1.;
     xe_output[iz] = rec_xesaha_HeII_III(cosmo, z, &Delta_xe);
     Tm_output[iz] = cosmo->T0 * (1.+z);
+    
+    // First steps, the comoving energy density does not vary
+    chiB[iz] = chiB_init;
+    MB[iz]   = 0.0;
+
+    //printf("iz=%ld, z=%e, chiB here is %e\n", iz, z, chiB[iz]);
   }
 
   /******** He II -> I recombination.
@@ -761,6 +790,11 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
       dxHeIIdlna_prev[0] = (xHeII_prev[0] - xHeII_prev[2])/2./DLNA;
 
       if (fabs(1-dxHeIIdlna_prev[1]/dxHeIIdlna_prev[0])<DXHEII_DIFF_MAX) data->loop_after_quasi = 0;
+
+      chiB[iz]  = chiB_init;
+      MB[iz]  = 0.0;
+      //printf("iz=%ld, z=%e, chiB here is %e\n", iz, z, chiB[iz]);
+
     }
     else{
       rec_get_xe_next1_He(data, z, &xHeII, dxHeIIdlna_prev, hubble_array, flag);
@@ -772,6 +806,11 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
       else H = rec_interp1d(.0, dz, hubble_array, Nz, z, error, data->error_message);
 
       Tm_output[iz] = rec_Tmss(z, xe_output[iz], cosmo, 0., H);
+
+      chiB[iz]  = chiB_init;
+      MB[iz]    = 0.0;
+      //printf("iz=%ld, z=%e, chiB here is %e\n", iz, z, chiB[iz]);
+
     }
 
     if (*error == 1) return data->error_message;
@@ -796,7 +835,7 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
   if (hubble_array[0]==-1.) H  = rec_HubbleRate(cosmo, z);
   else H = rec_interp1d(.0, dz, hubble_array, Nz, z, error, data->error_message);
 
-  update_dEdtdV_dep(z, DLNA, xe_output[iz-1], Tm_output[iz-1], nH, xH1, H, cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat);
+  update_dEdtdV_dep(z, DLNA, xe_output[iz-1], Tm_output[iz-1], nH, xH1, H, chiB[iz-1], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
   //*ion = dEdtdV_dep/3. /nH * xH1 /EI;
   //*exclya = *ion / 0.75;
 
@@ -811,8 +850,16 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
     else H = rec_interp1d(.0, dz, hubble_array, Nz, z, error, data->error_message);
 
     nH = cosmo->nH0*cube(1.+z);
+
+    chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1])*DLNA;
+    
+    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+    MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
+    //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
+
     Tm_output[iz] = rec_Tmss(z, xe_output[iz], cosmo, *dEdtdV_heat, H);
-    update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, xH1, H, cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat);
+    
+    update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, xH1, H, chiB[iz], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
     //*ion = dEdtdV_dep/3. /nH *xH1 /EI;
     //*exclya = *ion /0.75;
 
@@ -837,7 +884,7 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
         if (hubble_array[0]==-1.) H  = rec_HubbleRate(cosmo, z);
         else H = rec_interp1d(.0, dz, hubble_array, Nz, z, error, data->error_message);
 
-        update_dEdtdV_dep(z, DLNA/10., xe_i, Tm_i, nH, (1.-xe_i), H, cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat);
+        update_dEdtdV_dep(z, DLNA/10., xe_i, Tm_i, nH, (1.-xe_i), H, chiB[iz-1], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
         //*ion = dEdtdV_dep/3. /nH *(1.-xe_i) /EI;
         //*exclya = *ion /0.75;
       }
@@ -845,7 +892,14 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
       dxHIIdlna_prev[1] = (xe_output[iz-1] - xe_output[iz-3])/2./DLNA;
       dxHIIdlna_prev[0] = (xe_output[iz] - xe_output[iz-2])/2./DLNA;
 
+
       if (fabs(1-dxHIIdlna_prev[1]/dxHIIdlna_prev[0])<DXHII_DIFF_MAX) data->loop_after_quasi=0;
+
+      chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1]) * DLNA;
+      
+      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+      MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
+      //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
     }
 
     else{
@@ -862,9 +916,16 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
       if (hubble_array[0]==-1.) H  = rec_HubbleRate(cosmo, z);
       else H = rec_interp1d(.0, dz, hubble_array, Nz, z, error, data->error_message);
 
-      update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat);
+      chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1]) * DLNA;
+
+      update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+      MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
+      //printf("iz=%ld, z=%e, chiB here is %e (with decay_rate_PMF/H)=%e \n", iz, z, chiB[iz], *decay_rate_PMF/H);
+      
+      update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, chiB[iz], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
       //*ion = dEdtdV_dep/3. /nH *(1.-xe_output[iz]) /EI;
       //*exclya = *ion /0.75;
+
     }
     if (*error == 1) return data->error_message;
   }
@@ -902,9 +963,19 @@ char* rec_build_history(HYREC_DATA *data, int model, double *hubble_array){
       else H_next = H;
     }
     nH = cosmo->nH0*cube(1.+z);
-    update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat);
+
+
+    chiB[iz] = chiB[iz-1] - *decay_rate_PMF/H/(2*chiB[iz-1])*DLNA;
+
+    update_y_MB_one_step(&c_y_MB, &c_dy_MB, z, DLNA, chiB[iz-1], cosmo); 
+    MB[iz]  = c_y_MB / (1+z) / pow(1e+7 * cosmo->h / _MPC_TO_CM_, 2); // get H0 in s^{-1}
+    
+    //printf("iz=%ld, z=%e, H = %e, chiB here is %e (with decay_rate_PMF/H)=%e, | %e \n", iz, z, H, chiB[iz], *decay_rate_PMF/H, -2.0*(nB+3.0)/(nB+5.0)/log(pow(1+0.05, -2.0/3.0) * (1+z)/1089) * chiB[iz] * chiB[iz]);
+    
+    update_dEdtdV_dep(z, DLNA, xe_output[iz], Tm_output[iz], nH, (1.-xe_output[iz]), H, chiB[iz], cosmo, &dEdtdV_dep, ion, exclya, dEdtdV_heat, decay_rate_PMF);
     //*ion = dEdtdV_dep/3. /nH *(1.-xe_output[iz]) /EI;
     //*exclya = *ion /0.75;
+
 
     if (*error == 1) return data->error_message;
   }
@@ -950,6 +1021,8 @@ void hyrec_allocate(HYREC_DATA * data, double zmax, double zmin) {
 
   data->xe_output = create_1D_array(data->Nz, &data->error, data->error_message);
   data->Tm_output = create_1D_array(data->Nz, &data->error, data->error_message);
+  data->chiB      = create_1D_array(data->Nz, &data->error, data->error_message);
+  data->MB        = create_1D_array(data->Nz, &data->error, data->error_message);
 }
 
 
@@ -965,6 +1038,8 @@ void hyrec_free(HYREC_DATA *data) {
   free(data->atomic);
   free(data->xe_output);
   free(data->Tm_output);
+  free(data->chiB);
+  free(data->MB);
   free(data->error_message);
   if (MODEL == FULL) free_radiation(data->rad);
   free(data->rad);
@@ -994,7 +1069,7 @@ void hyrec_compute(HYREC_DATA *data, int model){
 double hyrec_xe(double z, HYREC_DATA *data) {
   if (z > data->zmax) return data->xe_output[0];
   if (z < data->zmin) {
-    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_xe: requesting x_e at z = %f ", z);
+    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_xe: requesting xe at z = %f ", z);
     fprintf(stderr, "lower than zmin\n");
     exit(1);
   }
@@ -1005,7 +1080,7 @@ double hyrec_xe(double z, HYREC_DATA *data) {
 double hyrec_Tm(double z, HYREC_DATA *data) {
   if(z > data->zmax) return data->cosmo->T0*(1.+z);
   if (z < data->zmin) {
-    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_Tm: requesting x_e at z = %f ", z);
+    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_Tm: requesting Tm at z = %f ", z);
     fprintf(stderr, "lower than zmin\n");
     exit(1);
   }
@@ -1013,3 +1088,26 @@ double hyrec_Tm(double z, HYREC_DATA *data) {
   return rec_interp1d(-log(1.+data->zmax), DLNA, data->Tm_output, data->Nz, -log(1.+z), &data->error, data->error_message);
 }
 
+
+double hyrec_chiB(double z, HYREC_DATA *data){
+  if(z > data->zmax) return data->chiB[0];
+  if (z < data->zmin) {
+    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_: requesting chiB at z = %f ", z);
+    fprintf(stderr, "lower than zmin\n");
+    exit(1);
+  }
+  double DLNA = data->cosmo->dlna;
+  return rec_interp1d(-log(1.+data->zmax), DLNA, data->chiB, data->Nz, -log(1.+z), &data->error, data->error_message);
+}
+
+
+double hyrec_MB(double z, HYREC_DATA *data){
+  if(z > data->zmax) return data->MB[0];
+  if (z < data->zmin) {
+    fprintf(stderr, "\033[1m\033[31m error\033[22;30m in hyrec_: requesting MB at z = %f ", z);
+    fprintf(stderr, "lower than zmin\n");
+    exit(1);
+  }
+  double DLNA = data->cosmo->dlna;
+  return rec_interp1d(-log(1.+data->zmax), DLNA, data->MB, data->Nz, -log(1.+z), &data->error, data->error_message);
+}
